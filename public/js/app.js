@@ -1899,6 +1899,851 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/AutomatasComponent.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/AutomatasComponent.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      estadosAutomataAFD: [{
+        id: 'inicio',
+        label: 'inicio',
+        color: '#75616b47',
+        "final": false
+      }],
+      estadoAutomataAFD: {
+        id: '',
+        label: '',
+        color: '#C25C0B',
+        "final": false
+      },
+      transicionesAutomataAFD: [],
+      transicionAutomataAFD: {
+        from: '',
+        label: '',
+        to: '',
+        color: {
+          color: 'rgb(0,0,0)'
+        }
+      },
+      estadosAP1: [{
+        id: 'inicio',
+        label: 'inicio',
+        color: '#75616b47',
+        "final": false
+      }],
+      estadoAP1: {
+        id: '',
+        label: '',
+        color: '#C25C0B',
+        "final": false
+      },
+      transicionesAP1: [],
+      transicionAP1: {
+        from: '',
+        label: '',
+        to: '',
+        color: {
+          color: 'rgb(0,0,0)'
+        }
+      },
+      estadosAP2: [{
+        id: 'inicio',
+        label: 'inicio',
+        color: '#75616b47',
+        "final": false
+      }],
+      estadoAP2: {
+        id: '',
+        label: '',
+        color: '#C25C0B',
+        "final": false
+      },
+      transicionesAP2: [],
+      transicionAP2: {
+        from: '',
+        label: '',
+        to: '',
+        color: {
+          color: 'rgb(0,0,0)'
+        }
+      },
+      expresionRegularAFD: '',
+      estadosAutomataUnionAP: [],
+      estadoAutomataUnionAP: {
+        id: '',
+        label: '',
+        color: '#C25C0B',
+        "final": false
+      },
+      transicionesAutomataUnionAP: [],
+      transicionAutomataUnionAP: {
+        from: '',
+        label: '',
+        to: '',
+        color: {
+          color: 'rgb(0,0,0)'
+        }
+      },
+      estadosAutomataConcatenacionAP: [],
+      estadoAutomataConcatenacionAp: {
+        id: '',
+        label: '',
+        color: '#C25C0B',
+        "final": false
+      },
+      transicionesAutomataConcatenacionAP: [],
+      transicionAutomataConcatenacionAp: {
+        from: '',
+        label: '',
+        to: '',
+        color: {
+          color: 'rgb(0,0,0)'
+        }
+      },
+      selected: false,
+      selected2: false,
+      automataCreate: false,
+      option: '',
+      opcion: 0,
+      representacion1: false,
+      analizarPalabra: false,
+      volverInicio: false,
+      createTrans: false,
+      creaEstado: false,
+      showAps: false,
+      apSeleccionado: 0
+    };
+  },
+  created: function created() {},
+  methods: {
+    selectAFD: function selectAFD() {
+      this.automataCreate = true;
+      this.option = 1;
+    },
+    selectAP: function selectAP() {
+      this.automataCreate = true;
+      this.selected = true;
+      this.showAps = true;
+      this.option = 2;
+    },
+    createEstado: function createEstado() {
+      this.creaEstado = true;
+      this.selected = true;
+      this.selected2 = true;
+      this.createTrans = false;
+    },
+    createTransicion: function createTransicion() {
+      this.createTrans = true;
+      this.selected = true;
+      this.selected2 = true;
+      this.creaEstado = false;
+    },
+    representacion: function representacion() {
+      this.representacion1 = true;
+    },
+    representacionBack: function representacionBack() {
+      this.representacion1 = false;
+    },
+    showAnalisisPalabra: function showAnalisisPalabra() {
+      this.analizarPalabra = true;
+      this.createTrans = false;
+      this.selected = true;
+      this.selected2 = true;
+    },
+    back: function back() {
+      this.selected = false;
+      this.createTrans = false;
+      this.creaEstado = false;
+      this.analizarPalabra = false;
+      this.selected2 = false;
+    },
+    backInicio: function backInicio() {
+      this.automataCreate = false;
+      this.creaEstado = false;
+      this.option = 0;
+      this.selected = false;
+    },
+    backToAp: function backToAp() {
+      this.selected = true;
+      this.showAps = true;
+    },
+    createAP1: function createAP1() {
+      this.selected = false;
+      this.showAps = false;
+      this.apSeleccionado = 1;
+    },
+    createAP2: function createAP2() {
+      this.selected = false;
+      this.showAps = false;
+      this.apSeleccionado = 2;
+    },
+    mostrarOP1: function mostrarOP1() {
+      this.opcion = 1;
+    },
+    mostrarOP2: function mostrarOP2() {
+      this.opcion = 2;
+    },
+    mostrarOP3: function mostrarOP3() {
+      this.opcion = 3;
+    },
+    crearTransicion: function crearTransicion() {},
+    existeEstado: function existeEstado(estados, estado) {
+      for (var i = 0; i < estados.length; i++) {
+        if (estados[i].id === estado.id) {
+          return true;
+        }
+
+        return false;
+      }
+    },
+    estadosDistintos: function estadosDistintos(estados, estado) {
+      for (var i = 0; i < estados.length; i++) {
+        if (estados[i].id === estado.id) {
+          return false;
+        }
+
+        return true;
+      }
+    },
+    crearEstado: function crearEstado() {
+      var aux = {
+        id: 'inicio',
+        label: 'inicio',
+        color: '#75616b47',
+        "final": false
+      };
+
+      if (this.option === 1) {
+        if (this.estadoAutomataAFD.id === '') {
+          swal("Por favor, ingrese un id", {
+            className: "alertas",
+            button: "Aceptar",
+            icon: "warning",
+            title: "Aviso"
+          });
+          return;
+        }
+
+        if (this.existeEstado(this.estadosAutomataAFD, this.estadoAutomataAFD)) {
+          swal("El estado ya existe. Ingrese un estado con otro id.", {
+            className: "Alertas",
+            button: "Aceptar",
+            icon: "warning",
+            title: "Aviso"
+          });
+          return;
+        }
+
+        if (this.estadosAutomataAFD.length === 0) {
+          this.estadosAutomataAFD.push(aux);
+        }
+
+        this.estadoAutomataAFD.label = this.estadoAutomataAFD.id;
+
+        if (this.estadosAutomataAFD.length === 1) {
+          this.estadosAutomataAFD.push(this.estadoAutomataAFD);
+          this.transicionAutomataAFD.from = 'inicio';
+          this.transicionAutomataAFD.label = '';
+          this.transicionAutomataAFD.to = this.estadoAutomataAFD.id;
+          this.transicionesAutomataAFD.push(this.transicionAutomataAFD);
+          this.transicionAutomataAFD = {
+            from: '',
+            label: '',
+            to: '',
+            color: {
+              color: 'rgb(0,0,0)'
+            }
+          };
+          this.estadoAutomataAFD = {
+            id: '',
+            label: '',
+            color: '#C52C0B',
+            "final": false
+          };
+          this.drawAutomata();
+          return;
+        } else {
+          this.estadosAutomataAFD.push(this.estadoAutomataAFD);
+          this.estadoAutomataAFD = {
+            id: '',
+            label: '',
+            color: '#C52C0B',
+            "final": false
+          };
+          this.drawAutomata();
+        }
+      } else {
+        if (this.apSeleccionado === 1) {
+          if (this.estadoAP1.id === '') {
+            swal("Por favor, ingrese un id", {
+              className: "alertas",
+              button: "Aceptar",
+              icon: "warning",
+              title: "Aviso"
+            });
+            return;
+          }
+
+          if (this.existeEstado(this.estadosAP1, this.estadoAP1)) {
+            swal("El estado ya existe. Ingrese un estado con otro id.", {
+              className: "Alertas",
+              button: "Aceptar",
+              icon: "warning",
+              title: "Aviso"
+            });
+            return;
+          }
+
+          if (this.estadosAP1.length === 0) {
+            this.estadosAP1.push(aux);
+          }
+
+          this.estadoAP1.label = this.estadoAP1.id;
+
+          if (this.estadosAP1.length === 1) {
+            if (!this.estadosDistintos(this.estadosAP2, this.estadoAP1)) {
+              swal("El id debe ser distinto al/los estado(s) del otro autómata", {
+                className: "Alertas",
+                button: "Aceptar",
+                icon: "warning",
+                title: "Aviso"
+              });
+              return;
+            }
+
+            this.estadosAP1.push(this.estadoAP1);
+            this.transicionAP1.from = 'inicio';
+            this.transicionAP1.label = '';
+            this.transicionAP1.to = this.estadoAP1.id;
+            this.transicionesAP1.push(this.transicionAP1);
+            this.transicionAP1 = {
+              from: '',
+              label: '',
+              to: '',
+              color: {
+                color: 'rgb(0,0,0)'
+              }
+            };
+            this.estadoAP1 = {
+              id: '',
+              label: '',
+              color: '#C52C0B',
+              "final": false
+            };
+            this.drawAutomata();
+            return;
+          } else {
+            if (!this.estadosDistintos(this.estadoAP2, this.estadoAP1)) {
+              swal("El id debe ser distinto al/los estado(s) del otro autómata", {
+                className: "alertas",
+                button: "Aceptar",
+                icon: "warning",
+                title: "Aviso"
+              });
+              return;
+            }
+
+            this.estadosAP1.push(this.estadoAP1);
+            this.estadoAP1 = {
+              id: '',
+              label: '',
+              color: '#C52C0B',
+              "final": false
+            };
+            this.drawAutomata();
+            return;
+          }
+        } else {
+          if (this.apSeleccionado === 2) {
+            if (this.estadoAP2.id === '') {
+              swal("Por favor, ingrese un id", {
+                className: "alertas",
+                button: "Aceptar",
+                icon: "warning",
+                title: "Aviso"
+              });
+              return;
+            }
+
+            if (this.existeEstado(this.estadosAP2, this.estadoAP2)) {
+              swal("El estado ya existe. Ingrese un estado con otro id.", {
+                className: "Alertas",
+                button: "Aceptar",
+                icon: "warning",
+                title: "Aviso"
+              });
+              return;
+            }
+
+            if (this.estadosAP2.length === 0) {
+              this.estadosAP2.push(aux);
+            }
+
+            this.estadoAP2.label = this.estadoAP2.id;
+
+            if (this.estadosAP2.length === 1) {
+              if (!this.estadosDistintos(this.estadosAP1, this.estadoAP2)) {
+                swal("El id debe ser distinto al/los estado(s) del otro autómata", {
+                  className: "Alertas",
+                  button: "Aceptar",
+                  icon: "warning",
+                  title: "Aviso"
+                });
+                return;
+              }
+
+              this.estadosAP2.push(this.estadoAP2);
+              this.transicionAP2.from = 'inicio';
+              this.transicionAP2.label = '';
+              this.transicionAP2.to = this.estadoAP2.id;
+              this.transicionesAP2.push(this.transicionAP2);
+              this.transicionAP2 = {
+                from: '',
+                label: '',
+                to: '',
+                color: {
+                  color: 'rgb(0,0,0)'
+                }
+              };
+              this.estadoAP2 = {
+                id: '',
+                label: '',
+                color: '#C52C0B',
+                "final": false
+              };
+              this.drawAutomata();
+              return;
+            } else {
+              if (!this.estadosDistintos(this.estadoAP1, this.estadoAP2)) {
+                swal("El id debe ser distinto al/los estado(s) del otro autómata", {
+                  className: "alertas",
+                  button: "Aceptar",
+                  icon: "warning",
+                  title: "Aviso"
+                });
+                return;
+              }
+
+              this.estadosAP2.push(this.estadoAP2);
+              this.estadoAP2 = {
+                id: '',
+                label: '',
+                color: '#C52C0B',
+                "final": false
+              };
+              this.drawAutomata();
+              return;
+            }
+          }
+        }
+      }
+    },
+    drawAutomata: function drawAutomata() {
+      var afd = document.getElementById("AFD");
+      var ap1 = document.getElementById("AP1");
+      var ap2 = document.getElementById("AP2");
+      var apConcatenados = document.getElementById("APCONCATENADO");
+      var apUnidos = document.getElementById("APUNIDOS");
+      var dataAFD = {
+        nodes: this.estadosAutomataAFD,
+        edges: this.transicionesAutomataAFD
+      };
+      var dataAP1 = {
+        nodes: this.estadosAP1,
+        edges: this.transicionesAp2
+      };
+      var dataAP2 = {
+        nodes: this.estadosAP2,
+        edges: this.transicionesAP2
+      };
+      var dataAPConcatenados = {
+        nodes: this.estadosAutomataConcatenacionAP,
+        edges: this.transicionesAutomataConcatenacionAP
+      };
+      var dataAPUnidos = {
+        nodes: this.estadosAutomataUnionAP,
+        edges: this.transicionesAutomataUnionAP
+      };
+      var options = {
+        heigth: 520 + 'px',
+        edges: {
+          arrows: 'to'
+        }
+      };
+      var networkAFD = new vis.Network(afd, dataAFD, options);
+
+      if (this.option === 2) {
+        var networkAP1 = new vis.Network(ap1, dataAP1, options);
+        var networkAP2 = new vis.Network(ap2, dataAP2, options);
+      }
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/particulas.vue?vue&type=script&lang=js&":
 /*!*********************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/particulas.vue?vue&type=script&lang=js& ***!
@@ -1954,7 +2799,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      controlvista: 1
+      controlvista: 2
     };
   },
   mounted: function mounted() {
@@ -92755,6 +93600,1083 @@ exports["default"] = FloydWarshall;
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/AutomatasComponent.vue?vue&type=template&id=06dab8b6&":
+/*!*********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/AutomatasComponent.vue?vue&type=template&id=06dab8b6& ***!
+  \*********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("h1", { staticClass: "text-center textocolor fredoka mt-5 pt-4" }, [
+      _vm._v("Crear Autómata")
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row justify-content-center" }, [
+      !_vm.representacion1
+        ? _c("div", { staticClass: "grafo1 col-md-3 mx-4 card cardaux" }, [
+            _c("div", { staticClass: "container-fluid mr-4" }, [
+              !_vm.automataCreate
+                ? _c(
+                    "div",
+                    { staticClass: "row justify-content-center ml-1" },
+                    [
+                      _c("div", { staticClass: "col-md-6 my-4" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-success info textocolor",
+                            on: { click: _vm.selectAFD }
+                          },
+                          [_vm._v("Crear AFD")]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-6 my-4" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-success info textocolor",
+                            on: { click: _vm.selectAP }
+                          },
+                          [_vm._v("Crear AP's")]
+                        )
+                      ])
+                    ]
+                  )
+                : _vm._e()
+            ]),
+            _vm._v(" "),
+            _vm.option === 1
+              ? _c("div", { staticClass: "container-fluid py-4 mr-4" }, [
+                  _c("h3", { staticClass: "mt-2" }, [
+                    _vm._v("Autómata Finito Determinista (AFD)")
+                  ]),
+                  _vm._v(" "),
+                  _c("hr"),
+                  _vm._v(" "),
+                  !_vm.selected
+                    ? _c("div", { staticClass: "row text-center my-4" }, [
+                        _c("div", { staticClass: "col-md-4" }, [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-sm btn-success",
+                              on: { click: _vm.createEstado }
+                            },
+                            [_vm._v("Añadir Estado")]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-4" }, [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-sm btn-success",
+                              on: { click: _vm.createTransicion }
+                            },
+                            [_vm._v("Añadir Transición")]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-4" }, [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-sm btn-success",
+                              on: { click: _vm.representacion }
+                            },
+                            [_vm._v("Modificar Estado Final")]
+                          )
+                        ])
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  !_vm.selected
+                    ? _c("div", { staticClass: "row text-center" }, [
+                        _c("div", { staticClass: "col-md-4" }, [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-sm btn-success",
+                              on: { click: _vm.showAnalisisPalabra }
+                            },
+                            [_vm._v("Analizar Palabra")]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _vm._m(0),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-4" }, [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-sm btn-warning",
+                              on: { click: _vm.backInicio }
+                            },
+                            [_vm._v(" Volver al Inicio")]
+                          )
+                        ])
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.selected
+                    ? _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-success btn-sm",
+                          on: { click: _vm.back }
+                        },
+                        [_vm._v("Volver")]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.creaEstado
+                    ? _c("div", { staticClass: "my-4" }, [
+                        _c("div", [
+                          _c(
+                            "form",
+                            {
+                              on: {
+                                submit: function($event) {
+                                  $event.preventDefault()
+                                  return _vm.crearEstado($event)
+                                }
+                              }
+                            },
+                            [
+                              _c("div", { staticClass: "form-group" }, [
+                                _c("label", { attrs: { for: "id" } }, [
+                                  _vm._v("Ingrese el id: ")
+                                ]),
+                                _vm._v(" "),
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.estadoAutomataAFD.id,
+                                      expression: "estadoAutomataAFD.id"
+                                    }
+                                  ],
+                                  staticClass: "form-control",
+                                  attrs: { type: "number", min: "0" },
+                                  domProps: { value: _vm.estadoAutomataAFD.id },
+                                  on: {
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(
+                                        _vm.estadoAutomataAFD,
+                                        "id",
+                                        $event.target.value
+                                      )
+                                    }
+                                  }
+                                })
+                              ]),
+                              _vm._v(" "),
+                              _vm._m(1)
+                            ]
+                          )
+                        ])
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.createTrans
+                    ? _c("div", { staticClass: "my-3" }, [
+                        _c(
+                          "form",
+                          {
+                            on: {
+                              submit: function($event) {
+                                $event.preventDefault()
+                              }
+                            }
+                          },
+                          [
+                            _vm._m(2),
+                            _vm._v(" "),
+                            _vm._m(3),
+                            _vm._v(" "),
+                            _vm._m(4),
+                            _vm._v(" "),
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-success btn-sm",
+                                attrs: { type: "submit" }
+                              },
+                              [_vm._v("Agregar")]
+                            )
+                          ]
+                        )
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.analizarPalabra
+                    ? _c("div", { staticClass: "col-md-12 my-4" }, [
+                        _c(
+                          "form",
+                          {
+                            on: {
+                              submit: function($event) {
+                                $event.preventDefault()
+                              }
+                            }
+                          },
+                          [
+                            _vm._m(5),
+                            _vm._v(" "),
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-success btn-sm",
+                                attrs: { type: "submit" }
+                              },
+                              [_vm._v("Consultar Palabra")]
+                            )
+                          ]
+                        )
+                      ])
+                    : _vm._e()
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.option === 2
+              ? _c("div", { staticClass: "container-fluid py-4 mr-4" }, [
+                  _c("h3", { staticClass: "mt-2" }, [
+                    _vm._v("Autómatas de Pila (AP)")
+                  ]),
+                  _vm._v(" "),
+                  _vm.showAps
+                    ? _c("div", { staticClass: "row text-center my-4" }, [
+                        _c("div", { staticClass: "col-md-6" }, [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-sm btn-success",
+                              on: { click: _vm.createAP1 }
+                            },
+                            [_vm._v("Crear AP 1")]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-6" }, [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-sm btn-success",
+                              on: { click: _vm.createAP2 }
+                            },
+                            [_vm._v("Crear AP 2")]
+                          )
+                        ])
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.showAps
+                    ? _c("div", { staticClass: "row my-2" }, [
+                        _c("div", { staticClass: "col-md-4" }),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-4 text-center" }, [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-sm btn-warning",
+                              on: { click: _vm.backInicio }
+                            },
+                            [_vm._v("Volver al Inicio")]
+                          )
+                        ])
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  !_vm.selected
+                    ? _c("div", { staticClass: "row text-center my-4" }, [
+                        _c("div", { staticClass: "col-md-4" }, [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-sm btn-success",
+                              on: { click: _vm.createEstado }
+                            },
+                            [_vm._v("Añadir Estado")]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-4" }, [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-sm btn-success",
+                              on: { click: _vm.createTransicion }
+                            },
+                            [_vm._v("Añadir Transición")]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-4" }, [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-sm btn-success",
+                              on: { click: _vm.representacion }
+                            },
+                            [_vm._v("Modificar Estado Final")]
+                          )
+                        ])
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.selected2
+                    ? _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-success btn-sm mt-3",
+                          on: { click: _vm.back }
+                        },
+                        [_vm._v("Volver")]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  !_vm.selected
+                    ? _c("div", { staticClass: "row text-center" }, [
+                        _c("div", { staticClass: "col-md-4" }, [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-sm btn-success",
+                              on: { click: _vm.showAnalisisPalabra }
+                            },
+                            [_vm._v("Analizar Palabra")]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _vm._m(6),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-4" }, [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-sm btn-warning",
+                              on: { click: _vm.backToAp }
+                            },
+                            [_vm._v(" Volver")]
+                          )
+                        ])
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.creaEstado
+                    ? _c("div", { staticClass: "my-4" }, [
+                        _c("div", [
+                          _vm.apSeleccionado === 1
+                            ? _c("form", { attrs: { "submit.prevent": "" } }, [
+                                _vm._m(7),
+                                _vm._v(" "),
+                                _vm._m(8)
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.apSeleccionado === 2
+                            ? _c("form", { attrs: { "submit.prevent": "" } }, [
+                                _vm._m(9),
+                                _vm._v(" "),
+                                _vm._m(10)
+                              ])
+                            : _vm._e()
+                        ])
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.createTrans
+                    ? _c("div", { staticClass: "my-3" }, [
+                        _vm.apSeleccionado === 1
+                          ? _c(
+                              "form",
+                              {
+                                on: {
+                                  submit: function($event) {
+                                    $event.preventDefault()
+                                  }
+                                }
+                              },
+                              [
+                                _vm._m(11),
+                                _vm._v(" "),
+                                _vm._m(12),
+                                _vm._v(" "),
+                                _vm._m(13),
+                                _vm._v(" "),
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn btn-success btn-sm",
+                                    attrs: { type: "submit" }
+                                  },
+                                  [_vm._v("Agregar")]
+                                )
+                              ]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.apSeleccionado === 2
+                          ? _c(
+                              "form",
+                              {
+                                on: {
+                                  submit: function($event) {
+                                    $event.preventDefault()
+                                  }
+                                }
+                              },
+                              [
+                                _vm._m(14),
+                                _vm._v(" "),
+                                _vm._m(15),
+                                _vm._v(" "),
+                                _vm._m(16),
+                                _vm._v(" "),
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn btn-success btn-sm",
+                                    attrs: { type: "submit" }
+                                  },
+                                  [_vm._v("Agregar")]
+                                )
+                              ]
+                            )
+                          : _vm._e()
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.analizarPalabra
+                    ? _c("div", { staticClass: "col-md-12 my-4" }, [
+                        _vm.apSeleccionado === 1
+                          ? _c(
+                              "form",
+                              {
+                                on: {
+                                  submit: function($event) {
+                                    $event.preventDefault()
+                                  }
+                                }
+                              },
+                              [
+                                _vm._m(17),
+                                _vm._v(" "),
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn btn-success btn-sm",
+                                    attrs: { type: "submit" }
+                                  },
+                                  [_vm._v("Consultar Palabra")]
+                                )
+                              ]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.apSeleccionado === 2
+                          ? _c(
+                              "form",
+                              {
+                                on: {
+                                  submit: function($event) {
+                                    $event.preventDefault()
+                                  }
+                                }
+                              },
+                              [
+                                _vm._m(18),
+                                _vm._v(" "),
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn btn-success btn-sm",
+                                    attrs: { type: "submit" }
+                                  },
+                                  [_vm._v("Consultar Palabra")]
+                                )
+                              ]
+                            )
+                          : _vm._e()
+                      ])
+                    : _vm._e()
+                ])
+              : _vm._e()
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _c("div", { staticClass: "grafo1 col-md-8 card cardaux" }, [
+        _c("h3", { staticClass: "text-center fredoka my-2" }, [
+          _vm._v("Representación")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "row" }, [
+          _vm.option === 1
+            ? _c("div", { staticClass: "col-md-12" }, [
+                _c("h4", { staticClass: "text-center fredoka my-3" }, [
+                  _vm._v("Autómata Finito Determinista")
+                ]),
+                _vm._v(" "),
+                _c("div", {
+                  staticClass: "mb-3",
+                  staticStyle: { border: "1px solid lightgray" },
+                  attrs: { id: "AFD" }
+                })
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.option === 2
+            ? _c("div", { staticClass: "col-md-6" }, [
+                _c("h4", { staticClass: "text-center fredoka my-3" }, [
+                  _vm._v("Autómata de Pila 1")
+                ]),
+                _vm._v(" "),
+                _c("div", {
+                  staticClass: "mb-3",
+                  staticStyle: { border: "1px solid lightgray" },
+                  attrs: { id: "AP1" }
+                })
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.option === 2
+            ? _c("div", { staticClass: "col-md-6" }, [
+                _c("h4", { staticClass: "text-center fredoka my-3" }, [
+                  _vm._v("Autómata de Pila 2")
+                ]),
+                _vm._v(" "),
+                _c("div", {
+                  staticClass: "mb-3",
+                  staticStyle: { border: "1px solid lightgray" },
+                  attrs: { id: "AP2" }
+                })
+              ])
+            : _vm._e()
+        ])
+      ]),
+      _vm._v(" "),
+      _vm.representacion1
+        ? _c("div", { staticClass: "grafo1 col-md-5 mx-3 card cardaux my-3" }, [
+            _c("hr"),
+            _vm._v(" "),
+            _c("div", [
+              _vm.option === 1
+                ? _c("h3", { staticClass: "text-center fredoka my-3" }, [
+                    _vm._v("Tabla de estados autómata Finito Determinista")
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.option === 1
+                ? _c(
+                    "table",
+                    {
+                      staticClass: "table table-striped table-dark",
+                      attrs: { "aria-describedby": "estados1" }
+                    },
+                    [_vm._m(19), _vm._v(" "), _vm._m(20)]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.option === 2
+                ? _c("h3", { staticClass: "text-center fredoka my-3" }, [
+                    _vm._v("Tabla de estados autómata de Pila 1")
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.option === 2
+                ? _c(
+                    "table",
+                    {
+                      staticClass: "table table-striped table-dark",
+                      attrs: { "aria-describedby": "estados1" }
+                    },
+                    [_vm._m(21), _vm._v(" "), _vm._m(22)]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.option === 2
+                ? _c("h3", { staticClass: "text-center fredoka my-3" }, [
+                    _vm._v("Tabla de estados autómata de Pila 2")
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.option === 2
+                ? _c(
+                    "table",
+                    {
+                      staticClass: "table table-striped table-dark",
+                      attrs: { "aria-describedby": "estados1" }
+                    },
+                    [_vm._m(23), _vm._v(" "), _vm._m(24)]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-success btn-sm mb-3 text-right",
+                  attrs: { type: "submit" },
+                  on: { click: _vm.representacionBack }
+                },
+                [_vm._v("Guardar")]
+              )
+            ])
+          ])
+        : _vm._e()
+    ]),
+    _vm._v(" "),
+    _c("h1", { staticClass: "text-center fredoka textocolor my-4" }, [
+      _vm._v("Operaciones")
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row justify-content-center" }, [
+      _c("div", { staticClass: "card cardaux4 col-md-10 rounded-top" }, [
+        _c(
+          "div",
+          {
+            staticClass: "btn-group justify-content-center",
+            attrs: { role: "group" }
+          },
+          [
+            _c("a", { attrs: { href: "#" } }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-secondary",
+                  on: { click: _vm.mostrarOP1 }
+                },
+                [_vm._v("Expresión Regular")]
+              )
+            ]),
+            _vm._v(" "),
+            _c("a", { attrs: { href: "#" } }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-secondary",
+                  on: { click: _vm.mostrarOP2 }
+                },
+                [_vm._v("Concatenación de AP's")]
+              )
+            ]),
+            _vm._v(" "),
+            _c("a", { attrs: { href: "#" } }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-secondary",
+                  on: { click: _vm.mostrarOP3 }
+                },
+                [_vm._v("Unión de AP's")]
+              )
+            ])
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _vm.opcion === 1
+        ? _c("div", { staticClass: "cardaux2 col-md-10" }, [
+            _c("h3", { staticClass: "text-center fredoka textocolor my-3" }, [
+              _vm._v("Expresión Regular")
+            ])
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.opcion === 1
+        ? _c(
+            "div",
+            { staticClass: "card cardaux3 col-md-10 rounded-bottom mb-3" },
+            [
+              _c("div", { staticClass: "container my-3" }, [
+                _vm._v("\n\n                aaaaaaaaaaaaaa\n            ")
+              ])
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.opcion === 2
+        ? _c("div", { staticClass: "cardaux2 col-md-10" }, [
+            _c("h3", { staticClass: "text-center fredoka textocolor my-3" }, [
+              _vm._v("Concatenación de AP'S")
+            ])
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.opcion === 2
+        ? _c(
+            "div",
+            { staticClass: "card cardaux3 col-md-10 rounded-bottom mb-3" },
+            [
+              _c("div", { staticClass: "container my-3" }, [
+                _vm._v("\n\n                aaaaaaaaaaaaaa\n            ")
+              ])
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.opcion === 3
+        ? _c("div", { staticClass: "cardaux2 col-md-10" }, [
+            _c("h3", { staticClass: "text-center fredoka textocolor my-3" }, [
+              _vm._v("Unión de AP's")
+            ])
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.opcion === 3
+        ? _c(
+            "div",
+            { staticClass: "card cardaux3 col-md-10 rounded-bottom mb-3" },
+            [
+              _c("div", { staticClass: "container my-3" }, [
+                _vm._v("\n\n                aaaaaaaaaaaaaa\n            ")
+              ])
+            ]
+          )
+        : _vm._e()
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-4" }, [
+      _c("button", { staticClass: "btn btn-sm btn-danger" }, [
+        _vm._v("Eliminar Autómata")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "text-center" }, [
+      _c(
+        "button",
+        { staticClass: "btn btn-success btn-sm", attrs: { type: "submit" } },
+        [_vm._v("Agregar")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("label", [
+        _vm._v("Ingrese el id del estado inicial de la transición:")
+      ]),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "form-control",
+        attrs: { type: "number", min: "0" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("label", [_vm._v("Ingrese el id del estado final de la transición:")]),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "form-control",
+        attrs: { type: "number", min: "0" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("label", [_vm._v("Ingrese carácter de la transición: ")]),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "form-control",
+        attrs: { type: "text", minlength: "1" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("label", [_vm._v("Ingrese la palabra: ")]),
+      _vm._v(" "),
+      _c("input", { staticClass: "form-control", attrs: { type: "text" } })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-4" }, [
+      _c("button", { staticClass: "btn btn-sm btn-danger" }, [
+        _vm._v("Eliminar Autómata")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("label", { attrs: { for: "id" } }, [_vm._v("Ingrese el id: ")]),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "form-control",
+        attrs: { type: "number", min: "0" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "text-center" }, [
+      _c(
+        "button",
+        { staticClass: "btn btn-success btn-sm", attrs: { type: "submit" } },
+        [_vm._v("Agregar")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("label", { attrs: { for: "id" } }, [_vm._v("Ingrese el id: ")]),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "form-control",
+        attrs: { type: "number", min: "0" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "text-center" }, [
+      _c(
+        "button",
+        { staticClass: "btn btn-success btn-sm", attrs: { type: "submit" } },
+        [_vm._v("Agregar")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("label", [
+        _vm._v("Ingrese el id del estado inicial de la transición:")
+      ]),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "form-control",
+        attrs: { type: "number", min: "0" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("label", [_vm._v("Ingrese el id del estado final de la transición:")]),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "form-control",
+        attrs: { type: "number", min: "0" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("label", [_vm._v("Ingrese carácter de la transición: ")]),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "form-control",
+        attrs: { type: "text", minlength: "1" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("label", [
+        _vm._v("Ingrese el id del estado inicial de la transición:")
+      ]),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "form-control",
+        attrs: { type: "number", min: "0" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("label", [_vm._v("Ingrese el id del estado final de la transición:")]),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "form-control",
+        attrs: { type: "number", min: "0" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("label", [_vm._v("Ingrese carácter de la transición: ")]),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "form-control",
+        attrs: { type: "text", minlength: "1" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("label", [_vm._v("Ingrese la palabra: ")]),
+      _vm._v(" "),
+      _c("input", { staticClass: "form-control", attrs: { type: "text" } })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("label", [_vm._v("Ingrese la palabra: ")]),
+      _vm._v(" "),
+      _c("input", { staticClass: "form-control", attrs: { type: "text" } })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Estado")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Final")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tbody", [
+      _c("tr", [
+        _c("td", [_vm._v("a")]),
+        _vm._v(" "),
+        _c("td", [_vm._v("a")]),
+        _vm._v(" "),
+        _c("td", [_vm._v("a")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Estado")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Final")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tbody", [
+      _c("tr", [
+        _c("td", [_vm._v("a")]),
+        _vm._v(" "),
+        _c("td", [_vm._v("a")]),
+        _vm._v(" "),
+        _c("td", [_vm._v("a")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Estado")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Final")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tbody", [
+      _c("tr", [
+        _c("td", [_vm._v("a")]),
+        _vm._v(" "),
+        _c("td", [_vm._v("a")]),
+        _vm._v(" "),
+        _c("td", [_vm._v("a")])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/HomeComponent.vue?vue&type=template&id=782dcf83&":
 /*!****************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/HomeComponent.vue?vue&type=template&id=782dcf83& ***!
@@ -105443,17 +107365,20 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-var render, staticRenderFns
-var script = {}
+/* harmony import */ var _AutomatasComponent_vue_vue_type_template_id_06dab8b6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AutomatasComponent.vue?vue&type=template&id=06dab8b6& */ "./resources/js/components/AutomatasComponent.vue?vue&type=template&id=06dab8b6&");
+/* harmony import */ var _AutomatasComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AutomatasComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/AutomatasComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
 
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_0__["default"])(
-  script,
-  render,
-  staticRenderFns,
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _AutomatasComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _AutomatasComponent_vue_vue_type_template_id_06dab8b6___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _AutomatasComponent_vue_vue_type_template_id_06dab8b6___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
   null,
@@ -105461,8 +107386,42 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   
 )
 
+/* hot reload */
+if (false) { var api; }
 component.options.__file = "resources/js/components/AutomatasComponent.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/AutomatasComponent.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/components/AutomatasComponent.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AutomatasComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./AutomatasComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/AutomatasComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AutomatasComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/AutomatasComponent.vue?vue&type=template&id=06dab8b6&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/components/AutomatasComponent.vue?vue&type=template&id=06dab8b6& ***!
+  \***************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AutomatasComponent_vue_vue_type_template_id_06dab8b6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./AutomatasComponent.vue?vue&type=template&id=06dab8b6& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/AutomatasComponent.vue?vue&type=template&id=06dab8b6&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AutomatasComponent_vue_vue_type_template_id_06dab8b6___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AutomatasComponent_vue_vue_type_template_id_06dab8b6___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
 
 /***/ }),
 
