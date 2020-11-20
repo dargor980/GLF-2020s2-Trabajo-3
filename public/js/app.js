@@ -2329,6 +2329,7 @@ __webpack_require__.r(__webpack_exports__);
           color: 'rgb(0,0,0)'
         }
       },
+      //transicion automata pila = {caracter que consume, caracter que elimina, caracter que ingresa}
       expresionRegularAFD: '',
       estadosAutomataUnionAP: [],
       estadoAutomataUnionAP: {
@@ -2362,6 +2363,9 @@ __webpack_require__.r(__webpack_exports__);
           color: 'rgb(0,0,0)'
         }
       },
+      alfabetoAFD: [],
+      alfabetoAP1: [],
+      alfabetoAP2: [],
       selected: false,
       selected2: false,
       automataCreate: false,
@@ -2448,14 +2452,240 @@ __webpack_require__.r(__webpack_exports__);
     mostrarOP3: function mostrarOP3() {
       this.opcion = 3;
     },
-    crearTransicion: function crearTransicion() {},
-    existeEstado: function existeEstado(estados, estado) {
+    existeEstadoTransicion: function existeEstadoTransicion(estados, transicion) {
+      var existeFrom = false;
+      var existeTo = false;
+
       for (var i = 0; i < estados.length; i++) {
-        if (estados[i].id === estado.id) {
-          return true;
+        if (estados[i].id === transicion.from) {
+          existeFrom = true;
+        } else {
+          if (estados[i].id != transicion.from && existeFrom === true) {
+            existeFrom = true;
+          } else {
+            if (estados[i].id != transicion.from && existeFrom === false) {
+              existeFrom = false;
+            }
+          }
+        }
+      }
+
+      for (var j = 0; j < estados.length; j++) {
+        if (estados[j].id === transicion.to) {
+          existeTo = true;
+        } else {
+          if (estados[j].id != transicion.to && existeTo === true) {
+            existeTo = true;
+          } else {
+            if (estados[j].id != transicion.to && existeTo === false) {
+              existeTo = false;
+            }
+          }
+        }
+      }
+
+      if (existeFrom && existeTo) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    crearTransicion: function crearTransicion() {
+      if (this.option === 1) {
+        if (this.transicionAutomataAFD.from === '' || this.transicionAutomataAFD.to === '') {
+          swal("Estados no ingresados. Rellene todos los campos antes de continuar", {
+            className: "alertas",
+            button: "Aceptar",
+            title: "Aviso",
+            icon: "warning"
+          });
+          return;
         }
 
-        return false;
+        for (var i = 0; i < this.transicionesAutomataAFD.length; i++) {
+          if (this.transicionesAutomataAFD[i].from === this.transicionAutomataAFD.from && this.transicionesAutomataAFD[i].label === this.transicionAutomataAFD.label) {
+            swal("La transición ya existe. Ingrese otra", {
+              className: "alertas",
+              button: "Aceptar",
+              title: "Aviso",
+              icon: "warning"
+            });
+            return;
+          }
+        }
+
+        if (!this.existeEstadoTransicion(this.estadosAutomataAFD, this.transicionAutomataAFD)) {
+          swal("Los estados ingresados no existen. Ingrese otros estados para generar la transición", {
+            className: "alertas",
+            button: "Aceptar",
+            title: "Aviso",
+            icon: "warning"
+          });
+          return;
+        }
+
+        this.addCaracterToAlfabeto();
+        this.transicionesAutomataAFD.push(this.transicionAutomataAFD);
+        this.transicionAutomataAFD = {
+          from: '',
+          label: '',
+          to: '',
+          color: {
+            color: 'rgb(0,0,0)'
+          }
+        };
+      } else {
+        if (this.apSeleccionado === 1) {
+          if (this.transicionAP1.from === '' || this.transicionAP1.to === '') {
+            swal("Estados no ingresadow. Rellene todos los campos antes de continuar", {
+              className: "alertas",
+              button: "Aceptar",
+              title: "Aviso",
+              icon: "warning"
+            });
+            return;
+          }
+
+          for (var i = 0; i < this.transicionesAP1.length; i++) {
+            if (this.transicionesAP1[i].from === this.transicionAP1.from && this.transicionesAP1[i].label === this.transicionAP1.label) {
+              swal("La transición ya existe. Ingrese otra", {
+                className: "alertas",
+                button: "Aceptar",
+                title: "Aviso",
+                icon: "warning"
+              });
+              return;
+            }
+          }
+
+          if (!this.existeEstadoTransicion(this.estadosAP1, this.transicionAP1)) {
+            swal("Los estados ingresados no existen. Ingrese otros estados para generar la transición", {
+              className: "alertas",
+              button: "Aceptar",
+              title: "Aviso",
+              icon: "warning"
+            });
+            return;
+          }
+
+          this.addCaracterToAlfabeto();
+          this.transicionesAutomataAFD.push(this.transicionAP1);
+          this.transicionAP1 = {
+            from: '',
+            label: '',
+            to: '',
+            color: {
+              color: 'rgb(0,0,0)'
+            }
+          };
+        } else {
+          if (this.apSeleccionado === 2) {
+            if (this.transicionAP2.from === '' || this.transicionAP2.to === '') {
+              swal("Estados no ingresadow. Rellene todos los campos antes de continuar", {
+                className: "alertas",
+                button: "Aceptar",
+                title: "Aviso",
+                icon: "warning"
+              });
+              return;
+            }
+
+            for (var i = 0; i < this.transicionesAP2.length; i++) {
+              if (this.transicionesAP2[i].from === this.transicionAP2.from && this.transicionesAP2[i].label === this.transicionAP2.label) {
+                swal("La transición ya existe. Ingrese otra", {
+                  className: "alertas",
+                  button: "Aceptar",
+                  title: "Aviso",
+                  icon: "warning"
+                });
+              }
+            }
+
+            if (!this.existeEstadoTransicion(this.estadosAP2, this.transicionAP2)) {
+              swal("Los estados ingresados no existen. Ingrese otros estados para generar la transición", {
+                className: "alertas",
+                button: "Aceptar",
+                title: "Aviso",
+                icon: "warning"
+              });
+              return;
+            }
+
+            this.addCaracterToAlfabeto();
+            this.transicionesAP2.push(this.transicionAP2);
+            this.transicionAP2 = {
+              from: '',
+              label: '',
+              to: '',
+              color: {
+                color: 'rgb(0,0,0)'
+              }
+            };
+          }
+        }
+      }
+
+      this.drawAutomata();
+    },
+    addCaracterToAlfabeto: function addCaracterToAlfabeto() {
+      var existe = false;
+
+      if (this.option === 1) {
+        for (var i = 0; i < this.transicionAutomataAFD.length; i++) {
+          if (existe === true && this.transicionAutomataAFD.label != this.transicionesAutomataAFD[i].label) {
+            existe = true;
+          } else {
+            if (this.transicionesAutomataAFD[i].label === this.transicionAutomataAFD.label && existe === false) {
+              existe = true;
+            } else {
+              if (this.transicionesAutomataAFD[i].label != this.transicionAutomataAFD.label && existe == false) {
+                existe = false;
+              }
+            }
+          }
+        }
+
+        if (!existe) {
+          this.alfabetoAFD.push(this.transicionAutomataAFD.label);
+        }
+
+        console.log("Alfabeto AFD: ", this.alfabetoAFD);
+      } else {
+        if (this.apSeleccionado === 1) {
+          for (var j = 0; j < this.transicionesAP1.length; j++) {
+            if (existe === true && this.transicionAP1.label != this.transicionesAP1[j].label) {
+              existe = true;
+            } else {
+              if (this.transicionesAP1[j].label === this.transicionAP1.label) {
+                existe = true;
+              } else {
+                existe = false;
+              }
+            }
+          }
+
+          if (!existe) {
+            this.alfabetoAP1.push(this.transicionAP1.label);
+          }
+        } else {
+          if (this.apSeleccionado === 2) {
+            for (var k = 0; k < this.transicionesAP2; k++) {
+              if (existe === true && this.transicionAP2.label != this.transicionesAP2[k].label) {
+                existe = true;
+              } else {
+                if (this.transicionesAP2[k].label === this.transicionAP2.label) {
+                  existe = true;
+                } else {
+                  existe = false;
+                }
+              }
+            }
+
+            if (!existe) {
+              this.alfabetoAP2.push(this.transicionAP2.label);
+            }
+          }
+        }
       }
     },
     estadosDistintos: function estadosDistintos(estados, estado) {
@@ -2463,9 +2693,9 @@ __webpack_require__.r(__webpack_exports__);
         if (estados[i].id === estado.id) {
           return false;
         }
-
-        return true;
       }
+
+      return true;
     },
     crearEstado: function crearEstado() {
       var aux = {
@@ -2488,7 +2718,7 @@ __webpack_require__.r(__webpack_exports__);
 
         if (this.existeEstado(this.estadosAutomataAFD, this.estadoAutomataAFD)) {
           swal("El estado ya existe. Ingrese un estado con otro id.", {
-            className: "Alertas",
+            className: "alertas",
             button: "Aceptar",
             icon: "warning",
             title: "Aviso"
@@ -2548,7 +2778,7 @@ __webpack_require__.r(__webpack_exports__);
 
           if (this.existeEstado(this.estadosAP1, this.estadoAP1)) {
             swal("El estado ya existe. Ingrese un estado con otro id.", {
-              className: "Alertas",
+              className: "alertas",
               button: "Aceptar",
               icon: "warning",
               title: "Aviso"
@@ -2565,7 +2795,7 @@ __webpack_require__.r(__webpack_exports__);
           if (this.estadosAP1.length === 1) {
             if (!this.estadosDistintos(this.estadosAP2, this.estadoAP1)) {
               swal("El id debe ser distinto al/los estado(s) del otro autómata", {
-                className: "Alertas",
+                className: "alertas",
                 button: "Aceptar",
                 icon: "warning",
                 title: "Aviso"
@@ -2577,6 +2807,7 @@ __webpack_require__.r(__webpack_exports__);
             this.transicionAP1.from = 'inicio';
             this.transicionAP1.label = '';
             this.transicionAP1.to = this.estadoAP1.id;
+            console.log("tr1", this.transicionAP1);
             this.transicionesAP1.push(this.transicionAP1);
             this.transicionAP1 = {
               from: '',
@@ -2593,6 +2824,7 @@ __webpack_require__.r(__webpack_exports__);
               "final": false
             };
             this.drawAutomata();
+            console.log("tr2", this.transicionesAP1);
             return;
           } else {
             if (!this.estadosDistintos(this.estadoAP2, this.estadoAP1)) {
@@ -2629,7 +2861,7 @@ __webpack_require__.r(__webpack_exports__);
 
             if (this.existeEstado(this.estadosAP2, this.estadoAP2)) {
               swal("El estado ya existe. Ingrese un estado con otro id.", {
-                className: "Alertas",
+                className: "alertas",
                 button: "Aceptar",
                 icon: "warning",
                 title: "Aviso"
@@ -2646,7 +2878,7 @@ __webpack_require__.r(__webpack_exports__);
             if (this.estadosAP2.length === 1) {
               if (!this.estadosDistintos(this.estadosAP1, this.estadoAP2)) {
                 swal("El id debe ser distinto al/los estado(s) del otro autómata", {
-                  className: "Alertas",
+                  className: "alertas",
                   button: "Aceptar",
                   icon: "warning",
                   title: "Aviso"
@@ -2700,6 +2932,15 @@ __webpack_require__.r(__webpack_exports__);
         }
       }
     },
+    existeEstado: function existeEstado(estados, estado) {
+      for (var i = 0; i < estados.length; i++) {
+        if (estados[i].id == estado.id) {
+          return true;
+        }
+      }
+
+      return false;
+    },
     drawAutomata: function drawAutomata() {
       var afd = document.getElementById("AFD");
       var ap1 = document.getElementById("AP1");
@@ -2712,7 +2953,7 @@ __webpack_require__.r(__webpack_exports__);
       };
       var dataAP1 = {
         nodes: this.estadosAP1,
-        edges: this.transicionesAp2
+        edges: this.transicionesAP1
       };
       var dataAP2 = {
         nodes: this.estadosAP2,
@@ -2727,12 +2968,14 @@ __webpack_require__.r(__webpack_exports__);
         edges: this.transicionesAutomataUnionAP
       };
       var options = {
-        heigth: 520 + 'px',
         edges: {
           arrows: 'to'
         }
       };
-      var networkAFD = new vis.Network(afd, dataAFD, options);
+
+      if (this.option === 1) {
+        var networkAFD = new vis.Network(afd, dataAFD, options);
+      }
 
       if (this.option === 2) {
         var networkAP1 = new vis.Network(ap1, dataAP1, options);
@@ -93800,15 +94043,116 @@ var render = function() {
                             on: {
                               submit: function($event) {
                                 $event.preventDefault()
+                                return _vm.crearTransicion($event)
                               }
                             }
                           },
                           [
-                            _vm._m(2),
+                            _c("div", { staticClass: "form-group" }, [
+                              _c("label", [
+                                _vm._v(
+                                  "Ingrese el id del estado inicial de la transición:"
+                                )
+                              ]),
+                              _vm._v(" "),
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.transicionAutomataAFD.from,
+                                    expression: "transicionAutomataAFD.from"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                attrs: { type: "number", min: "0" },
+                                domProps: {
+                                  value: _vm.transicionAutomataAFD.from
+                                },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      _vm.transicionAutomataAFD,
+                                      "from",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              })
+                            ]),
                             _vm._v(" "),
-                            _vm._m(3),
+                            _c("div", { staticClass: "form-group" }, [
+                              _c("label", [
+                                _vm._v(
+                                  "Ingrese el id del estado final de la transición:"
+                                )
+                              ]),
+                              _vm._v(" "),
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.transicionAutomataAFD.to,
+                                    expression: "transicionAutomataAFD.to"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                attrs: { type: "number", min: "0" },
+                                domProps: {
+                                  value: _vm.transicionAutomataAFD.to
+                                },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      _vm.transicionAutomataAFD,
+                                      "to",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              })
+                            ]),
                             _vm._v(" "),
-                            _vm._m(4),
+                            _c("div", { staticClass: "form-group" }, [
+                              _c("label", [
+                                _vm._v("Ingrese carácter de la transición: ")
+                              ]),
+                              _vm._v(" "),
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.transicionAutomataAFD.label,
+                                    expression: "transicionAutomataAFD.label"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                attrs: { type: "text", minlength: "1" },
+                                domProps: {
+                                  value: _vm.transicionAutomataAFD.label
+                                },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      _vm.transicionAutomataAFD,
+                                      "label",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              })
+                            ]),
                             _vm._v(" "),
                             _c(
                               "button",
@@ -93835,7 +94179,7 @@ var render = function() {
                             }
                           },
                           [
-                            _vm._m(5),
+                            _vm._m(2),
                             _vm._v(" "),
                             _c(
                               "button",
@@ -93962,7 +94306,7 @@ var render = function() {
                           )
                         ]),
                         _vm._v(" "),
-                        _vm._m(6),
+                        _vm._m(3),
                         _vm._v(" "),
                         _c("div", { staticClass: "col-md-4" }, [
                           _c(
@@ -93981,19 +94325,101 @@ var render = function() {
                     ? _c("div", { staticClass: "my-4" }, [
                         _c("div", [
                           _vm.apSeleccionado === 1
-                            ? _c("form", { attrs: { "submit.prevent": "" } }, [
-                                _vm._m(7),
-                                _vm._v(" "),
-                                _vm._m(8)
-                              ])
+                            ? _c(
+                                "form",
+                                {
+                                  on: {
+                                    submit: function($event) {
+                                      $event.preventDefault()
+                                      return _vm.crearEstado($event)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("div", { staticClass: "form-group" }, [
+                                    _c("label", { attrs: { for: "id" } }, [
+                                      _vm._v("Ingrese el id: ")
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: _vm.estadoAP1.id,
+                                          expression: "estadoAP1.id"
+                                        }
+                                      ],
+                                      staticClass: "form-control",
+                                      attrs: { type: "number", min: "0" },
+                                      domProps: { value: _vm.estadoAP1.id },
+                                      on: {
+                                        input: function($event) {
+                                          if ($event.target.composing) {
+                                            return
+                                          }
+                                          _vm.$set(
+                                            _vm.estadoAP1,
+                                            "id",
+                                            $event.target.value
+                                          )
+                                        }
+                                      }
+                                    })
+                                  ]),
+                                  _vm._v(" "),
+                                  _vm._m(4)
+                                ]
+                              )
                             : _vm._e(),
                           _vm._v(" "),
                           _vm.apSeleccionado === 2
-                            ? _c("form", { attrs: { "submit.prevent": "" } }, [
-                                _vm._m(9),
-                                _vm._v(" "),
-                                _vm._m(10)
-                              ])
+                            ? _c(
+                                "form",
+                                {
+                                  on: {
+                                    submit: function($event) {
+                                      $event.preventDefault()
+                                      return _vm.crearEstado($event)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("div", { staticClass: "form-group" }, [
+                                    _c("label", { attrs: { for: "id" } }, [
+                                      _vm._v("Ingrese el id: ")
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: _vm.estadoAP2.id,
+                                          expression: "estadoAP2.id"
+                                        }
+                                      ],
+                                      staticClass: "form-control",
+                                      attrs: { type: "number", min: "0" },
+                                      domProps: { value: _vm.estadoAP2.id },
+                                      on: {
+                                        input: function($event) {
+                                          if ($event.target.composing) {
+                                            return
+                                          }
+                                          _vm.$set(
+                                            _vm.estadoAP2,
+                                            "id",
+                                            $event.target.value
+                                          )
+                                        }
+                                      }
+                                    })
+                                  ]),
+                                  _vm._v(" "),
+                                  _vm._m(5)
+                                ]
+                              )
                             : _vm._e()
                         ])
                       ])
@@ -94008,15 +94434,114 @@ var render = function() {
                                 on: {
                                   submit: function($event) {
                                     $event.preventDefault()
+                                    return _vm.crearTransicion($event)
                                   }
                                 }
                               },
                               [
-                                _vm._m(11),
+                                _c("div", { staticClass: "form-group" }, [
+                                  _c("label", [
+                                    _vm._v(
+                                      "Ingrese el id del estado inicial de la transición:"
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.transicionAP1.from,
+                                        expression: "transicionAP1.from"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    attrs: { type: "number", min: "0" },
+                                    domProps: { value: _vm.transicionAP1.from },
+                                    on: {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          _vm.transicionAP1,
+                                          "from",
+                                          $event.target.value
+                                        )
+                                      }
+                                    }
+                                  })
+                                ]),
                                 _vm._v(" "),
-                                _vm._m(12),
+                                _c("div", { staticClass: "form-group" }, [
+                                  _c("label", [
+                                    _vm._v(
+                                      "Ingrese el id del estado final de la transición:"
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.transicionAP1.to,
+                                        expression: "transicionAP1.to"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    attrs: { type: "number", min: "0" },
+                                    domProps: { value: _vm.transicionAP1.to },
+                                    on: {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          _vm.transicionAP1,
+                                          "to",
+                                          $event.target.value
+                                        )
+                                      }
+                                    }
+                                  })
+                                ]),
                                 _vm._v(" "),
-                                _vm._m(13),
+                                _c("div", { staticClass: "form-group" }, [
+                                  _c("label", [
+                                    _vm._v(
+                                      "Ingrese carácter de la transición: "
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.transicionAP1.label,
+                                        expression: "transicionAP1.label"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    attrs: { type: "text", minlength: "1" },
+                                    domProps: {
+                                      value: _vm.transicionAP1.label
+                                    },
+                                    on: {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          _vm.transicionAP1,
+                                          "label",
+                                          $event.target.value
+                                        )
+                                      }
+                                    }
+                                  })
+                                ]),
                                 _vm._v(" "),
                                 _c(
                                   "button",
@@ -94037,15 +94562,114 @@ var render = function() {
                                 on: {
                                   submit: function($event) {
                                     $event.preventDefault()
+                                    return _vm.crearTransicion($event)
                                   }
                                 }
                               },
                               [
-                                _vm._m(14),
+                                _c("div", { staticClass: "form-group" }, [
+                                  _c("label", [
+                                    _vm._v(
+                                      "Ingrese el id del estado inicial de la transición:"
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.transicionAP2.from,
+                                        expression: "transicionAP2.from"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    attrs: { type: "number", min: "0" },
+                                    domProps: { value: _vm.transicionAP2.from },
+                                    on: {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          _vm.transicionAP2,
+                                          "from",
+                                          $event.target.value
+                                        )
+                                      }
+                                    }
+                                  })
+                                ]),
                                 _vm._v(" "),
-                                _vm._m(15),
+                                _c("div", { staticClass: "form-group" }, [
+                                  _c("label", [
+                                    _vm._v(
+                                      "Ingrese el id del estado final de la transición:"
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.transicionAP2.to,
+                                        expression: "transicionAP2.to"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    attrs: { type: "number", min: "0" },
+                                    domProps: { value: _vm.transicionAP2.to },
+                                    on: {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          _vm.transicionAP2,
+                                          "to",
+                                          $event.target.value
+                                        )
+                                      }
+                                    }
+                                  })
+                                ]),
                                 _vm._v(" "),
-                                _vm._m(16),
+                                _c("div", { staticClass: "form-group" }, [
+                                  _c("label", [
+                                    _vm._v(
+                                      "Ingrese carácter de la transición: "
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.transicionAP1.label,
+                                        expression: "transicionAP1.label"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    attrs: { type: "text", minlength: "1" },
+                                    domProps: {
+                                      value: _vm.transicionAP1.label
+                                    },
+                                    on: {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          _vm.transicionAP1,
+                                          "label",
+                                          $event.target.value
+                                        )
+                                      }
+                                    }
+                                  })
+                                ]),
                                 _vm._v(" "),
                                 _c(
                                   "button",
@@ -94074,7 +94698,7 @@ var render = function() {
                                 }
                               },
                               [
-                                _vm._m(17),
+                                _vm._m(6),
                                 _vm._v(" "),
                                 _c(
                                   "button",
@@ -94099,7 +94723,7 @@ var render = function() {
                                 }
                               },
                               [
-                                _vm._m(18),
+                                _vm._m(7),
                                 _vm._v(" "),
                                 _c(
                                   "button",
@@ -94187,7 +94811,7 @@ var render = function() {
                       staticClass: "table table-striped table-dark",
                       attrs: { "aria-describedby": "estados1" }
                     },
-                    [_vm._m(19), _vm._v(" "), _vm._m(20)]
+                    [_vm._m(8), _vm._v(" "), _vm._m(9)]
                   )
                 : _vm._e(),
               _vm._v(" "),
@@ -94204,7 +94828,7 @@ var render = function() {
                       staticClass: "table table-striped table-dark",
                       attrs: { "aria-describedby": "estados1" }
                     },
-                    [_vm._m(21), _vm._v(" "), _vm._m(22)]
+                    [_vm._m(10), _vm._v(" "), _vm._m(11)]
                   )
                 : _vm._e(),
               _vm._v(" "),
@@ -94221,7 +94845,7 @@ var render = function() {
                       staticClass: "table table-striped table-dark",
                       attrs: { "aria-describedby": "estados1" }
                     },
-                    [_vm._m(23), _vm._v(" "), _vm._m(24)]
+                    [_vm._m(12), _vm._v(" "), _vm._m(13)]
                   )
                 : _vm._e(),
               _vm._v(" "),
@@ -94378,47 +95002,6 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "form-group" }, [
-      _c("label", [
-        _vm._v("Ingrese el id del estado inicial de la transición:")
-      ]),
-      _vm._v(" "),
-      _c("input", {
-        staticClass: "form-control",
-        attrs: { type: "number", min: "0" }
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("label", [_vm._v("Ingrese el id del estado final de la transición:")]),
-      _vm._v(" "),
-      _c("input", {
-        staticClass: "form-control",
-        attrs: { type: "number", min: "0" }
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("label", [_vm._v("Ingrese carácter de la transición: ")]),
-      _vm._v(" "),
-      _c("input", {
-        staticClass: "form-control",
-        attrs: { type: "text", minlength: "1" }
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
       _c("label", [_vm._v("Ingrese la palabra: ")]),
       _vm._v(" "),
       _c("input", { staticClass: "form-control", attrs: { type: "text" } })
@@ -94438,19 +95021,6 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("label", { attrs: { for: "id" } }, [_vm._v("Ingrese el id: ")]),
-      _vm._v(" "),
-      _c("input", {
-        staticClass: "form-control",
-        attrs: { type: "number", min: "0" }
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "text-center" }, [
       _c(
         "button",
@@ -94463,107 +95033,12 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("label", { attrs: { for: "id" } }, [_vm._v("Ingrese el id: ")]),
-      _vm._v(" "),
-      _c("input", {
-        staticClass: "form-control",
-        attrs: { type: "number", min: "0" }
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "text-center" }, [
       _c(
         "button",
         { staticClass: "btn btn-success btn-sm", attrs: { type: "submit" } },
         [_vm._v("Agregar")]
       )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("label", [
-        _vm._v("Ingrese el id del estado inicial de la transición:")
-      ]),
-      _vm._v(" "),
-      _c("input", {
-        staticClass: "form-control",
-        attrs: { type: "number", min: "0" }
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("label", [_vm._v("Ingrese el id del estado final de la transición:")]),
-      _vm._v(" "),
-      _c("input", {
-        staticClass: "form-control",
-        attrs: { type: "number", min: "0" }
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("label", [_vm._v("Ingrese carácter de la transición: ")]),
-      _vm._v(" "),
-      _c("input", {
-        staticClass: "form-control",
-        attrs: { type: "text", minlength: "1" }
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("label", [
-        _vm._v("Ingrese el id del estado inicial de la transición:")
-      ]),
-      _vm._v(" "),
-      _c("input", {
-        staticClass: "form-control",
-        attrs: { type: "number", min: "0" }
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("label", [_vm._v("Ingrese el id del estado final de la transición:")]),
-      _vm._v(" "),
-      _c("input", {
-        staticClass: "form-control",
-        attrs: { type: "number", min: "0" }
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("label", [_vm._v("Ingrese carácter de la transición: ")]),
-      _vm._v(" "),
-      _c("input", {
-        staticClass: "form-control",
-        attrs: { type: "text", minlength: "1" }
-      })
     ])
   },
   function() {
