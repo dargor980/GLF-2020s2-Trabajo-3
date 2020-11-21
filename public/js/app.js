@@ -2263,6 +2263,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2366,6 +2371,7 @@ __webpack_require__.r(__webpack_exports__);
       alfabetoAFD: [],
       alfabetoAP1: [],
       alfabetoAP2: [],
+      cadena: '',
       selected: false,
       selected2: false,
       automataCreate: false,
@@ -2409,6 +2415,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     representacionBack: function representacionBack() {
       this.representacion1 = false;
+      this.drawAutomata();
     },
     showAnalisisPalabra: function showAnalisisPalabra() {
       this.analizarPalabra = true;
@@ -2524,6 +2531,26 @@ __webpack_require__.r(__webpack_exports__);
           return;
         }
 
+        if (this.existeTransicionAFD(this.transicionesAutomataAFD, this.transicionAutomataAFD)) {
+          swal("La transición ya existe. Ingrese otra", {
+            className: "alertas",
+            button: "Aceptar",
+            title: "Aviso",
+            icon: "warning"
+          });
+          return;
+        }
+
+        for (var t = 0; t < this.transicionesAutomataAFD.length; t++) {
+          if (this.transicionesAutomataAFD[t].from === this.transicionAutomataAFD.from && this.transicionesAutomataAFD[t].label != this.transicionAutomataAFD.label && this.transicionesAutomataAFD[t].to === this.transicionAutomataAFD.to) {
+            var aux = [this.transicionesAutomataAFD[t].label, this.transicionAutomataAFD.label];
+            console.log("aux: ", aux);
+            this.transicionesAutomataAFD[t].label = aux[0] + '+' + aux[1];
+            this.drawAutomata();
+            return;
+          }
+        }
+
         this.addCaracterToAlfabeto();
         this.transicionesAutomataAFD.push(this.transicionAutomataAFD);
         this.transicionAutomataAFD = {
@@ -2626,6 +2653,28 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       this.drawAutomata();
+    },
+    existeTransicionAFD: function existeTransicionAFD(transiciones, transicion) {
+      var existe = false;
+      var caracteres = [];
+      var aux;
+
+      for (var i = 0; i < transiciones.length; i++) {
+        if (transiciones[i].from === transicion.from && transiciones[i].to === transicion.to) {
+          if (transiciones[i].label.includes('+')) {
+            aux = transiciones[i].label;
+            caracteres = aux.split('+');
+
+            for (var j = 0; j < caracteres.length; j++) {
+              if (caracteres[j] === transicion.label) {
+                return true;
+              }
+            }
+
+            return false;
+          }
+        }
+      }
     },
     addCaracterToAlfabeto: function addCaracterToAlfabeto() {
       var existe = false;
@@ -2941,6 +2990,161 @@ __webpack_require__.r(__webpack_exports__);
 
       return false;
     },
+    existeFinal: function existeFinal(estados) {
+      for (var i = 0; i < estados.length; i++) {
+        if (estados[i]["final"] === true) {
+          return true;
+        }
+      }
+
+      return false;
+    },
+    marcarFinal: function marcarFinal(id) {
+      if (this.option === 1) {
+        for (var i = 0; i < this.estadosAutomataAFD.length; i++) {
+          if (this.estadosAutomataAFD[i].id === id && this.estadosAutomataAFD[i]["final"] === false) {
+            this.estadosAutomataAFD[i]["final"] = true;
+            this.estadosAutomataAFD[i].shape = 'diamond';
+            this.estadosAutomataAFD[i].color = '#5cb85c';
+            this.drawAutomata();
+            console.log("Estado final: ", i, this.estadosAutomataAFD[i]["final"]);
+          } else {
+            if (this.estadosAutomataAFD[i].id === id && this.estadosAutomataAFD[i]["final"] === true) {
+              this.estadosAutomataAFD[i]["final"] = false;
+              this.estadosAutomataAFD[i].shape = 'ellipse';
+              this.estadosAutomataAFD[i].color = '#C52C0B';
+              this.drawAutomata();
+            }
+          }
+        }
+      } else {
+        if (this.apSeleccionado === 1) {
+          for (var j = 0; j < this.estadosAP1.length; j++) {
+            if (this.estadosAP1[j].id === id && this.estadosAP1[j]["final"] === false) {
+              this.estadosAP1[j]["final"] = true;
+              this.estadosAP1[j].shape = 'diamond';
+              this.estadosAP1[j].color = '#5cb85c';
+              this.drawAutomata();
+              console.log("Estado final: ", i, this.estadosAP1[j]["final"]);
+            } else {
+              if (this.estadosAP1[j].id === id && this.estadosAP1[j]["final"] === true) {
+                this.estadosAP1[j]["final"] = false;
+                this.estadosAP1[j].shape = 'ellipse';
+                this.estadosAP1[j].color = '#C52C0B';
+                this.drawAutomata();
+                console.log("Estado final: ", i, this.estadosAP1[j]["final"]);
+              }
+            }
+          }
+        } else {
+          if (this.apSeleccionado === 2) {
+            for (var k = 0; j < this.estadosAP2.length; k++) {
+              if (this.estadosAP2[k].id === id && this.estadosAP2[k]["final"] === false) {
+                this.estadosAP2[k]["final"] = true;
+                this.estadosAP2[k].shape = 'diamond';
+                this.estadosAP2[k].color = '#5cb85c';
+                this.drawAutomata();
+                console.log("Estado final: ", i, this.estadosAP2[k]["final"]);
+              } else {
+                if (this.estadosAP2[k].id === id && this.estadosAP2[k]["final"] === true) {
+                  this.estadosAP2[k]["final"] = false;
+                  this.estadosAP2[k].shape = 'ellipse';
+                  this.estadosAP2[k].color = '#C52C0B';
+                  this.drawAutomata();
+                  console.log("Estado final: ", i, this.estadosAP2[k]["final"]);
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    existeCaracterAFD: function existeCaracterAFD(caracter) {
+      for (var i = 0; i < this.alfabetoAFD.length; i++) {
+        if (this.alfabetoAFD[i] === caracter) {
+          return true;
+        }
+      }
+
+      return false;
+    },
+    analizarCadenaAFD: function analizarCadenaAFD() {
+      var word = this.cadena.split('');
+      var transicionesEstadoActual = [];
+      var estadoActual;
+      console.log(word);
+
+      if (this.estadosAutomataAFD.length === 1 || this.estadosAutomataAFD.length === 0) {
+        swal("Debe ingresar el automata antes de analizar la palabra", {
+          className: "alertas",
+          button: "Aceptar",
+          title: "Aviso",
+          icon: "warning"
+        });
+        return;
+      } else {
+        if (!this.existeFinal(this.estadosAutomataAFD)) {
+          swal("Para analizar la palabra debe marcar como final a lo menos un estado en el autómata", {
+            className: "alertas",
+            button: "Aceptar",
+            title: "Aviso",
+            icon: "warning"
+          });
+          return;
+        }
+      }
+
+      estadoActual = this.estadosAutomataAFD[1].id;
+      console.log(estadoActual);
+
+      for (var i = 0; i < word.length; i++) {
+        if (!this.existeCaracterAFD(word[i])) {
+          swal("La palabra no pertenece al lenguaje", {
+            className: "alertas",
+            button: "Aceptar",
+            title: "Resultado del análisis",
+            icon: "error"
+          });
+          return;
+        }
+
+        for (var j = 0; j < this.transicionesAutomataAFD.length; j++) {
+          if (this.transicionesAutomataAFD[j].from === estadoActual) {
+            transicionesEstadoActual.push(this.transicionesAutomataAFD[j]);
+          }
+        }
+
+        for (var k = 0; k < transicionesEstadoActual.length; k++) {
+          if (transicionesEstadoActual[k].label === word[i]) {
+            estadoActual = transicionesEstadoActual[k].to;
+            console.log("Estado Actual: ", estadoActual);
+          }
+        }
+
+        transicionesEstadoActual = [];
+      }
+
+      for (var t = 0; t < this.estadosAutomataAFD.length; t++) {
+        if (estadoActual === this.estadosAutomataAFD[t].id) {
+          if (this.estadosAutomataAFD[t]["final"] === true) {
+            swal("La palabra pertenece al leguaje", {
+              className: "alertas",
+              button: "Aceptar",
+              title: "Resultado del análisis"
+            });
+            return;
+          } else {
+            swal("La palabra no pertenece al lenguaje", {
+              className: "alertas",
+              button: "Aceptar",
+              title: "Resultado del análisis",
+              icon: "error"
+            });
+            return;
+          }
+        }
+      }
+    },
     drawAutomata: function drawAutomata() {
       var afd = document.getElementById("AFD");
       var ap1 = document.getElementById("AP1");
@@ -2968,6 +3172,7 @@ __webpack_require__.r(__webpack_exports__);
         edges: this.transicionesAutomataUnionAP
       };
       var options = {
+        height: 320 + 'px',
         edges: {
           arrows: 'to'
         }
@@ -2980,6 +3185,76 @@ __webpack_require__.r(__webpack_exports__);
       if (this.option === 2) {
         var networkAP1 = new vis.Network(ap1, dataAP1, options);
         var networkAP2 = new vis.Network(ap2, dataAP2, options);
+      }
+    },
+    encontrarExpresionRegular: function encontrarExpresionRegular() {
+      var finales = []; //Se busca los finales y se agregan al arreglo finales
+
+      for (var i = 0; i < this.estadosAutomataAFD.length; i++) {
+        if (this.estadosAutomataAFD[i]["final"] === true) {
+          finales.push(this.estadosAutomataAFD[i].id);
+        }
+      } //Se busca si hay transiciones que salen de los finales. Si ese es el caso, se procede a crear un nuevo estado final y los antiguos dejan de ser finales.
+
+
+      if (this.salenFinales(finales)) {
+        //Se crean las transiciones desde los antiguos finales al nuevo final con una transicion vacía.
+        for (var j = 0; j < finales.length; j++) {
+          this.transicionAutomataAFD.from = finales[j];
+          this.transicionAutomataAFD.to = 'Final';
+          this.transicionAutomataAFD.label = '';
+          this.transicionesAutomataAFD.push(this.transicionAutomataAFD);
+          this.transicionAutomataAFD = {
+            from: '',
+            label: '',
+            to: '',
+            color: {
+              color: 'rgb(0,0,0)'
+            }
+          };
+        }
+      } //Buscar intermedio entre el inicial (q0) y q2 
+
+
+      var primero = 'inicio';
+      var intermedio;
+      var segundo;
+
+      for (var k = 0; k < this.transicionesAutomataAFD.length; k++) {
+        if (this.transicionesAutomataAFD[k].from === primero) {
+          intermedio = this.transicionesAutomataAFD[k].to;
+        }
+      }
+    },
+    salenFinales: function salenFinales(finales) {
+      for (var j = 0; j < this.transicionesAutomataAFD.length; j++) {
+        for (var k = 0; k < finales.length; k++) {
+          if (this.transicionesAutomata[j].from === finales[k]) {
+            for (var t = 0; t < this.estadosAutomataAFD.length; t++) {
+              if (this.estadosAutomataAFD[t]["final"] === true) {
+                this.estadosAutomataAFD[t]["final"] = false;
+                this.estadosAutomataAFD[t].shape = 'ellipse';
+                this.estadosAutomata[t].color = '#C25C0B';
+              }
+            }
+
+            this.estadoAutomataAFD["final"] = true;
+            this.estadoAutomataAFD.shape = 'diamond';
+            this.estadoAutomataAFD.color = '#5cb85c';
+            this.estadoAutomataAFD.id = 'Final';
+            this.estadoAutomataAFD.label = 'Final';
+            this.estadosAutomataAFD.push(this.estadoAutomataAFD);
+            this.estadoAutomataAFD = {
+              id: '',
+              label: '',
+              color: '#C25C0B',
+              "final": false
+            };
+            return true;
+          }
+        }
+
+        return false;
       }
     }
   }
@@ -94175,11 +94450,36 @@ var render = function() {
                             on: {
                               submit: function($event) {
                                 $event.preventDefault()
+                                return _vm.analizarCadenaAFD($event)
                               }
                             }
                           },
                           [
-                            _vm._m(2),
+                            _c("div", { staticClass: "form-group" }, [
+                              _c("label", [_vm._v("Ingrese la palabra: ")]),
+                              _vm._v(" "),
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.cadena,
+                                    expression: "cadena"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                attrs: { type: "text" },
+                                domProps: { value: _vm.cadena },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.cadena = $event.target.value
+                                  }
+                                }
+                              })
+                            ]),
                             _vm._v(" "),
                             _c(
                               "button",
@@ -94306,7 +94606,7 @@ var render = function() {
                           )
                         ]),
                         _vm._v(" "),
-                        _vm._m(3),
+                        _vm._m(2),
                         _vm._v(" "),
                         _c("div", { staticClass: "col-md-4" }, [
                           _c(
@@ -94368,7 +94668,7 @@ var render = function() {
                                     })
                                   ]),
                                   _vm._v(" "),
-                                  _vm._m(4)
+                                  _vm._m(3)
                                 ]
                               )
                             : _vm._e(),
@@ -94417,7 +94717,7 @@ var render = function() {
                                     })
                                   ]),
                                   _vm._v(" "),
-                                  _vm._m(5)
+                                  _vm._m(4)
                                 ]
                               )
                             : _vm._e()
@@ -94698,7 +94998,7 @@ var render = function() {
                                 }
                               },
                               [
-                                _vm._m(6),
+                                _vm._m(5),
                                 _vm._v(" "),
                                 _c(
                                   "button",
@@ -94723,7 +95023,7 @@ var render = function() {
                                 }
                               },
                               [
-                                _vm._m(7),
+                                _vm._m(6),
                                 _vm._v(" "),
                                 _c(
                                   "button",
@@ -94811,7 +95111,60 @@ var render = function() {
                       staticClass: "table table-striped table-dark",
                       attrs: { "aria-describedby": "estados1" }
                     },
-                    [_vm._m(8), _vm._v(" "), _vm._m(9)]
+                    [
+                      _vm._m(7),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        _vm._l(_vm.estadosAutomataAFD, function(item, index) {
+                          return _c(
+                            "tr",
+                            {
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value: index != 0,
+                                  expression: "index!=0"
+                                }
+                              ],
+                              key: index
+                            },
+                            [
+                              _c("td", [_vm._v(_vm._s(index))]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(_vm._s(item.label))]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c("div", [
+                                  _c("input", {
+                                    attrs: {
+                                      type: "checkbox",
+                                      name: "state",
+                                      id: "state"
+                                    },
+                                    domProps: {
+                                      checked:
+                                        _vm.estadosAutomataAFD[index].final
+                                    },
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.marcarFinal(item.id)
+                                      }
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("label", { attrs: { for: "state" } }, [
+                                    _vm._v("Estado Final")
+                                  ])
+                                ])
+                              ])
+                            ]
+                          )
+                        }),
+                        0
+                      )
+                    ]
                   )
                 : _vm._e(),
               _vm._v(" "),
@@ -94828,7 +95181,7 @@ var render = function() {
                       staticClass: "table table-striped table-dark",
                       attrs: { "aria-describedby": "estados1" }
                     },
-                    [_vm._m(10), _vm._v(" "), _vm._m(11)]
+                    [_vm._m(8), _vm._v(" "), _vm._m(9)]
                   )
                 : _vm._e(),
               _vm._v(" "),
@@ -94845,7 +95198,7 @@ var render = function() {
                       staticClass: "table table-striped table-dark",
                       attrs: { "aria-describedby": "estados1" }
                     },
-                    [_vm._m(12), _vm._v(" "), _vm._m(13)]
+                    [_vm._m(10), _vm._v(" "), _vm._m(11)]
                   )
                 : _vm._e(),
               _vm._v(" "),
@@ -95001,16 +95354,6 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("label", [_vm._v("Ingrese la palabra: ")]),
-      _vm._v(" "),
-      _c("input", { staticClass: "form-control", attrs: { type: "text" } })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "col-md-4" }, [
       _c("button", { staticClass: "btn btn-sm btn-danger" }, [
         _vm._v("Eliminar Autómata")
@@ -95072,20 +95415,6 @@ var staticRenderFns = [
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Estado")]),
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Final")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tbody", [
-      _c("tr", [
-        _c("td", [_vm._v("a")]),
-        _vm._v(" "),
-        _c("td", [_vm._v("a")]),
-        _vm._v(" "),
-        _c("td", [_vm._v("a")])
       ])
     ])
   },

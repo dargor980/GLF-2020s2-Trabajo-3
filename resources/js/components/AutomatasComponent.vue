@@ -75,10 +75,10 @@
 
 
                     <div class="col-md-12 my-4" v-if="analizarPalabra">
-                        <form @submit.prevent="">
+                        <form @submit.prevent="analizarCadenaAFD">
                             <div class="form-group">
                                 <label>Ingrese la palabra: </label>
-                                <input type="text" class="form-control">
+                                <input type="text" class="form-control" v-model="cadena">
                             </div>
                             <button class="btn btn-success btn-sm" type="submit">Consultar Palabra</button>
                         </form>
@@ -228,11 +228,11 @@
 
                     <div class="col-md-6" v-if="option===2">
                         <h4 class="text-center fredoka my-3">Autómata de Pila 1</h4>
-                        <div class="mb-3" id="AP1" style="border:1px solid lightgray;"></div>
+                        <div  id="AP1" class="mb-3" style="border:1px solid lightgray;"></div>
                     </div>
                     <div class="col-md-6" v-if="option===2">
                         <h4 class="text-center fredoka my-3">Autómata de Pila 2</h4>
-                        <div class="mb-3" id="AP2" style="border:1px solid lightgray;"></div>
+                        <div id="AP2" class="mb-3" style="border:1px solid lightgray;"></div>
                     </div>
                 </div>
             </div>
@@ -254,10 +254,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>a</td>
-                                <td>a</td>
-                                <td>a</td>
+                            <tr v-for="(item,index) in estadosAutomataAFD" :key="index" v-show="index!=0">
+                                <td>{{index}}</td>
+                                <td>{{item.label}}</td>
+                                <td>
+                                    <div>
+                                        <input type="checkbox" name="state" id="state" @click="marcarFinal(item.id)" :checked="estadosAutomataAFD[index].final">
+                                        <label for="state">Estado Final</label>
+                                    </div>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -389,6 +394,8 @@ export default {
             alfabetoAP1:[],
             alfabetoAP2:[],
 
+            cadena:'',
+
             selected:false,
             selected2:false,
             automataCreate:false,
@@ -405,7 +412,7 @@ export default {
     },
 
     created(){
-       
+
     },
 
     methods:{
@@ -442,6 +449,7 @@ export default {
 
         representacionBack(){
             this.representacion1=false;
+            this.drawAutomata();
         },
 
         showAnalisisPalabra(){
@@ -584,6 +592,28 @@ export default {
                     });
                     return;
                 } 
+                if(this.existeTransicionAFD(this.transicionesAutomataAFD,this.transicionAutomataAFD))
+                {
+                    swal("La transición ya existe. Ingrese otra",{
+                        className: "alertas",
+                        button: "Aceptar",
+                        title: "Aviso",
+                        icon: "warning",
+                    });
+                    return;
+                }
+
+                for(var t=0; t<this.transicionesAutomataAFD.length;t++)
+                {
+                    if(this.transicionesAutomataAFD[t].from===this.transicionAutomataAFD.from && this.transicionesAutomataAFD[t].label!= this.transicionAutomataAFD.label && this.transicionesAutomataAFD[t].to ===this.transicionAutomataAFD.to){
+                        var aux=[this.transicionesAutomataAFD[t].label, this.transicionAutomataAFD.label];
+                        console.log("aux: ",aux);
+                        this.transicionesAutomataAFD[t].label= aux[0]+ '+'+ aux[1];
+                        
+                        this.drawAutomata();
+                        return;
+                    }
+                }
                 this.addCaracterToAlfabeto();
                 this.transicionesAutomataAFD.push(this.transicionAutomataAFD);
                 this.transicionAutomataAFD={from:'',label: '',to:'',color:{color:'rgb(0,0,0)'}}; 
@@ -672,6 +702,32 @@ export default {
                 }
             }
             this.drawAutomata();
+        },
+
+        existeTransicionAFD(transiciones,transicion){
+            var existe= false;
+            var caracteres= [];
+            var aux;
+
+            for(var i=0; i< transiciones.length;i++){
+                if(transiciones[i].from===transicion.from && transiciones[i].to===transicion.to)
+                {
+                    if(transiciones[i].label.includes('+'))
+                    {
+                        aux=transiciones[i].label;
+                        caracteres=aux.split('+');
+                        for(var j=0; j<caracteres.length;j++)
+                        {
+                            if(caracteres[j]===transicion.label)
+                            {
+                                return true;
+                            }
+                        }
+                        return false;
+                    }
+                }
+            }
+
         },
 
         addCaracterToAlfabeto(){
@@ -970,6 +1026,196 @@ export default {
             return false;
         },
 
+        existeFinal(estados){
+            for(var i=0; i<estados.length;i++)
+            {
+                if(estados[i].final===true)
+                {
+                    return true;
+                }
+            }
+            return false;
+        },
+
+        marcarFinal(id){
+            if(this.option===1)
+            {
+                for(var i=0; i<this.estadosAutomataAFD.length; i++)
+                {
+                    if(this.estadosAutomataAFD[i].id===id && this.estadosAutomataAFD[i].final===false)
+                    {
+                        this.estadosAutomataAFD[i].final= true;
+                        this.estadosAutomataAFD[i].shape= 'diamond';
+                        this.estadosAutomataAFD[i].color = '#5cb85c';
+                        this.drawAutomata();
+                        console.log("Estado final: ", i, this.estadosAutomataAFD[i].final);
+                    }
+                    else{
+                        if(this.estadosAutomataAFD[i].id===id && this.estadosAutomataAFD[i].final===true)
+                        {
+                            this.estadosAutomataAFD[i].final= false;
+                            this.estadosAutomataAFD[i].shape= 'ellipse';
+                            this.estadosAutomataAFD[i].color= '#C52C0B';
+                            this.drawAutomata();
+                        }
+                    }
+                }
+            }
+            else{
+                if(this.apSeleccionado===1)
+                {
+                    for(var j=0; j<this.estadosAP1.length; j++)
+                    {
+                        if(this.estadosAP1[j].id===id && this.estadosAP1[j].final===false)
+                        {
+                            this.estadosAP1[j].final= true;
+                            this.estadosAP1[j].shape= 'diamond';
+                            this.estadosAP1[j].color = '#5cb85c';
+                            this.drawAutomata();
+                            console.log("Estado final: ", i, this.estadosAP1[j].final);
+
+                        }
+                        else
+                        {
+                            if(this.estadosAP1[j].id===id && this.estadosAP1[j].final===true)
+                            {
+                                this.estadosAP1[j].final= false;
+                                this.estadosAP1[j].shape= 'ellipse';
+                                this.estadosAP1[j].color = '#C52C0B';
+                                this.drawAutomata();
+                                console.log("Estado final: ", i, this.estadosAP1[j].final);
+                            }
+                        }
+                    }
+                }
+                else{
+                    if(this.apSeleccionado===2)
+                    {
+                        for(var k=0; j<this.estadosAP2.length; k++)
+                        {
+                            if(this.estadosAP2[k].id===id && this.estadosAP2[k].final===false)
+                            {
+                                this.estadosAP2[k].final= true;
+                                this.estadosAP2[k].shape= 'diamond';
+                                this.estadosAP2[k].color = '#5cb85c';
+                                this.drawAutomata();
+                                console.log("Estado final: ", i, this.estadosAP2[k].final);
+
+                            }
+                            else
+                            {
+                                if(this.estadosAP2[k].id===id && this.estadosAP2[k].final===true)
+                                {
+                                    this.estadosAP2[k].final= false;
+                                    this.estadosAP2[k].shape= 'ellipse';
+                                    this.estadosAP2[k].color = '#C52C0B';
+                                    this.drawAutomata();
+                                    console.log("Estado final: ", i, this.estadosAP2[k].final);
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }
+        },
+
+        existeCaracterAFD(caracter){
+            for(var i=0; i<this.alfabetoAFD.length;i++)
+            {
+                if(this.alfabetoAFD[i]===caracter)
+                {
+                    return true;
+                }
+            }
+            return false;
+        },
+
+        analizarCadenaAFD(){
+            var word=this.cadena.split('');
+            var transicionesEstadoActual=[];
+            var estadoActual;
+            console.log(word);
+            if(this.estadosAutomataAFD.length===1 || this.estadosAutomataAFD.length===0)
+            {
+                swal("Debe ingresar el automata antes de analizar la palabra",{
+                    className: "alertas",
+                    button: "Aceptar",
+                    title: "Aviso",
+                    icon: "warning",
+                });
+                return;
+            }
+            else{
+                if(!this.existeFinal(this.estadosAutomataAFD))
+                {
+                    swal("Para analizar la palabra debe marcar como final a lo menos un estado en el autómata",{
+                        className: "alertas",
+                        button: "Aceptar",
+                        title: "Aviso",
+                        icon: "warning",
+                    });
+                    return;
+                }
+            }
+            estadoActual=this.estadosAutomataAFD[1].id;
+            console.log(estadoActual);
+            for(var i=0; i<word.length;i++)
+            {
+                if(!this.existeCaracterAFD(word[i]))
+                {
+                    swal("La palabra no pertenece al lenguaje",{
+                        className: "alertas",
+                        button: "Aceptar",
+                        title: "Resultado del análisis",
+                        icon: "error",
+                    });
+                    return;
+                }
+                for(var j=0; j<this.transicionesAutomataAFD.length;j++)
+                {
+                    if(this.transicionesAutomataAFD[j].from===estadoActual){
+                        transicionesEstadoActual.push(this.transicionesAutomataAFD[j]);
+                    }
+                }
+                for(var k =0; k<transicionesEstadoActual.length; k++)
+                {
+                    if(transicionesEstadoActual[k].label===word[i])
+                    {
+                        estadoActual=transicionesEstadoActual[k].to;
+                        console.log("Estado Actual: ", estadoActual);
+                    }
+                }
+                transicionesEstadoActual=[];
+            }
+
+            for(var t=0; t<this.estadosAutomataAFD.length; t++)
+            {
+                if(estadoActual===this.estadosAutomataAFD[t].id)
+                {
+                    if(this.estadosAutomataAFD[t].final===true)
+                    {
+                        swal("La palabra pertenece al leguaje",{
+                            className: "alertas",
+                            button: "Aceptar",
+                            title: "Resultado del análisis",   
+                        });
+                        return;
+                    }
+                    else{
+                        swal("La palabra no pertenece al lenguaje",{
+                            className: "alertas",
+                            button: "Aceptar",
+                            title: "Resultado del análisis",
+                            icon: "error",
+                        });
+                        return;
+                    }
+                }
+            }
+            
+        },
+
         drawAutomata(){
             var afd= document.getElementById("AFD");
             var ap1= document.getElementById("AP1");
@@ -1004,8 +1250,7 @@ export default {
 
 
             var options = {
-                
-
+                height: 320 +'px',
                 edges:{
                     arrows: 'to',
                 },
@@ -1022,6 +1267,75 @@ export default {
                 var networkAP2= new vis.Network(ap2,dataAP2,options);
             }
 
+        },
+
+
+        encontrarExpresionRegular(){
+            var finales=[];
+
+            //Se busca los finales y se agregan al arreglo finales
+            for(var i=0; i<this.estadosAutomataAFD.length; i++)
+            {
+                if(this.estadosAutomataAFD[i].final===true)
+                {
+                    finales.push(this.estadosAutomataAFD[i].id);
+                }
+            }
+
+            //Se busca si hay transiciones que salen de los finales. Si ese es el caso, se procede a crear un nuevo estado final y los antiguos dejan de ser finales.
+            if(this.salenFinales(finales)){
+                //Se crean las transiciones desde los antiguos finales al nuevo final con una transicion vacía.
+                for(var j=0; j<finales.length;j++)
+                {
+                    this.transicionAutomataAFD.from=finales[j];
+                    this.transicionAutomataAFD.to='Final';
+                    this.transicionAutomataAFD.label='';
+                    this.transicionesAutomataAFD.push(this.transicionAutomataAFD);
+                    this.transicionAutomataAFD={from: '', label: '', to: '', color: {color: 'rgb(0,0,0)'}};
+                }
+            }
+
+            //Buscar intermedio entre el inicial (q0) y q2 
+            var primero='inicio';
+            var intermedio;
+            var segundo;
+            for(var k=0; k<this.transicionesAutomataAFD.length;k++)
+            {
+                if(this.transicionesAutomataAFD[k].from===primero)
+                {
+                    intermedio=this.transicionesAutomataAFD[k].to;
+                }
+            }
+            
+
+        },
+
+        salenFinales(finales){
+            for(var j=0; j<this.transicionesAutomataAFD.length;j++)
+            {
+                for(var k=0; k<finales.length;k++)
+                {
+                    if(this.transicionesAutomata[j].from===finales[k])
+                    {
+                        for(var t=0; t<this.estadosAutomataAFD.length;t++){
+                            if(this.estadosAutomataAFD[t].final===true){
+                                this.estadosAutomataAFD[t].final=false;
+                                this.estadosAutomataAFD[t].shape='ellipse';
+                                this.estadosAutomata[t].color='#C25C0B';
+                            }
+                        }
+                        this.estadoAutomataAFD.final=true;
+                        this.estadoAutomataAFD.shape='diamond';
+                        this.estadoAutomataAFD.color='#5cb85c';
+                        this.estadoAutomataAFD.id='Final';
+                        this.estadoAutomataAFD.label='Final';
+                        this.estadosAutomataAFD.push(this.estadoAutomataAFD);
+                        this.estadoAutomataAFD={id: '', label: '', color: '#C25C0B', final: false};
+                        return true;
+                    }
+                }
+                return false;
+            }
         },
 
 
