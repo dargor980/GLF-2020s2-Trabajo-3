@@ -324,7 +324,7 @@
             </div>
             <div class="card cardaux3 col-md-10 rounded-bottom mb-3" v-if="opcion===1">
                 <div class="container my-3">
-
+                    <button class="btn btn-success" @click="encontrarExpresionRegular">Mostrar expresion regular</button>
                     aaaaaaaaaaaaaa
                 </div>
             </div>
@@ -1296,17 +1296,65 @@ export default {
             }
 
             //Buscar intermedio entre el inicial (q0) y q2 
-            var primero='inicio';
+            var primero='inicio';   //INICIO   -  INTERMEDIO   -   Q1 Q2 ...
             var intermedio;
-            var segundo;
+            var revisado=[];
+            var transicion={from: '', label: '', to: '', color: {color: 'rgb(0,0,0)'}};
+            var transaux=[];
             for(var k=0; k<this.transicionesAutomataAFD.length;k++)
             {
+                console.log("k =", k, "/ ", this.transicionesAutomataAFD.length);
                 if(this.transicionesAutomataAFD[k].from===primero)
                 {
                     intermedio=this.transicionesAutomataAFD[k].to;
+                    console.log("Intermedio: ", intermedio);
+                    console.log("Revisados: ", revisado);
+                    for(var t=0; t<this.transicionesAutomataAFD.length;t++)
+                    {
+                        console.log("t =", t, "/ ", this.transicionesAutomataAFD.length);
+                        if(this.transicionesAutomataAFD[t].from===intermedio)
+                        {
+                            console.log("entro 1");
+                            for(var u=0; u<revisado.length; u++){
+                                console.log("entro for");                                
+                                if(transicionesAutomataAFD[t].to != revisado[u]){
+                                    console.log("entro 2.1");
+                                    transicion.from=primero;
+                                    if(this.transicionesAutomataAFD[t].from==this.transicionesAutomataAFD[t].to)
+                                    {
+                                        console.log("entro 3.1");
+                                        if(this.transicionesAutomata[t].label.includes('+'))
+                                        {
+                                            transicion.label=transicion.label+'('+this.transicionesAutomataAFD[t].label+')*';
+                                        }
+                                        else{
+                                            transicion.label=transicion.label+this.transicionesAutomataAFD[t].label+'*';
+                                        }
+                                    }
+                                    else{
+                                        console.log("entro 3.2");
+                                        transicion.label=transicion.label+this.transicionesAutomataAFD[t].label;
+                                    }
+                                    transicion.to=this.transicionesAutomataAFD[t].to;
+                                    console.log("transicion push", transicion);
+                                    this.transicionesAutomataAFD.push(transicion);
+                                    transicion={from: '', label: '', to: '', color: {color: 'rgb(0,0,0)'}};
+                                    this.transicionesAutomataAFD.splice(t,1);
+                                }else{
+                                    console.log("entro 2.2");
+                                    this.transicionesAutomataAFD.splice(t,1);
+                                }
+                            }
+                        }
+                    }
+                    revisado.push(intermedio);
+                
                 }
+                
             }
-            
+            this.drawAutomata();
+
+
 
         },
 
@@ -1315,7 +1363,7 @@ export default {
             {
                 for(var k=0; k<finales.length;k++)
                 {
-                    if(this.transicionesAutomata[j].from===finales[k])
+                    if(this.transicionesAutomataAFD[j].from===finales[k])
                     {
                         for(var t=0; t<this.estadosAutomataAFD.length;t++){
                             if(this.estadosAutomataAFD[t].final===true){
