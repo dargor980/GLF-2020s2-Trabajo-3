@@ -2268,6 +2268,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2313,6 +2329,11 @@ __webpack_require__.r(__webpack_exports__);
           color: 'rgb(0,0,0)'
         }
       },
+      pilaAP1: {
+        agrega: '',
+        elimina: ''
+      },
+      pila1: [],
       estadosAP2: [{
         id: 'inicio',
         label: 'inicio',
@@ -2552,6 +2573,7 @@ __webpack_require__.r(__webpack_exports__);
         }
 
         this.addCaracterToAlfabeto();
+        this.pilaAPs();
         this.transicionesAutomataAFD.push(this.transicionAutomataAFD);
         this.transicionAutomataAFD = {
           from: '',
@@ -2564,7 +2586,7 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         if (this.apSeleccionado === 1) {
           if (this.transicionAP1.from === '' || this.transicionAP1.to === '') {
-            swal("Estados no ingresadow. Rellene todos los campos antes de continuar", {
+            swal("Estados no ingresados. Rellene todos los campos antes de continuar", {
               className: "alertas",
               button: "Aceptar",
               title: "Aviso",
@@ -2593,18 +2615,19 @@ __webpack_require__.r(__webpack_exports__);
               icon: "warning"
             });
             return;
+          } else {
+            this.addCaracterToAlfabeto();
+            this.transicionesAP1.push(this.transicionAP1);
+            this.pilaAPs();
+            this.transicionAP1 = {
+              from: '',
+              label: '',
+              to: '',
+              color: {
+                color: 'rgb(0,0,0)'
+              }
+            };
           }
-
-          this.addCaracterToAlfabeto();
-          this.transicionesAutomataAFD.push(this.transicionAP1);
-          this.transicionAP1 = {
-            from: '',
-            label: '',
-            to: '',
-            color: {
-              color: 'rgb(0,0,0)'
-            }
-          };
         } else {
           if (this.apSeleccionado === 2) {
             if (this.transicionAP2.from === '' || this.transicionAP2.to === '') {
@@ -2674,6 +2697,107 @@ __webpack_require__.r(__webpack_exports__);
             return false;
           }
         }
+      }
+    },
+    pilaAPs: function pilaAPs() {
+      //console.log(this.pilaAP1);
+      //console.log("transiciones ap1",this.transicionesAP1);
+      if (this.pila1.length < 1) {
+        this.pila1.push('P');
+
+        if (this.pilaAP1.agrega === '' && this.pilaAP1.elimina === '') {
+          for (var k = 0; k < this.transicionesAP1.length; k++) {
+            if (this.transicionesAP1[k].from != 'inicio') {
+              var nT = this.transicionesAP1[k].label + '|' + 'E' + '|' + '|' + 'E' + '|';
+              console.log("nT", nt);
+              this.transicionesAP1[k].label = nT;
+              nT = '';
+            }
+
+            console.log("Epsilon");
+          }
+        }
+
+        if (this.pilaAP1.agrega != '' && this.pilaAP1.elimina == '') {
+          for (var i = 0; i < this.transicionesAP1.length; i++) {
+            if (this.transicionesAP1[i].from != 'inicio') {
+              console.log("agrega: ", this.pilaAP1.agrega);
+              console.log("transiciones ap1 label", this.transicionesAP1[i].label);
+              var newT = this.transicionesAP1[i].label + '|' + 'E' + '|' + this.pilaAP1.agrega;
+              console.log("newT:", newT);
+              this.transicionesAP1[i].label = newT;
+              newT = '';
+              this.pila1.push(this.pilaAP1.agrega);
+              this.pilaAP1.agrega = '';
+            }
+          }
+        }
+
+        if (this.pilaAP1.elimina != '' && this.pilaAP1.agrega == '') {
+          console.log("pop()", this.pilaAP1.elimina);
+
+          for (var j = 1; j < this.transicionesAP1.length; j++) {
+            console.log("transiciones ap1", this.transicionesAP1[j]);
+
+            var _newT = this.transicionesAP1[j].label + '|' + this.pilaAP1.elimina + '|' + 'E';
+
+            console.log("newT:", _newT);
+            this.transicionesAP1[j].label = _newT;
+            newt = '';
+          }
+
+          this.pila1.pop(this.pilaAP1.elimina);
+          this.pilaAP1.elimina = '';
+        }
+
+        console.log("pila", this.pilaAP1);
+        console.log("pila1", this.pila1);
+      } else {
+        if (this.pilaAP1.agrega === '' && this.pilaAP1.elimina === '') {
+          for (var m = 0; m < this.transicionesAP1.length; m++) {
+            if (this.transicionesAP1[m].from != 'inicio') {
+              var nT1 = this.transicionesAP1[m].label + '|' + 'E' + '|' + '|' + 'E' + '|';
+              console.log("nt1", nT1);
+              this.transicionesAP1[m].label = nT1;
+              nT1 = '';
+            }
+
+            console.log("Epsilon");
+          }
+        }
+
+        if (this.pilaAP1.agrega != '' && this.pilaAP1.elimina == '') {
+          for (var f = 0; f < this.transicionesAP1.length; f++) {
+            if (this.transicionesAP1[f].from != 'inicio') {
+              console.log("agrega: ", this.pilaAP1.agrega);
+              console.log("transiciones ap1 label", this.transicionesAP1[f].label);
+              var newT1 = this.transicionesAP1[f].label + '|' + 'E' + '|' + this.pilaAP1.agrega;
+              console.log("newT1:", newT1);
+              this.transicionesAP1[f].label = newT1;
+              newT1 = '';
+              this.pila1.push(this.pilaAP1.agrega);
+              this.pilaAP1.agrega = '';
+            }
+          }
+        }
+
+        if (this.pilaAP1.elimina != '' && this.pilaAP1.agrega == '') {
+          console.log("pop()", this.pilaAP1.elimina);
+
+          for (var d = 1; d < this.transicionesAP1.length; d++) {
+            console.log("transiciones ap1", this.transicionesAP1[d]);
+            var newT2 = this.transicionesAP1[d].label + '|' + this.pilaAP1.elimina + '|' + 'E';
+            console.log("newT2:", newT2);
+            this.transicionesAP1[d].label = newT2;
+            newt2 = '';
+          }
+
+          this.pila1.pop(this.pilaAP1.elimina);
+          this.pilaAP1.elimina = '';
+        }
+
+        console.log("pila", this.pilaAP1);
+        console.log("pila1", this.pila1);
       }
     },
     addCaracterToAlfabeto: function addCaracterToAlfabeto() {
@@ -94907,6 +95031,74 @@ var render = function() {
                                   })
                                 ]),
                                 _vm._v(" "),
+                                _c("div", { staticClass: "form-group" }, [
+                                  _c("label", [_vm._v("Push(): ")]),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.pilaAP1.agrega,
+                                        expression: "pilaAP1.agrega"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    attrs: {
+                                      type: "text",
+                                      minlength: "1",
+                                      placeholder: "dejar vacío para epsilon"
+                                    },
+                                    domProps: { value: _vm.pilaAP1.agrega },
+                                    on: {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          _vm.pilaAP1,
+                                          "agrega",
+                                          $event.target.value
+                                        )
+                                      }
+                                    }
+                                  })
+                                ]),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "form-group" }, [
+                                  _c("label", [_vm._v("Pop(): ")]),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.pilaAP1.elimina,
+                                        expression: "pilaAP1.elimina"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    attrs: {
+                                      type: "text",
+                                      minlength: "1",
+                                      placeholder: "dejar vacío para epsilon"
+                                    },
+                                    domProps: { value: _vm.pilaAP1.elimina },
+                                    on: {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          _vm.pilaAP1,
+                                          "elimina",
+                                          $event.target.value
+                                        )
+                                      }
+                                    }
+                                  })
+                                ]),
+                                _vm._v(" "),
                                 _c(
                                   "button",
                                   {
@@ -95028,6 +95220,74 @@ var render = function() {
                                         _vm.$set(
                                           _vm.transicionAP1,
                                           "label",
+                                          $event.target.value
+                                        )
+                                      }
+                                    }
+                                  })
+                                ]),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "form-group" }, [
+                                  _c("label", [_vm._v("Push(): ")]),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.pilaAP1.agrega,
+                                        expression: "pilaAP1.agrega"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    attrs: {
+                                      type: "text",
+                                      minlength: "1",
+                                      placeholder: "dejar vacío para epsilon"
+                                    },
+                                    domProps: { value: _vm.pilaAP1.agrega },
+                                    on: {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          _vm.pilaAP1,
+                                          "agrega",
+                                          $event.target.value
+                                        )
+                                      }
+                                    }
+                                  })
+                                ]),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "form-group" }, [
+                                  _c("label", [_vm._v("Pop(): ")]),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.pilaAP1.elimina,
+                                        expression: "pilaAP1.elimina"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    attrs: {
+                                      type: "text",
+                                      minlength: "1",
+                                      placeholder: "dejar vacío para epsilon"
+                                    },
+                                    domProps: { value: _vm.pilaAP1.elimina },
+                                    on: {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          _vm.pilaAP1,
+                                          "elimina",
                                           $event.target.value
                                         )
                                       }
@@ -108512,8 +108772,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp\htdocs\GLF-2020s2-Trabajo-3\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\GLF-2020s2-Trabajo-3\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\Luciano\Desktop\2020-2\Grafos y lenguajes formales\Grafos\GLF-2020s2-Trabajo-3\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\Luciano\Desktop\2020-2\Grafos y lenguajes formales\Grafos\GLF-2020s2-Trabajo-3\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

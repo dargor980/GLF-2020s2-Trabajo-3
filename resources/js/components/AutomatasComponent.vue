@@ -173,6 +173,14 @@
                                 <label>Ingrese carácter de la transición: </label>
                                 <input type="text" minlength="1" class="form-control" v-model="transicionAP1.label">
                             </div>
+                            <div class="form-group">
+                                <label>Push(): </label>
+                                <input type="text" minlength="1" class="form-control" placeholder="dejar vacío para epsilon" v-model="pilaAP1.agrega">
+                            </div>
+                            <div class="form-group">
+                                <label>Pop(): </label>
+                                <input type="text" minlength="1" class="form-control" placeholder="dejar vacío para epsilon" v-model="pilaAP1.elimina">
+                            </div>
 
                             <button class="btn btn-success btn-sm" type="submit">Agregar</button>
                         </form>
@@ -189,6 +197,14 @@
                             <div class="form-group">
                                 <label>Ingrese carácter de la transición: </label>
                                 <input type="text" minlength="1" class="form-control" v-model="transicionAP1.label">
+                            </div>
+                            <div class="form-group">
+                                <label>Push(): </label>
+                                <input type="text" minlength="1" class="form-control" placeholder="dejar vacío para epsilon" v-model="pilaAP1.agrega">
+                            </div>
+                            <div class="form-group">
+                                <label>Pop(): </label>
+                                <input type="text" minlength="1" class="form-control" placeholder="dejar vacío para epsilon" v-model="pilaAP1.elimina">
                             </div>
 
                             <button class="btn btn-success btn-sm" type="submit">Agregar</button>
@@ -371,7 +387,8 @@ export default {
             estadoAP1:{id: '', label: '', color: '#C25C0B', final: false},
             transicionesAP1:[],
             transicionAP1:{from: '', label: '', to: '', color: {color: 'rgb(0,0,0)'}},
-
+            pilaAP1:{agrega:'',elimina:''},
+            pila1:[],
             estadosAP2:[{id: 'inicio', label: 'inicio', color:'#75616b47', final: false}],
             estadoAP2:{id: '', label: '', color: '#C25C0B', final: false},
             transicionesAP2:[],
@@ -614,7 +631,9 @@ export default {
                         return;
                     }
                 }
+
                 this.addCaracterToAlfabeto();
+                this.pilaAPs();
                 this.transicionesAutomataAFD.push(this.transicionAutomataAFD);
                 this.transicionAutomataAFD={from:'',label: '',to:'',color:{color:'rgb(0,0,0)'}}; 
             }
@@ -623,7 +642,7 @@ export default {
                 {
                     if(this.transicionAP1.from ==='' || this.transicionAP1.to ==='')
                     {
-                        swal("Estados no ingresadow. Rellene todos los campos antes de continuar",{
+                        swal("Estados no ingresados. Rellene todos los campos antes de continuar",{
                             className: "alertas",
                             button: "Aceptar",
                             title: "Aviso",
@@ -655,9 +674,14 @@ export default {
                         });
                         return;
                     }
-                    this.addCaracterToAlfabeto();
-                    this.transicionesAutomataAFD.push(this.transicionAP1);
-                    this.transicionAP1={from:'',label: '',to:'',color:{color:'rgb(0,0,0)'}};
+                    else{
+                        
+                        this.addCaracterToAlfabeto();
+                        this.transicionesAP1.push(this.transicionAP1);
+                        this.pilaAPs();
+                        this.transicionAP1={from:'',label: '',to:'',color:{color:'rgb(0,0,0)'}};
+
+                    }
                 }
                 else{
                     if(this.apSeleccionado===2)
@@ -727,6 +751,112 @@ export default {
                     }
                 }
             }
+
+        },
+
+        pilaAPs(){
+            //console.log(this.pilaAP1);
+            //console.log("transiciones ap1",this.transicionesAP1);
+            if(this.pila1.length<1){
+                this.pila1.push('P')                
+                if(this.pilaAP1.agrega==='' && this.pilaAP1.elimina===''){
+                    for(let k=0;k<this.transicionesAP1.length;k++){
+                        if(this.transicionesAP1[k].from!='inicio'){
+                            let nT=this.transicionesAP1[k].label +  '|' + 'E' + '|' + '|' + 'E' + '|' 
+                            console.log("nT",nt);
+                            this.transicionesAP1[k].label= nT;
+                            nT = ''
+                        }
+                        console.log("Epsilon");
+                    }
+                }
+                if(this.pilaAP1.agrega!='' && this.pilaAP1.elimina==''){
+                    
+                    for(let i=0;i<this.transicionesAP1.length;i++){
+                        
+                        if(this.transicionesAP1[i].from!='inicio'){
+
+                            console.log("agrega: ",this.pilaAP1.agrega);
+                            console.log("transiciones ap1 label",this.transicionesAP1[i].label);
+                            let newT = this.transicionesAP1[i].label + '|' + 'E' + '|' + this.pilaAP1.agrega;
+                            console.log("newT:",newT);
+                            this.transicionesAP1[i].label= newT;
+                            newT = ''
+                            this.pila1.push(this.pilaAP1.agrega)
+                            this.pilaAP1.agrega=''
+
+                        }
+                    }
+                    
+                }
+                if(this.pilaAP1.elimina!='' && this.pilaAP1.agrega==''){
+                    console.log("pop()", this.pilaAP1.elimina);
+                    for(let j=1;j<this.transicionesAP1.length;j++){
+                        console.log("transiciones ap1",this.transicionesAP1[j]);
+                        let newT = this.transicionesAP1[j].label + '|' + this.pilaAP1.elimina + '|' +'E'
+                        console.log("newT:",newT);
+                        this.transicionesAP1[j].label= newT;
+                        newt = '' 
+                    }
+                    this.pila1.pop(this.pilaAP1.elimina)
+                    this.pilaAP1.elimina=''
+
+
+                }
+                console.log("pila",this.pilaAP1);
+                console.log("pila1",this.pila1);
+            }
+            else{
+                if(this.pilaAP1.agrega==='' && this.pilaAP1.elimina===''){
+                    for(let m=0;m<this.transicionesAP1.length;m++){
+                        if(this.transicionesAP1[m].from!='inicio'){
+                            let nT1=this.transicionesAP1[m].label +  '|' + 'E' + '|' + '|' + 'E' + '|' 
+                            console.log("nt1",nT1);
+                            this.transicionesAP1[m].label= nT1;
+                            nT1 = ''
+                        }
+                        console.log("Epsilon");
+                    }
+                }
+                if(this.pilaAP1.agrega!='' && this.pilaAP1.elimina==''){
+                    
+                    for(let f=0;f<this.transicionesAP1.length;f++){
+                        
+                        if(this.transicionesAP1[f].from!='inicio' ){
+
+                            console.log("agrega: ",this.pilaAP1.agrega);
+                            console.log("transiciones ap1 label",this.transicionesAP1[f].label);
+                            let newT1 = this.transicionesAP1[f].label + '|' + 'E' + '|' + this.pilaAP1.agrega;
+                            console.log("newT1:",newT1);
+                            this.transicionesAP1[f].label= newT1;
+                            newT1 = ''
+                            this.pila1.push(this.pilaAP1.agrega)
+                            this.pilaAP1.agrega=''
+
+                        }
+                    }
+                    
+                }
+                if(this.pilaAP1.elimina!='' && this.pilaAP1.agrega==''){
+                    console.log("pop()", this.pilaAP1.elimina);
+                    for(let d=1;d<this.transicionesAP1.length;d++){
+                        console.log("transiciones ap1",this.transicionesAP1[d]);
+                        let newT2 = this.transicionesAP1[d].label + '|' + this.pilaAP1.elimina + '|' +'E'
+                        console.log("newT2:",newT2);
+                        this.transicionesAP1[d].label= newT2;
+                        newt2 = '' 
+                    }
+                    this.pila1.pop(this.pilaAP1.elimina)
+                    this.pilaAP1.elimina=''
+
+
+                }
+                console.log("pila",this.pilaAP1);
+                console.log("pila1",this.pila1);
+            }
+            
+            
+            
 
         },
 
