@@ -2285,6 +2285,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2879,6 +2889,124 @@ __webpack_require__.r(__webpack_exports__);
       console.log(this.estadosAutomataUnionAP);
       this.drawAutomata();
     },
+    analisisPalabraAP: function analisisPalabraAP(estados, transiciones, pila) {
+      var palabra = this.cadena.split('');
+      console.log("palabra", palabra);
+      var transicionesEstadoActual = [];
+      var estadoActual;
+
+      if (estados.length === 1 || estados.length === 0) {
+        swal("Debe ingresar el automata antes de analizar la palabra", {
+          className: "alertas",
+          button: "Aceptar",
+          title: "Aviso",
+          icon: "warning"
+        });
+        return;
+      } else {
+        if (!this.existeFinal(estados)) {
+          swal("Para analizar la palabra debe marcar como final a lo menos un estado en el autómata", {
+            className: "alertas",
+            button: "Aceptar",
+            title: "Aviso",
+            icon: "warning"
+          });
+          return;
+        }
+      }
+
+      estadoActual = estados[1].id;
+      console.log(estadoActual);
+
+      for (var i = 0; i < palabra.length; i++) {
+        if (!this.existeCaracterAP(palabra[i])) {
+          swal("La palabra no pertenece al lenguaje 1", {
+            className: "alertas",
+            button: "Aceptar",
+            title: "Resultado del análisis",
+            icon: "error"
+          });
+          return;
+        }
+
+        for (var j = 0; j < transiciones.length; j++) {
+          console.log("entro for transiciones");
+
+          if (transiciones[j].from === estadoActual) {
+            transicionesEstadoActual.push(transiciones[j]);
+          }
+        }
+
+        for (var k = 0; k < transicionesEstadoActual.length; k++) {
+          console.log("entro for transiciones estado actual");
+          var aux = transicionesEstadoActual[k].label.split('|'); // c - +  
+
+          if (aux[0] === palabra[i]) //aca empieza el webeo   a|E|B   aabb
+            // a|x|E
+            {
+              //pila.push('P')
+              estadoActual = transicionesEstadoActual[k].to;
+
+              if (aux[2] != 'E' && aux[1] != 'E') {
+                if (pila[pila.length - 1] == aux[1]) {
+                  pila.pop();
+                }
+
+                if (pila[pila.length - 1] == aux[2]) {
+                  pila.push(aux[2]);
+                }
+              }
+
+              if (aux[2] != 'E' && aux[1] == 'E') {
+                if (pila[pila.length - 1] == aux[1]) {
+                  pila.pop();
+                }
+              }
+
+              if (aux[2] == 'E' && aux[1] != 'E') {
+                if (pila[pila.length - 1] == aux[2]) {
+                  pila.push(aux[2]);
+                }
+              }
+
+              console.log("Estado Actual: ", estadoActual);
+            }
+        }
+
+        transicionesEstadoActual = [];
+      }
+
+      for (var t = 0; t < estados.length; t++) {
+        if (estadoActual === estados[t].id) {
+          if (estados["final"] === true) {
+            if (pila.length === 1 && pila[0] == 'P' || pila.length === 0) {
+              swal("La palabra pertenece al leguaje 2", {
+                className: "alertas",
+                button: "Aceptar",
+                title: "Resultado del análisis"
+              });
+              return;
+            } else {
+              swal("La palabra no pertenece al lenguaje 3", {
+                className: "alertas",
+                button: "Aceptar",
+                title: "Resultado del análisis",
+                icon: "error"
+              });
+              return;
+            }
+          } else {
+            swal("La palabra no pertenece al lenguaje 4", {
+              className: "alertas",
+              button: "Aceptar",
+              title: "Resultado del análisis",
+              icon: "error"
+            });
+            return;
+          }
+        }
+      }
+    },
     copiarAutomata: function copiarAutomata(estadosIn, transicionesIn, estadosOut, transicionesOut) {
       var estado = {
         id: '',
@@ -3276,14 +3404,14 @@ __webpack_require__.r(__webpack_exports__);
               this.estadosAP1[j].shape = 'diamond';
               this.estadosAP1[j].color = '#5cb85c';
               this.drawAutomata();
-              console.log("Estado final: ", i, this.estadosAP1[j]["final"]);
+              console.log("Estado final: ", j, this.estadosAP1[j]["final"]);
             } else {
               if (this.estadosAP1[j].id === id && this.estadosAP1[j]["final"] === true) {
                 this.estadosAP1[j]["final"] = false;
                 this.estadosAP1[j].shape = 'ellipse';
                 this.estadosAP1[j].color = '#C52C0B';
                 this.drawAutomata();
-                console.log("Estado final: ", i, this.estadosAP1[j]["final"]);
+                console.log("Estado final: ", j, this.estadosAP1[j]["final"]);
               }
             }
           }
@@ -3295,14 +3423,14 @@ __webpack_require__.r(__webpack_exports__);
                 this.estadosAP2[k].shape = 'diamond';
                 this.estadosAP2[k].color = '#5cb85c';
                 this.drawAutomata();
-                console.log("Estado final: ", i, this.estadosAP2[k]["final"]);
+                console.log("Estado final: ", k, this.estadosAP2[k]["final"]);
               } else {
                 if (this.estadosAP2[k].id === id && this.estadosAP2[k]["final"] === true) {
                   this.estadosAP2[k]["final"] = false;
                   this.estadosAP2[k].shape = 'ellipse';
                   this.estadosAP2[k].color = '#C52C0B';
                   this.drawAutomata();
-                  console.log("Estado final: ", i, this.estadosAP2[k]["final"]);
+                  console.log("Estado final: ", k, this.estadosAP2[k]["final"]);
                 }
               }
             }
@@ -3313,6 +3441,15 @@ __webpack_require__.r(__webpack_exports__);
     existeCaracterAFD: function existeCaracterAFD(caracter) {
       for (var i = 0; i < this.alfabetoAFD.length; i++) {
         if (this.alfabetoAFD[i] === caracter) {
+          return true;
+        }
+      }
+
+      return false;
+    },
+    existeCaracterAP: function existeCaracterAP(caracter) {
+      for (var i = 0; i < this.alfabetoAFD.length; i++) {
+        if (this.alfabetoAP1[i] === caracter) {
           return true;
         }
       }
@@ -95511,11 +95648,40 @@ var render = function() {
                                 on: {
                                   submit: function($event) {
                                     $event.preventDefault()
+                                    return _vm.analisisPalabraAP(
+                                      _vm.estadosAP1,
+                                      _vm.transicionesAP1,
+                                      _vm.pila1
+                                    )
                                   }
                                 }
                               },
                               [
-                                _vm._m(5),
+                                _c("div", { staticClass: "form-group" }, [
+                                  _c("label", [_vm._v("Ingrese la palabra: ")]),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.cadena,
+                                        expression: "cadena"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    attrs: { type: "text" },
+                                    domProps: { value: _vm.cadena },
+                                    on: {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.cadena = $event.target.value
+                                      }
+                                    }
+                                  })
+                                ]),
                                 _vm._v(" "),
                                 _c(
                                   "button",
@@ -95536,11 +95702,40 @@ var render = function() {
                                 on: {
                                   submit: function($event) {
                                     $event.preventDefault()
+                                    return _vm.analisisPalabraAP(
+                                      _vm.estadosAP2,
+                                      _vm.transicionesAP2,
+                                      _vm.pila2
+                                    )
                                   }
                                 }
                               },
                               [
-                                _vm._m(6),
+                                _c("div", { staticClass: "form-group" }, [
+                                  _c("label", [_vm._v("Ingrese la palabra: ")]),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.cadena,
+                                        expression: "cadena"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    attrs: { type: "text" },
+                                    domProps: { value: _vm.cadena },
+                                    on: {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.cadena = $event.target.value
+                                      }
+                                    }
+                                  })
+                                ]),
                                 _vm._v(" "),
                                 _c(
                                   "button",
@@ -95579,7 +95774,7 @@ var render = function() {
                       attrs: { "aria-describedby": "estados1" }
                     },
                     [
-                      _vm._m(7),
+                      _vm._m(5),
                       _vm._v(" "),
                       _c(
                         "tbody",
@@ -95648,7 +95843,59 @@ var render = function() {
                       staticClass: "table table-striped table-dark",
                       attrs: { "aria-describedby": "estados1" }
                     },
-                    [_vm._m(8), _vm._v(" "), _vm._m(9)]
+                    [
+                      _vm._m(6),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        _vm._l(_vm.estadosAP1, function(item, index) {
+                          return _c(
+                            "tr",
+                            {
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value: index != 0,
+                                  expression: "index!=0"
+                                }
+                              ],
+                              key: index
+                            },
+                            [
+                              _c("td", [_vm._v(_vm._s(index))]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(_vm._s(item.label))]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c("div", [
+                                  _c("input", {
+                                    attrs: {
+                                      type: "checkbox",
+                                      name: "state",
+                                      id: "state"
+                                    },
+                                    domProps: {
+                                      checked: _vm.estadosAP1[index].final
+                                    },
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.marcarFinal(item.id)
+                                      }
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("label", { attrs: { for: "state" } }, [
+                                    _vm._v("Estado Final")
+                                  ])
+                                ])
+                              ])
+                            ]
+                          )
+                        }),
+                        0
+                      )
+                    ]
                   )
                 : _vm._e(),
               _vm._v(" "),
@@ -95665,7 +95912,59 @@ var render = function() {
                       staticClass: "table table-striped table-dark",
                       attrs: { "aria-describedby": "estados1" }
                     },
-                    [_vm._m(10), _vm._v(" "), _vm._m(11)]
+                    [
+                      _vm._m(7),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        _vm._l(_vm.estadosAP2, function(item, index) {
+                          return _c(
+                            "tr",
+                            {
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value: index != 0,
+                                  expression: "index!=0"
+                                }
+                              ],
+                              key: index
+                            },
+                            [
+                              _c("td", [_vm._v(_vm._s(index))]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(_vm._s(item.label))]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c("div", [
+                                  _c("input", {
+                                    attrs: {
+                                      type: "checkbox",
+                                      name: "state",
+                                      id: "state"
+                                    },
+                                    domProps: {
+                                      checked: _vm.estadosAP2[index].final
+                                    },
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.marcarFinal(item.id)
+                                      }
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("label", { attrs: { for: "state" } }, [
+                                    _vm._v("Estado Final")
+                                  ])
+                                ])
+                              ])
+                            ]
+                          )
+                        }),
+                        0
+                      )
+                    ]
                   )
                 : _vm._e(),
               _vm._v(" "),
@@ -95926,26 +96225,6 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("label", [_vm._v("Ingrese la palabra: ")]),
-      _vm._v(" "),
-      _c("input", { staticClass: "form-control", attrs: { type: "text" } })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("label", [_vm._v("Ingrese la palabra: ")]),
-      _vm._v(" "),
-      _c("input", { staticClass: "form-control", attrs: { type: "text" } })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
         _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
@@ -95974,20 +96253,6 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("tbody", [
-      _c("tr", [
-        _c("td", [_vm._v("a")]),
-        _vm._v(" "),
-        _c("td", [_vm._v("a")]),
-        _vm._v(" "),
-        _c("td", [_vm._v("a")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
         _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
@@ -95995,20 +96260,6 @@ var staticRenderFns = [
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Estado")]),
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Final")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tbody", [
-      _c("tr", [
-        _c("td", [_vm._v("a")]),
-        _vm._v(" "),
-        _c("td", [_vm._v("a")]),
-        _vm._v(" "),
-        _c("td", [_vm._v("a")])
       ])
     ])
   }

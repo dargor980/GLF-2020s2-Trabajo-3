@@ -212,20 +212,20 @@
                     </div> 
 
                     <div class="col-md-12 my-4" v-if="analizarPalabra">
-                        <form @submit.prevent="" v-if="apSeleccionado===1">
+                        <form @submit.prevent="analisisPalabraAP(estadosAP1,transicionesAP1,pila1)" v-if="apSeleccionado===1">
                             <div class="form-group">
                                 <label>Ingrese la palabra: </label>
-                                <input type="text" class="form-control">
+                                <input type="text" class="form-control" v-model="cadena">
                             </div>
-                            <button class="btn btn-success btn-sm" type="submit">Consultar Palabra</button>
+                            <button class="btn btn-success btn-sm" type="submit" >Consultar Palabra</button>
                         </form>
 
-                        <form @submit.prevent="" v-if="apSeleccionado===2">
+                        <form @submit.prevent="analisisPalabraAP(estadosAP2,transicionesAP2,pila2)" v-if="apSeleccionado===2">
                             <div class="form-group">
                                 <label>Ingrese la palabra: </label>
-                                <input type="text" class="form-control">
+                                <input type="text" class="form-control" v-model="cadena">
                             </div>
-                            <button class="btn btn-success btn-sm" type="submit">Consultar Palabra</button>
+                            <button class="btn btn-success btn-sm" type="submit" >Consultar Palabra</button>
                         </form>
                     </div>
 
@@ -270,10 +270,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>a</td>
-                                <td>a</td>
-                                <td>a</td>
+                            <tr v-for="(item,index) in estadosAP1" :key="index" v-show="index!=0">
+                                <td>{{index}}</td>
+                                <td>{{item.label}}</td>
+                                <td>
+                                    <div>
+                                        <input type="checkbox" name="state" id="state" @click="marcarFinal(item.id)" :checked="estadosAP1[index].final">
+                                        <label for="state">Estado Final</label>
+                                    </div>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -287,10 +292,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>a</td>
-                                <td>a</td>
-                                <td>a</td>
+                            <tr v-for="(item,index) in estadosAP2" :key="index" v-show="index!=0">
+                                <td>{{index}}</td>
+                                <td>{{item.label}}</td>
+                                <td>
+                                    <div>
+                                        <input type="checkbox" name="state" id="state" @click="marcarFinal(item.id)" :checked="estadosAP2[index].final">
+                                        <label for="state">Estado Final</label>
+                                    </div>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -919,6 +929,128 @@ export default {
             this.drawAutomata();
         },
 
+        analisisPalabraAP(estados,transiciones,pila){
+            var palabra = this.cadena.split('');
+            console.log("palabra",palabra);
+            var transicionesEstadoActual=[];
+            var estadoActual;
+            if(estados.length===1 || estados.length===0)
+            {
+                swal("Debe ingresar el automata antes de analizar la palabra",{
+                    className: "alertas",
+                    button: "Aceptar",
+                    title: "Aviso",
+                    icon: "warning",
+                });
+                return;
+            }
+            else{
+                if(!this.existeFinal(estados))
+                {
+                    swal("Para analizar la palabra debe marcar como final a lo menos un estado en el autómata",{
+                        className: "alertas",
+                        button: "Aceptar",
+                        title: "Aviso",
+                        icon: "warning",
+                    });
+                    return;
+                }                
+            }
+            estadoActual=estados[1].id;
+            console.log(estadoActual);
+            for(var i=0; i<palabra.length;i++)
+            {
+                if(!this.existeCaracterAP(palabra[i]))
+                {
+                    swal("La palabra no pertenece al lenguaje 1",{
+                        className: "alertas",
+                        button: "Aceptar",
+                        title: "Resultado del análisis",
+                        icon: "error",
+                    });
+                    return;
+                }
+                for(var j=0; j<transiciones.length;j++)
+                {
+                    console.log("entro for transiciones");
+                    if(transiciones[j].from===estadoActual){
+                        transicionesEstadoActual.push(transiciones[j]);
+                    }
+                }
+                for(var k =0; k<transicionesEstadoActual.length; k++)
+                { console.log("entro for transiciones estado actual");
+                    var aux=transicionesEstadoActual[k].label.split('|');
+                                                                        // c - +  
+                    if(aux[0]===palabra[i])      //aca empieza el webeo   a|E|B   aabb
+                                                                        // a|x|E
+                    {
+                        //pila.push('P')
+                        estadoActual=transicionesEstadoActual[k].to;
+                        if(aux[2]!='E' && aux[1] !='E')
+                        {   
+                            if(pila[pila.length-1]==aux[1]){
+                                pila.pop();                                
+                            }
+                            if(pila[pila.length-1]==aux[2]){
+                                pila.push(aux[2]);
+                            }
+                        }
+                        if(aux[2]!='E' && aux[1]=='E'){
+                            if(pila[pila.length-1]==aux[1]){
+                                pila.pop();
+                                
+                            }
+                        }
+                        if(aux[2]=='E' && aux[1]!='E'){
+                            if(pila[pila.length-1]==aux[2]){
+                                pila.push(aux[2]);
+                            }
+                        }
+                        console.log("Estado Actual: ", estadoActual);
+                        
+                    }
+                }
+                transicionesEstadoActual=[];
+            }
+
+            for(var t=0; t<estados.length; t++)
+            {
+                if(estadoActual===estados[t].id)
+                {
+                    if(estados.final===true)
+                    {
+                        if((pila.length===1 && pila[0]=='P') || pila.length===0)
+                        {
+                            swal("La palabra pertenece al leguaje 2",{
+                                className: "alertas",
+                                button: "Aceptar",
+                                title: "Resultado del análisis",   
+                            });
+                            return;
+                        }
+                        else{
+                            swal("La palabra no pertenece al lenguaje 3",{
+                                className: "alertas",
+                                button: "Aceptar",
+                                title: "Resultado del análisis",
+                                icon: "error",
+                            });
+                            return;
+                        }
+                    }
+                    else{
+                        swal("La palabra no pertenece al lenguaje 4",{
+                            className: "alertas",
+                            button: "Aceptar",
+                            title: "Resultado del análisis",
+                            icon: "error",
+                        });
+                        return;
+                    }
+                }
+            }    
+        },
+
         copiarAutomata(estadosIn,transicionesIn, estadosOut,transicionesOut)
         {
             var estado={id:'', label:'',color:'#C52C0B', final:false, shape:'ellipse'};
@@ -978,7 +1110,7 @@ export default {
                 {
                     for(var j=0; j<this.transicionesAP1.length;j++)
                     {
-                        if(existe===true && this.transicionAP1.label!= this.transicionesAP1[j].label)
+                        if(existe===true && this.transicionAP1.label!= this.transicionesAP1[j].label)  
                         {
                             existe=true;
                         }
@@ -1285,7 +1417,7 @@ export default {
                             this.estadosAP1[j].shape= 'diamond';
                             this.estadosAP1[j].color = '#5cb85c';
                             this.drawAutomata();
-                            console.log("Estado final: ", i, this.estadosAP1[j].final);
+                            console.log("Estado final: ", j, this.estadosAP1[j].final);
 
                         }
                         else
@@ -1296,7 +1428,7 @@ export default {
                                 this.estadosAP1[j].shape= 'ellipse';
                                 this.estadosAP1[j].color = '#C52C0B';
                                 this.drawAutomata();
-                                console.log("Estado final: ", i, this.estadosAP1[j].final);
+                                console.log("Estado final: ", j, this.estadosAP1[j].final);
                             }
                         }
                     }
@@ -1312,7 +1444,7 @@ export default {
                                 this.estadosAP2[k].shape= 'diamond';
                                 this.estadosAP2[k].color = '#5cb85c';
                                 this.drawAutomata();
-                                console.log("Estado final: ", i, this.estadosAP2[k].final);
+                                console.log("Estado final: ", k, this.estadosAP2[k].final);
 
                             }
                             else
@@ -1323,7 +1455,7 @@ export default {
                                     this.estadosAP2[k].shape= 'ellipse';
                                     this.estadosAP2[k].color = '#C52C0B';
                                     this.drawAutomata();
-                                    console.log("Estado final: ", i, this.estadosAP2[k].final);
+                                    console.log("Estado final: ", k, this.estadosAP2[k].final);
                                 }
                             }
                         }
@@ -1343,10 +1475,20 @@ export default {
             }
             return false;
         },
+        existeCaracterAP(caracter){
+            for(var i=0; i<this.alfabetoAFD.length;i++)
+            {
+                if(this.alfabetoAP1[i]===caracter)
+                {
+                    return true;
+                }
+            }
+            return false;
+        },
 
         analizarCadenaAFD(){
-            var word=this.cadena.split('');
-            var transicionesEstadoActual=[];
+            var word=this.cadena.split('');    
+            var transicionesEstadoActual=[];    
             var estadoActual;
             console.log(word);
             if(this.estadosAutomataAFD.length===1 || this.estadosAutomataAFD.length===0)
@@ -1393,7 +1535,7 @@ export default {
                 }
                 for(var k =0; k<transicionesEstadoActual.length; k++)
                 {
-                    if(transicionesEstadoActual[k].label===word[i])
+                    if(transicionesEstadoActual[k].label===word[i])     
                     {
                         estadoActual=transicionesEstadoActual[k].to;
                         console.log("Estado Actual: ", estadoActual);
