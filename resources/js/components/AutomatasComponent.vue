@@ -800,7 +800,7 @@ export default {
                         let newT = transiciones[j].label + '|' + pilaAP.elimina + '|' +'E'
                         console.log("newT:",newT);
                         transiciones[j].label= newT;
-                        newt = '' 
+                        newT = '' 
                     }
                     //funcion agregareliminar
                     //this.pila1.pop(this.pilaAP1.elimina)
@@ -893,37 +893,30 @@ export default {
         },
 
         unionAp(){
-            this.copiarAutomata(this.estadosAp1,this.transicionesAP1,this.estadosAutomataUnionAP,this.transicionesAutomataUnionAP);
-            this.estadosAutomataUnionAp= this.estadosAutomataUnionAP.concat(this.estadosAP2);
-            this.transicionesAutomataUnionAP= this.trancionesAutomataUnionAP.concat(this.transicionesAP2);
-            for(var i=0; i<this.estadosAutomataUnionAP.length;i++)
-            {
-                if(this.estadosAutomataUnionAP[i].id=='inicio')
-                {
-                    this.estadosAutomataUnionAP.splice(i,1);
-                }
-            }
-            for(var j=0; j<this.transicionesAutomataUnionAP.length;j++)
-            {
-                if(this.transicionesAutomataUnionAP[j].from==='inicio')
-                {
-                    this.transicionesAutomataUnionAp.splice(j,1);
-                }
-            }
-            var inicio1=this.estadosAP1[1].id;
-            var inicio2= this.estadosAP2[1].id;
+            this.estadosAP1.splice(0,1);
+            this.estadosAP2.splice(0,1);
+            this.transicionesAP1.splice(0,1);
+            this.transicionesAP2.splice(0,1);
+            this.copiarAutomata(this.estadosAP1,this.transicionesAP1,this.estadosAutomataUnionAP,this.transicionesAutomataUnionAP);
+            this.estadosAutomataUnionAP= this.estadosAutomataUnionAP.concat(this.estadosAP2);
+            this.transicionesAutomataUnionAP= this.transicionesAutomataUnionAP.concat(this.transicionesAP2);
+            
             this.estadoAutomataUnionAP.id='inicio';
+            this.estadoAutomataUnionAP.label='inicio';
             this.estadoAutomataUnionAP.color='#75616b47';
             this.estadosAutomataUnionAP.push(this.estadoAutomataUnionAP);
             this.transicionAutomataUnionAP.from='inicio';
-            this.transicionAutomataUnionAP.to=inicio1;
+            this.transicionAutomataUnionAP.to=this.estadosAP1[0].id;
             this.transicionAutomataUnionAP.label='E|E|E';
             this.transicionesAutomataUnionAP.push(this.transicionAutomataUnionAP);
+            this.transicionAutomataUnionAP={from: '', label: '', to: '', color: {color: 'rgb(0,0,0)'}}
             this.transicionAutomataUnionAP.from='inicio';
-            this.transicionAutomataUnionAP.to=inicio2;
+            this.transicionAutomataUnionAP.to=this.estadosAP2[0].id;
             this.transicionAutomataUnionAP.label='E|E|E';
             this.transicionesAutomataUnionAP.push(this.transicionAutomataUnionAP);
-
+            console.log(this.transicionesAutomataUnionAP);
+            console.log(this.estadosAutomataUnionAP);
+            this.drawAutomata();
         },
 
         copiarAutomata(estadosIn,transicionesIn, estadosOut,transicionesOut)
@@ -1487,8 +1480,12 @@ export default {
                 var networkAP2= new vis.Network(ap2,dataAP2,options);
             }
 
-        },
+            if(this.opcion===3)
+            {
+                var networkUnion= new vis.Network(apUnidos,dataAPUnidos,options);//el Apus nahasapeemapetilon
+            }
 
+        },
 
         encontrarExpresionRegular(){
             var finales=[];
