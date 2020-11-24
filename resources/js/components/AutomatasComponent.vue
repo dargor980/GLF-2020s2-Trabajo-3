@@ -175,11 +175,11 @@
                             </div>
                             <div class="form-group">
                                 <label>Push(): </label>
-                                <input type="text" minlength="1" class="form-control" placeholder="dejar vacío para epsilon" v-model="pilaAP1.agrega">
+                                <input type="text" minlength="1" class="form-control" placeholder="dejar vacío para epsilon" v-model="pilaAP.agrega">
                             </div>
                             <div class="form-group">
                                 <label>Pop(): </label>
-                                <input type="text" minlength="1" class="form-control" placeholder="dejar vacío para epsilon" v-model="pilaAP1.elimina">
+                                <input type="text" minlength="1" class="form-control" placeholder="dejar vacío para epsilon" v-model="pilaAP.elimina">
                             </div>
 
                             <button class="btn btn-success btn-sm" type="submit">Agregar</button>
@@ -196,15 +196,15 @@
                             </div>
                             <div class="form-group">
                                 <label>Ingrese carácter de la transición: </label>
-                                <input type="text" minlength="1" class="form-control" v-model="transicionAP1.label">
+                                <input type="text" minlength="1" class="form-control" v-model="transicionAP2.label">
                             </div>
                             <div class="form-group">
                                 <label>Push(): </label>
-                                <input type="text" minlength="1" class="form-control" placeholder="dejar vacío para epsilon" v-model="pilaAP1.agrega">
+                                <input type="text" minlength="1" class="form-control" placeholder="dejar vacío para epsilon" v-model="pilaAP.agrega">
                             </div>
                             <div class="form-group">
                                 <label>Pop(): </label>
-                                <input type="text" minlength="1" class="form-control" placeholder="dejar vacío para epsilon" v-model="pilaAP1.elimina">
+                                <input type="text" minlength="1" class="form-control" placeholder="dejar vacío para epsilon" v-model="pilaAP.elimina">
                             </div>
 
                             <button class="btn btn-success btn-sm" type="submit">Agregar</button>
@@ -362,7 +362,8 @@
             </div>
             <div class="card cardaux3 col-md-10 rounded-bottom mb-3" v-if="opcion===3">
                 <div class="container my-3">
-
+                    <button class="btn btn-success" @click="unionAp">Mostrar Unión UWU</button>
+                    <div id="APUNIDOS" style="border:1px solid lightgray;"></div>
                     aaaaaaaaaaaaaa
                 </div>
             </div>
@@ -387,13 +388,18 @@ export default {
             estadoAP1:{id: '', label: '', color: '#C25C0B', final: false},
             transicionesAP1:[],
             transicionAP1:{from: '', label: '', to: '', color: {color: 'rgb(0,0,0)'}},
-            pilaAP1:{agrega:'',elimina:''},
+            
+            pilaAP:{agrega:'',elimina:''},
             pila1:[],
+            pila2:[],
+
             estadosAP2:[{id: 'inicio', label: 'inicio', color:'#75616b47', final: false}],
             estadoAP2:{id: '', label: '', color: '#C25C0B', final: false},
             transicionesAP2:[],
             transicionAP2:{from: '', label: '', to: '', color: {color: 'rgb(0,0,0)'}},
-            //transicion automata pila = {caracter que consume, caracter que elimina, caracter que ingresa}
+            
+
+
             expresionRegularAFD:'',
             
             estadosAutomataUnionAP:[],
@@ -495,6 +501,7 @@ export default {
             this.selected=true;
             this.showAps=true;
         },
+
         createAP1(){
             this.selected=false;
             this.showAps=false;
@@ -571,7 +578,6 @@ export default {
             }
         },
     
-
         crearTransicion(){
             if(this.option===1)
             {
@@ -633,7 +639,7 @@ export default {
                 }
 
                 this.addCaracterToAlfabeto();
-                this.pilaAPs();
+                
                 this.transicionesAutomataAFD.push(this.transicionAutomataAFD);
                 this.transicionAutomataAFD={from:'',label: '',to:'',color:{color:'rgb(0,0,0)'}}; 
             }
@@ -678,7 +684,8 @@ export default {
                         
                         this.addCaracterToAlfabeto();
                         this.transicionesAP1.push(this.transicionAP1);
-                        this.pilaAPs();
+                        this.pilaAPs(this.pilaAP,this.pila1,this.transicionesAP1);
+                        this.pilaAp={agrega:'',elimina:''};
                         this.transicionAP1={from:'',label: '',to:'',color:{color:'rgb(0,0,0)'}};
 
                     }
@@ -721,6 +728,7 @@ export default {
                         }
                         this.addCaracterToAlfabeto();
                         this.transicionesAP2.push(this.transicionAP2);
+                        this.pilaAPs(this.pilaAP,this.pila2,this.transicionesAP2);
                         this.transicionAP2={from:'',label: '',to:'',color:{color:'rgb(0,0,0)'}};
                     }
                 }
@@ -754,110 +762,192 @@ export default {
 
         },
 
-        pilaAPs(){
-            //console.log(this.pilaAP1);
-            //console.log("transiciones ap1",this.transicionesAP1);
-            if(this.pila1.length<1){
-                this.pila1.push('P')                
-                if(this.pilaAP1.agrega==='' && this.pilaAP1.elimina===''){
-                    for(let k=0;k<this.transicionesAP1.length;k++){
-                        if(this.transicionesAP1[k].from!='inicio'){
-                            let nT=this.transicionesAP1[k].label +  '|' + 'E' + '|' + '|' + 'E' + '|' 
-                            console.log("nT",nt);
-                            this.transicionesAP1[k].label= nT;
+        pilaAPs(pilaAP,pila,transiciones){
+            if(pila.length<1){
+                pila.push('P')                
+                if(pilaAP.agrega==='' && pilaAP.elimina===''){
+                    for(let k=0;k<transiciones.length;k++){
+                        if(transiciones[k].from!='inicio'){
+                            let nT=transiciones[k].label +  '|' + 'E' + '|' + 'E' 
+                            console.log("nT",nT);
+                            transiciones[k].label= nT;
                             nT = ''
                         }
                         console.log("Epsilon");
                     }
                 }
-                if(this.pilaAP1.agrega!='' && this.pilaAP1.elimina==''){
-                    
-                    for(let i=0;i<this.transicionesAP1.length;i++){
+                if(pilaAP.agrega!='' && pilaAP.elimina==''){
+                    for(let i=0;i<transiciones.length;i++){
                         
-                        if(this.transicionesAP1[i].from!='inicio'){
+                        if(transiciones[i].from!='inicio'){
 
-                            console.log("agrega: ",this.pilaAP1.agrega);
-                            console.log("transiciones ap1 label",this.transicionesAP1[i].label);
-                            let newT = this.transicionesAP1[i].label + '|' + 'E' + '|' + this.pilaAP1.agrega;
+                            console.log("agrega: ",pilaAP.agrega);
+                            console.log("transiciones ap1 label",transiciones[i].label);
+                            let newT = transiciones[i].label + '|' + 'E' + '|' + pilaAP.agrega;
                             console.log("newT:",newT);
-                            this.transicionesAP1[i].label= newT;
+                            transiciones[i].label= newT;
                             newT = ''
-                            this.pila1.push(this.pilaAP1.agrega)
-                            this.pilaAP1.agrega=''
-
+                            //funcion agregareliminar
+                            //this.pila1.push(this.pilaAP1.agrega)
+                            pilaAP.agrega=''
                         }
-                    }
-                    
+                    }    
                 }
-                if(this.pilaAP1.elimina!='' && this.pilaAP1.agrega==''){
-                    console.log("pop()", this.pilaAP1.elimina);
-                    for(let j=1;j<this.transicionesAP1.length;j++){
-                        console.log("transiciones ap1",this.transicionesAP1[j]);
-                        let newT = this.transicionesAP1[j].label + '|' + this.pilaAP1.elimina + '|' +'E'
+                if(pilaAP.elimina!='' && pilaAP.agrega==''){
+                    console.log("pop()", pilaAP.elimina);
+                    for(let j=1;j<transiciones.length;j++){
+                        console.log("transiciones ap1",transiciones[j]);
+                        let newT = transiciones[j].label + '|' + pilaAP.elimina + '|' +'E'
                         console.log("newT:",newT);
-                        this.transicionesAP1[j].label= newT;
+                        transiciones[j].label= newT;
                         newt = '' 
                     }
-                    this.pila1.pop(this.pilaAP1.elimina)
-                    this.pilaAP1.elimina=''
-
-
+                    //funcion agregareliminar
+                    //this.pila1.pop(this.pilaAP1.elimina)
+                    pilaAP.elimina=''
                 }
-                console.log("pila",this.pilaAP1);
-                console.log("pila1",this.pila1);
+                if(pilaAP.agrega!='' && pilaAP.elimina!=''){
+                    console.log("agrega: ", pilaAP.agrega, ", elimina: ", pilaAP.elimina);
+                    for(let z=0;z< transiciones.length;z++){
+                        if(transiciones[z].from!='inicio' && !transiciones[z].label.includes('|')){
+                            console.log("entramos perrito");
+                            let newElim = transiciones[z].label + '|' + pilaAP.elimina + '|' + pilaAP.agrega
+                            console.log("newElim", newElim);
+                            transiciones[z].label = newElim;
+                            newElim='';
+                            //funcion agregareliminar
+                            //this.pila1.pop(this.pilaAP1.elimina)
+                            //this.pila1.push(this.pilaAP1.agrega)
+                            pilaAP.agrega=''
+                            pilaAP.elimina=''               
+                        }
+                    }
+                }
+                console.log("pila",pilaAP);
+                console.log("pila1",pila);
             }
             else{
-                if(this.pilaAP1.agrega==='' && this.pilaAP1.elimina===''){
-                    for(let m=0;m<this.transicionesAP1.length;m++){
-                        if(this.transicionesAP1[m].from!='inicio'){
-                            let nT1=this.transicionesAP1[m].label +  '|' + 'E' + '|' + '|' + 'E' + '|' 
+                if(pilaAP.agrega==='' && pilaAP.elimina===''){
+                    for(let m=0;m<transiciones.length;m++){
+                        if(transiciones[m].from!='inicio' && !transiciones[m].label.includes('|')){
+                            let nT1=transiciones[m].label +  '|' + 'E' + '|' + '|' + 'E' + '|' 
                             console.log("nt1",nT1);
-                            this.transicionesAP1[m].label= nT1;
+                            transiciones[m].label= nT1;
                             nT1 = ''
                         }
                         console.log("Epsilon");
                     }
                 }
-                if(this.pilaAP1.agrega!='' && this.pilaAP1.elimina==''){
-                    
-                    for(let f=0;f<this.transicionesAP1.length;f++){
-                        
-                        if(this.transicionesAP1[f].from!='inicio' ){
-
-                            console.log("agrega: ",this.pilaAP1.agrega);
-                            console.log("transiciones ap1 label",this.transicionesAP1[f].label);
-                            let newT1 = this.transicionesAP1[f].label + '|' + 'E' + '|' + this.pilaAP1.agrega;
+                if(pilaAP.agrega!='' && pilaAP.elimina==''){                   
+                    for(let f=0;f<transiciones.length;f++){                        
+                        if(transiciones[f].from!='inicio' && !transiciones[f].label.includes('|')){
+                            console.log("agrega: ",pilaAP.agrega);
+                            console.log("transiciones ap1 label",transiciones[f].label);
+                            let newT1 = transiciones[f].label + '|' + 'E' + '|' + pilaAP.agrega;
                             console.log("newT1:",newT1);
-                            this.transicionesAP1[f].label= newT1;
+                            transiciones[f].label= newT1;
                             newT1 = ''
-                            this.pila1.push(this.pilaAP1.agrega)
-                            this.pilaAP1.agrega=''
-
+                            //funcion agregareliminar
+                            //this.pila1.push(this.pilaAP1.agrega)
+                            pilaAP.agrega=''
+                        }
+                    }                    
+                }
+                if(pilaAP.elimina!='' && pilaAP.agrega==''){
+                    console.log("pop()", pilaAP.elimina);
+                    for(let d=1;d<transiciones.length;d++){
+                        if(transiciones[d].from!='inicio' && !transiciones[d].label.includes('|')){
+                            console.log("transiciones ap1",transiciones[d]);
+                            let newT2 = transiciones[d].label + '|' + pilaAP.elimina + '|' +'E'
+                            console.log("newT2:",newT2);
+                            transiciones[d].label= newT2;
+                            newT2 = ''                             
+                            //funcion agregareliminar
+                            //this.pila1.pop(this.pilaAP1.elimina)
+                            pilaAP.elimina=''
                         }
                     }
-                    
                 }
-                if(this.pilaAP1.elimina!='' && this.pilaAP1.agrega==''){
-                    console.log("pop()", this.pilaAP1.elimina);
-                    for(let d=1;d<this.transicionesAP1.length;d++){
-                        console.log("transiciones ap1",this.transicionesAP1[d]);
-                        let newT2 = this.transicionesAP1[d].label + '|' + this.pilaAP1.elimina + '|' +'E'
-                        console.log("newT2:",newT2);
-                        this.transicionesAP1[d].label= newT2;
-                        newt2 = '' 
+                if(pilaAP.agrega!='' && pilaAP.elimina!=''){
+                    console.log("Vienen llenitos");      
+                    console.log("agrega: ", pilaAP.agrega, ", elimina: ", pilaAP.elimina);
+                    for(let o=0;o< transiciones.length;o++){
+                        if(transiciones[o].from!='inicio' && !transiciones[o].label.includes('|')){
+                            console.log("entramos perrito");
+                            let newElim1 = transiciones[o].label + '|' + pilaAP.elimina + '|' + pilaAP.agrega
+                            console.log("newElim1", newElim1);
+                            transiciones[o].label = newElim1;
+                            newElim1='';
+                            //funcion agregareliminar(elimina || agrega )
+                            //this.pila1.pop(this.pilaAP1.elimina)
+                            //this.pila1.push(this.pilaAP1.agrega)
+                            pilaAP.agrega=''
+                            pilaAP.elimina=''                           
+                        }
                     }
-                    this.pila1.pop(this.pilaAP1.elimina)
-                    this.pilaAP1.elimina=''
-
-
                 }
-                console.log("pila",this.pilaAP1);
-                console.log("pila1",this.pila1);
+                console.log("pila",pilaAP);
+                console.log("pila1",pila);
             }
             
-            
-            
+        },
 
+        unionAp(){
+            this.copiarAutomata(this.estadosAp1,this.transicionesAP1,this.estadosAutomataUnionAP,this.transicionesAutomataUnionAP);
+            this.estadosAutomataUnionAp= this.estadosAutomataUnionAP.concat(this.estadosAP2);
+            this.transicionesAutomataUnionAP= this.trancionesAutomataUnionAP.concat(this.transicionesAP2);
+            for(var i=0; i<this.estadosAutomataUnionAP.length;i++)
+            {
+                if(this.estadosAutomataUnionAP[i].id=='inicio')
+                {
+                    this.estadosAutomataUnionAP.splice(i,1);
+                }
+            }
+            for(var j=0; j<this.transicionesAutomataUnionAP.length;j++)
+            {
+                if(this.transicionesAutomataUnionAP[j].from==='inicio')
+                {
+                    this.transicionesAutomataUnionAp.splice(j,1);
+                }
+            }
+            var inicio1=this.estadosAP1[1].id;
+            var inicio2= this.estadosAP2[1].id;
+            this.estadoAutomataUnionAP.id='inicio';
+            this.estadoAutomataUnionAP.color='#75616b47';
+            this.estadosAutomataUnionAP.push(this.estadoAutomataUnionAP);
+            this.transicionAutomataUnionAP.from='inicio';
+            this.transicionAutomataUnionAP.to=inicio1;
+            this.transicionAutomataUnionAP.label='E|E|E';
+            this.transicionesAutomataUnionAP.push(this.transicionAutomataUnionAP);
+            this.transicionAutomataUnionAP.from='inicio';
+            this.transicionAutomataUnionAP.to=inicio2;
+            this.transicionAutomataUnionAP.label='E|E|E';
+            this.transicionesAutomataUnionAP.push(this.transicionAutomataUnionAP);
+
+        },
+
+        copiarAutomata(estadosIn,transicionesIn, estadosOut,transicionesOut)
+        {
+            var estado={id:'', label:'',color:'#C52C0B', final:false, shape:'ellipse'};
+            var transiciones={from:'',label: '',to:'',color:{color:'rgb(0,0,0)'}};
+            for(var i=0; i<estadosIn.length;i++)
+            {
+                estado.id= estadosIn[i].id;
+                estado.label= estadosIn[i].label;
+                estado.color= estadosIn[i].color;
+                estado.final= estadosIn[i].final;
+                estado.shape= estadosIn[i].shape;
+                estadosOut.push(estado);
+                estado={id:'', label:'',color:'#C52C0B', final:false, shape:'ellipse'};
+            }
+            for(var j=0; j<transicionesIn.length; j++)
+            {
+                transiciones.from= transicionesIn[j].from;
+                transiciones.label= transicionesIn[j].label;
+                transiciones.to= transicionesIn[j].to;
+                transicionesOut.push(transiciones);
+                transiciones={from:'',label: '',to:'',color:{color:'rgb(0,0,0)'}};
+            }
         },
 
         addCaracterToAlfabeto(){

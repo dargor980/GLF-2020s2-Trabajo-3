@@ -2284,6 +2284,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2329,11 +2330,12 @@ __webpack_require__.r(__webpack_exports__);
           color: 'rgb(0,0,0)'
         }
       },
-      pilaAP1: {
+      pilaAP: {
         agrega: '',
         elimina: ''
       },
       pila1: [],
+      pila2: [],
       estadosAP2: [{
         id: 'inicio',
         label: 'inicio',
@@ -2355,7 +2357,6 @@ __webpack_require__.r(__webpack_exports__);
           color: 'rgb(0,0,0)'
         }
       },
-      //transicion automata pila = {caracter que consume, caracter que elimina, caracter que ingresa}
       expresionRegularAFD: '',
       estadosAutomataUnionAP: [],
       estadoAutomataUnionAP: {
@@ -2573,7 +2574,6 @@ __webpack_require__.r(__webpack_exports__);
         }
 
         this.addCaracterToAlfabeto();
-        this.pilaAPs();
         this.transicionesAutomataAFD.push(this.transicionAutomataAFD);
         this.transicionAutomataAFD = {
           from: '',
@@ -2618,7 +2618,11 @@ __webpack_require__.r(__webpack_exports__);
           } else {
             this.addCaracterToAlfabeto();
             this.transicionesAP1.push(this.transicionAP1);
-            this.pilaAPs();
+            this.pilaAPs(this.pilaAP, this.pila1, this.transicionesAP1);
+            this.pilaAp = {
+              agrega: '',
+              elimina: ''
+            };
             this.transicionAP1 = {
               from: '',
               label: '',
@@ -2663,6 +2667,7 @@ __webpack_require__.r(__webpack_exports__);
 
             this.addCaracterToAlfabeto();
             this.transicionesAP2.push(this.transicionAP2);
+            this.pilaAPs(this.pilaAP, this.pila2, this.transicionesAP2);
             this.transicionAP2 = {
               from: '',
               label: '',
@@ -2699,18 +2704,16 @@ __webpack_require__.r(__webpack_exports__);
         }
       }
     },
-    pilaAPs: function pilaAPs() {
-      //console.log(this.pilaAP1);
-      //console.log("transiciones ap1",this.transicionesAP1);
-      if (this.pila1.length < 1) {
-        this.pila1.push('P');
+    pilaAPs: function pilaAPs(pilaAP, pila, transiciones) {
+      if (pila.length < 1) {
+        pila.push('P');
 
-        if (this.pilaAP1.agrega === '' && this.pilaAP1.elimina === '') {
-          for (var k = 0; k < this.transicionesAP1.length; k++) {
-            if (this.transicionesAP1[k].from != 'inicio') {
-              var nT = this.transicionesAP1[k].label + '|' + 'E' + '|' + '|' + 'E' + '|';
-              console.log("nT", nt);
-              this.transicionesAP1[k].label = nT;
+        if (pilaAP.agrega === '' && pilaAP.elimina === '') {
+          for (var k = 0; k < transiciones.length; k++) {
+            if (transiciones[k].from != 'inicio') {
+              var nT = transiciones[k].label + '|' + 'E' + '|' + 'E';
+              console.log("nT", nT);
+              transiciones[k].label = nT;
               nT = '';
             }
 
@@ -2718,47 +2721,68 @@ __webpack_require__.r(__webpack_exports__);
           }
         }
 
-        if (this.pilaAP1.agrega != '' && this.pilaAP1.elimina == '') {
-          for (var i = 0; i < this.transicionesAP1.length; i++) {
-            if (this.transicionesAP1[i].from != 'inicio') {
-              console.log("agrega: ", this.pilaAP1.agrega);
-              console.log("transiciones ap1 label", this.transicionesAP1[i].label);
-              var newT = this.transicionesAP1[i].label + '|' + 'E' + '|' + this.pilaAP1.agrega;
+        if (pilaAP.agrega != '' && pilaAP.elimina == '') {
+          for (var i = 0; i < transiciones.length; i++) {
+            if (transiciones[i].from != 'inicio') {
+              console.log("agrega: ", pilaAP.agrega);
+              console.log("transiciones ap1 label", transiciones[i].label);
+              var newT = transiciones[i].label + '|' + 'E' + '|' + pilaAP.agrega;
               console.log("newT:", newT);
-              this.transicionesAP1[i].label = newT;
-              newT = '';
-              this.pila1.push(this.pilaAP1.agrega);
-              this.pilaAP1.agrega = '';
+              transiciones[i].label = newT;
+              newT = ''; //funcion agregareliminar
+              //this.pila1.push(this.pilaAP1.agrega)
+
+              pilaAP.agrega = '';
             }
           }
         }
 
-        if (this.pilaAP1.elimina != '' && this.pilaAP1.agrega == '') {
-          console.log("pop()", this.pilaAP1.elimina);
+        if (pilaAP.elimina != '' && pilaAP.agrega == '') {
+          console.log("pop()", pilaAP.elimina);
 
-          for (var j = 1; j < this.transicionesAP1.length; j++) {
-            console.log("transiciones ap1", this.transicionesAP1[j]);
+          for (var j = 1; j < transiciones.length; j++) {
+            console.log("transiciones ap1", transiciones[j]);
 
-            var _newT = this.transicionesAP1[j].label + '|' + this.pilaAP1.elimina + '|' + 'E';
+            var _newT = transiciones[j].label + '|' + pilaAP.elimina + '|' + 'E';
 
             console.log("newT:", _newT);
-            this.transicionesAP1[j].label = _newT;
+            transiciones[j].label = _newT;
             newt = '';
-          }
+          } //funcion agregareliminar
+          //this.pila1.pop(this.pilaAP1.elimina)
 
-          this.pila1.pop(this.pilaAP1.elimina);
-          this.pilaAP1.elimina = '';
+
+          pilaAP.elimina = '';
         }
 
-        console.log("pila", this.pilaAP1);
-        console.log("pila1", this.pila1);
+        if (pilaAP.agrega != '' && pilaAP.elimina != '') {
+          console.log("agrega: ", pilaAP.agrega, ", elimina: ", pilaAP.elimina);
+
+          for (var z = 0; z < transiciones.length; z++) {
+            if (transiciones[z].from != 'inicio' && !transiciones[z].label.includes('|')) {
+              console.log("entramos perrito");
+              var newElim = transiciones[z].label + '|' + pilaAP.elimina + '|' + pilaAP.agrega;
+              console.log("newElim", newElim);
+              transiciones[z].label = newElim;
+              newElim = ''; //funcion agregareliminar
+              //this.pila1.pop(this.pilaAP1.elimina)
+              //this.pila1.push(this.pilaAP1.agrega)
+
+              pilaAP.agrega = '';
+              pilaAP.elimina = '';
+            }
+          }
+        }
+
+        console.log("pila", pilaAP);
+        console.log("pila1", pila);
       } else {
-        if (this.pilaAP1.agrega === '' && this.pilaAP1.elimina === '') {
-          for (var m = 0; m < this.transicionesAP1.length; m++) {
-            if (this.transicionesAP1[m].from != 'inicio') {
-              var nT1 = this.transicionesAP1[m].label + '|' + 'E' + '|' + '|' + 'E' + '|';
+        if (pilaAP.agrega === '' && pilaAP.elimina === '') {
+          for (var m = 0; m < transiciones.length; m++) {
+            if (transiciones[m].from != 'inicio' && !transiciones[m].label.includes('|')) {
+              var nT1 = transiciones[m].label + '|' + 'E' + '|' + '|' + 'E' + '|';
               console.log("nt1", nT1);
-              this.transicionesAP1[m].label = nT1;
+              transiciones[m].label = nT1;
               nT1 = '';
             }
 
@@ -2766,38 +2790,140 @@ __webpack_require__.r(__webpack_exports__);
           }
         }
 
-        if (this.pilaAP1.agrega != '' && this.pilaAP1.elimina == '') {
-          for (var f = 0; f < this.transicionesAP1.length; f++) {
-            if (this.transicionesAP1[f].from != 'inicio') {
-              console.log("agrega: ", this.pilaAP1.agrega);
-              console.log("transiciones ap1 label", this.transicionesAP1[f].label);
-              var newT1 = this.transicionesAP1[f].label + '|' + 'E' + '|' + this.pilaAP1.agrega;
+        if (pilaAP.agrega != '' && pilaAP.elimina == '') {
+          for (var f = 0; f < transiciones.length; f++) {
+            if (transiciones[f].from != 'inicio' && !transiciones[f].label.includes('|')) {
+              console.log("agrega: ", pilaAP.agrega);
+              console.log("transiciones ap1 label", transiciones[f].label);
+              var newT1 = transiciones[f].label + '|' + 'E' + '|' + pilaAP.agrega;
               console.log("newT1:", newT1);
-              this.transicionesAP1[f].label = newT1;
-              newT1 = '';
-              this.pila1.push(this.pilaAP1.agrega);
-              this.pilaAP1.agrega = '';
+              transiciones[f].label = newT1;
+              newT1 = ''; //funcion agregareliminar
+              //this.pila1.push(this.pilaAP1.agrega)
+
+              pilaAP.agrega = '';
             }
           }
         }
 
-        if (this.pilaAP1.elimina != '' && this.pilaAP1.agrega == '') {
-          console.log("pop()", this.pilaAP1.elimina);
+        if (pilaAP.elimina != '' && pilaAP.agrega == '') {
+          console.log("pop()", pilaAP.elimina);
 
-          for (var d = 1; d < this.transicionesAP1.length; d++) {
-            console.log("transiciones ap1", this.transicionesAP1[d]);
-            var newT2 = this.transicionesAP1[d].label + '|' + this.pilaAP1.elimina + '|' + 'E';
-            console.log("newT2:", newT2);
-            this.transicionesAP1[d].label = newT2;
-            newt2 = '';
+          for (var d = 1; d < transiciones.length; d++) {
+            if (transiciones[d].from != 'inicio' && !transiciones[d].label.includes('|')) {
+              console.log("transiciones ap1", transiciones[d]);
+              var newT2 = transiciones[d].label + '|' + pilaAP.elimina + '|' + 'E';
+              console.log("newT2:", newT2);
+              transiciones[d].label = newT2;
+              newT2 = ''; //funcion agregareliminar
+              //this.pila1.pop(this.pilaAP1.elimina)
+
+              pilaAP.elimina = '';
+            }
           }
-
-          this.pila1.pop(this.pilaAP1.elimina);
-          this.pilaAP1.elimina = '';
         }
 
-        console.log("pila", this.pilaAP1);
-        console.log("pila1", this.pila1);
+        if (pilaAP.agrega != '' && pilaAP.elimina != '') {
+          console.log("Vienen llenitos");
+          console.log("agrega: ", pilaAP.agrega, ", elimina: ", pilaAP.elimina);
+
+          for (var o = 0; o < transiciones.length; o++) {
+            if (transiciones[o].from != 'inicio' && !transiciones[o].label.includes('|')) {
+              console.log("entramos perrito");
+              var newElim1 = transiciones[o].label + '|' + pilaAP.elimina + '|' + pilaAP.agrega;
+              console.log("newElim1", newElim1);
+              transiciones[o].label = newElim1;
+              newElim1 = ''; //funcion agregareliminar(elimina || agrega )
+              //this.pila1.pop(this.pilaAP1.elimina)
+              //this.pila1.push(this.pilaAP1.agrega)
+
+              pilaAP.agrega = '';
+              pilaAP.elimina = '';
+            }
+          }
+        }
+
+        console.log("pila", pilaAP);
+        console.log("pila1", pila);
+      }
+    },
+    unionAp: function unionAp() {
+      this.copiarAutomata(this.estadosAp1, this.transicionesAP1, this.estadosAutomataUnionAP, this.transicionesAutomataUnionAP);
+      this.estadosAutomataUnionAp = this.estadosAutomataUnionAP.concat(this.estadosAP2);
+      this.transicionesAutomataUnionAP = this.trancionesAutomataUnionAP.concat(this.transicionesAP2);
+
+      for (var i = 0; i < this.estadosAutomataUnionAP.length; i++) {
+        if (this.estadosAutomataUnionAP[i].id == 'inicio') {
+          this.estadosAutomataUnionAP.splice(i, 1);
+        }
+      }
+
+      for (var j = 0; j < this.transicionesAutomataUnionAP.length; j++) {
+        if (this.transicionesAutomataUnionAP[j].from === 'inicio') {
+          this.transicionesAutomataUnionAp.splice(j, 1);
+        }
+      }
+
+      var inicio1 = this.estadosAP1[1].id;
+      var inicio2 = this.estadosAP2[1].id;
+      this.estadoAutomataUnionAP.id = 'inicio';
+      this.estadoAutomataUnionAP.color = '#75616b47';
+      this.estadosAutomataUnionAP.push(this.estadoAutomataUnionAP);
+      this.transicionAutomataUnionAP.from = 'inicio';
+      this.transicionAutomataUnionAP.to = inicio1;
+      this.transicionAutomataUnionAP.label = 'E|E|E';
+      this.transicionesAutomataUnionAP.push(this.transicionAutomataUnionAP);
+      this.transicionAutomataUnionAP.from = 'inicio';
+      this.transicionAutomataUnionAP.to = inicio2;
+      this.transicionAutomataUnionAP.label = 'E|E|E';
+      this.transicionesAutomataUnionAP.push(this.transicionAutomataUnionAP);
+    },
+    copiarAutomata: function copiarAutomata(estadosIn, transicionesIn, estadosOut, transicionesOut) {
+      var estado = {
+        id: '',
+        label: '',
+        color: '#C52C0B',
+        "final": false,
+        shape: 'ellipse'
+      };
+      var transiciones = {
+        from: '',
+        label: '',
+        to: '',
+        color: {
+          color: 'rgb(0,0,0)'
+        }
+      };
+
+      for (var i = 0; i < estadosIn.length; i++) {
+        estado.id = estadosIn[i].id;
+        estado.label = estadosIn[i].label;
+        estado.color = estadosIn[i].color;
+        estado["final"] = estadosIn[i]["final"];
+        estado.shape = estadosIn[i].shape;
+        estadosOut.push(estado);
+        estado = {
+          id: '',
+          label: '',
+          color: '#C52C0B',
+          "final": false,
+          shape: 'ellipse'
+        };
+      }
+
+      for (var j = 0; j < transicionesIn.length; j++) {
+        transiciones.from = transicionesIn[j].from;
+        transiciones.label = transicionesIn[j].label;
+        transiciones.to = transicionesIn[j].to;
+        transicionesOut.push(transiciones);
+        transiciones = {
+          from: '',
+          label: '',
+          to: '',
+          color: {
+            color: 'rgb(0,0,0)'
+          }
+        };
       }
     },
     addCaracterToAlfabeto: function addCaracterToAlfabeto() {
@@ -95039,8 +95165,8 @@ var render = function() {
                                       {
                                         name: "model",
                                         rawName: "v-model",
-                                        value: _vm.pilaAP1.agrega,
-                                        expression: "pilaAP1.agrega"
+                                        value: _vm.pilaAP.agrega,
+                                        expression: "pilaAP.agrega"
                                       }
                                     ],
                                     staticClass: "form-control",
@@ -95049,14 +95175,14 @@ var render = function() {
                                       minlength: "1",
                                       placeholder: "dejar vacío para epsilon"
                                     },
-                                    domProps: { value: _vm.pilaAP1.agrega },
+                                    domProps: { value: _vm.pilaAP.agrega },
                                     on: {
                                       input: function($event) {
                                         if ($event.target.composing) {
                                           return
                                         }
                                         _vm.$set(
-                                          _vm.pilaAP1,
+                                          _vm.pilaAP,
                                           "agrega",
                                           $event.target.value
                                         )
@@ -95073,8 +95199,8 @@ var render = function() {
                                       {
                                         name: "model",
                                         rawName: "v-model",
-                                        value: _vm.pilaAP1.elimina,
-                                        expression: "pilaAP1.elimina"
+                                        value: _vm.pilaAP.elimina,
+                                        expression: "pilaAP.elimina"
                                       }
                                     ],
                                     staticClass: "form-control",
@@ -95083,14 +95209,14 @@ var render = function() {
                                       minlength: "1",
                                       placeholder: "dejar vacío para epsilon"
                                     },
-                                    domProps: { value: _vm.pilaAP1.elimina },
+                                    domProps: { value: _vm.pilaAP.elimina },
                                     on: {
                                       input: function($event) {
                                         if ($event.target.composing) {
                                           return
                                         }
                                         _vm.$set(
-                                          _vm.pilaAP1,
+                                          _vm.pilaAP,
                                           "elimina",
                                           $event.target.value
                                         )
@@ -95203,14 +95329,14 @@ var render = function() {
                                       {
                                         name: "model",
                                         rawName: "v-model",
-                                        value: _vm.transicionAP1.label,
-                                        expression: "transicionAP1.label"
+                                        value: _vm.transicionAP2.label,
+                                        expression: "transicionAP2.label"
                                       }
                                     ],
                                     staticClass: "form-control",
                                     attrs: { type: "text", minlength: "1" },
                                     domProps: {
-                                      value: _vm.transicionAP1.label
+                                      value: _vm.transicionAP2.label
                                     },
                                     on: {
                                       input: function($event) {
@@ -95218,7 +95344,7 @@ var render = function() {
                                           return
                                         }
                                         _vm.$set(
-                                          _vm.transicionAP1,
+                                          _vm.transicionAP2,
                                           "label",
                                           $event.target.value
                                         )
@@ -95235,8 +95361,8 @@ var render = function() {
                                       {
                                         name: "model",
                                         rawName: "v-model",
-                                        value: _vm.pilaAP1.agrega,
-                                        expression: "pilaAP1.agrega"
+                                        value: _vm.pilaAP.agrega,
+                                        expression: "pilaAP.agrega"
                                       }
                                     ],
                                     staticClass: "form-control",
@@ -95245,14 +95371,14 @@ var render = function() {
                                       minlength: "1",
                                       placeholder: "dejar vacío para epsilon"
                                     },
-                                    domProps: { value: _vm.pilaAP1.agrega },
+                                    domProps: { value: _vm.pilaAP.agrega },
                                     on: {
                                       input: function($event) {
                                         if ($event.target.composing) {
                                           return
                                         }
                                         _vm.$set(
-                                          _vm.pilaAP1,
+                                          _vm.pilaAP,
                                           "agrega",
                                           $event.target.value
                                         )
@@ -95269,8 +95395,8 @@ var render = function() {
                                       {
                                         name: "model",
                                         rawName: "v-model",
-                                        value: _vm.pilaAP1.elimina,
-                                        expression: "pilaAP1.elimina"
+                                        value: _vm.pilaAP.elimina,
+                                        expression: "pilaAP.elimina"
                                       }
                                     ],
                                     staticClass: "form-control",
@@ -95279,14 +95405,14 @@ var render = function() {
                                       minlength: "1",
                                       placeholder: "dejar vacío para epsilon"
                                     },
-                                    domProps: { value: _vm.pilaAP1.elimina },
+                                    domProps: { value: _vm.pilaAP.elimina },
                                     on: {
                                       input: function($event) {
                                         if ($event.target.composing) {
                                           return
                                         }
                                         _vm.$set(
-                                          _vm.pilaAP1,
+                                          _vm.pilaAP,
                                           "elimina",
                                           $event.target.value
                                         )
@@ -95651,7 +95777,20 @@ var render = function() {
             { staticClass: "card cardaux3 col-md-10 rounded-bottom mb-3" },
             [
               _c("div", { staticClass: "container my-3" }, [
-                _vm._v("\n\n                aaaaaaaaaaaaaa\n            ")
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-success",
+                    on: { click: _vm.unionAp }
+                  },
+                  [_vm._v("Mostrar Unión UWU")]
+                ),
+                _vm._v(" "),
+                _c("div", {
+                  staticStyle: { border: "1px solid lightgray" },
+                  attrs: { id: "APUNIDOS" }
+                }),
+                _vm._v("\n                aaaaaaaaaaaaaa\n            ")
               ])
             ]
           )
