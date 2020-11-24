@@ -32,7 +32,7 @@
                             <button class="btn btn-sm btn-success" @click="showAnalisisPalabra">Analizar Palabra</button>
                         </div>
                         <div class="col-md-4">
-                            <button class="btn btn-sm btn-danger">Eliminar Autómata</button>
+                            <button class="btn btn-sm btn-danger" @click="delAndClear">Eliminar Autómata</button>
                         </div>
                         <div class="col-md-4">
                             <button class="btn btn-sm btn-warning" @click="backInicio"> Volver al Inicio</button>
@@ -125,7 +125,7 @@
                             <button class="btn btn-sm btn-success" @click="showAnalisisPalabra">Analizar Palabra</button>
                         </div>
                         <div class="col-md-4">
-                            <button class="btn btn-sm btn-danger">Eliminar Autómata</button>
+                            <button class="btn btn-sm btn-danger" @click="delAndClear">Eliminar Autómata</button>
                         </div>
                         <div class="col-md-4">
                             <button class="btn btn-sm btn-warning" @click="backToAp"> Volver</button>
@@ -260,8 +260,8 @@
                             </tr>
                         </tbody>
                     </table>
-                    <h3 class="text-center fredoka my-3" v-if="option===2">Tabla de estados autómata de Pila 1</h3>
-                    <table class="table table-striped table-dark" aria-describedby="estados1" v-if="option===2">
+                    <h3 class="text-center fredoka my-3" v-if="option===2 && apSeleccionado===1">Tabla de estados autómata de Pila 1</h3>
+                    <table class="table table-striped table-dark" aria-describedby="estados1" v-if="option===2  && apSeleccionado===1">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -282,8 +282,8 @@
                             </tr>
                         </tbody>
                     </table>
-                    <h3 class="text-center fredoka my-3" v-if="option===2">Tabla de estados autómata de Pila 2</h3>
-                    <table class="table table-striped table-dark" aria-describedby="estados1" v-if="option===2">
+                    <h3 class="text-center fredoka my-3" v-if="option===2 && apSeleccionado===2">Tabla de estados autómata de Pila 2</h3>
+                    <table class="table table-striped table-dark" aria-describedby="estados1" v-if="option===2 && apSeleccionado===2">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -361,7 +361,8 @@
             </div>
             <div class="card cardaux3 col-md-10 rounded-bottom mb-3" v-if="opcion===2">
                 <div class="container my-3">
-
+                    <button class="btn btn-success" @click="concatenacionAP">Mostrar concatenación</button>
+                    <div id="APCONCATENADO" style="border:1px solid lightgray;"></div>
                     aaaaaaaaaaaaaa
                 </div>
             </div>
@@ -418,9 +419,9 @@ export default {
             transicionAutomataUnionAP:{from: '', label: '', to: '', color: {color: 'rgb(0,0,0)'}},
 
             estadosAutomataConcatenacionAP:[],
-            estadoAutomataConcatenacionAp:{id: '', label: '', color: '#C25C0B', final: false},
+            estadoAutomataConcatenacionAP:{id: '', label: '', color: '#C25C0B', final: false},
             transicionesAutomataConcatenacionAP:[],
-            transicionAutomataConcatenacionAp:{from: '', label: '', to: '', color: {color: 'rgb(0,0,0)'}},
+            transicionAutomataConcatenacionAP:{from: '', label: '', to: '', color: {color: 'rgb(0,0,0)'}},
 
 
             alfabetoAFD:[],
@@ -467,6 +468,7 @@ export default {
             this.selected=true;    
             this.selected2=true;  
             this.createTrans=false;
+            this.drawAutomata();
         },
 
         createTransicion(){
@@ -474,6 +476,7 @@ export default {
             this.selected=true;
             this.selected2=true;
             this.creaEstado=false;
+            this.drawAutomata();
         },
 
         representacion(){
@@ -525,15 +528,50 @@ export default {
         },
 
         mostrarOP1(){
-            this.opcion=1;
+            
+            if(this.existeFinales(1)){
+                this.opcion=1;
+            }
+            else{
+                swal("Para proseguir debe marcar como final a lo menos un estado el autómata",{
+                    className: "alertas",
+                    button:'Aceptar',
+                    title:"Aviso",
+                    icon:"warning",
+                });
+                return;
+            }
         },
 
         mostrarOP2(){
-            this.opcion=2;
+            if(this.existeFinales(2)){
+                this.opcion=2;
+            }
+            else{
+                swal("Para proseguir debe marcar como final a lo menos un estado en los autómataa",{
+                    className: "alertas",
+                    button:'Aceptar',
+                    title:"Aviso",
+                    icon:"warning",
+                });
+                return;
+            }
+            
         },
 
          mostrarOP3(){
-            this.opcion=3;
+            if(this.existeFinales(3)){
+                this.opcion=3;
+            }
+            else{
+                swal("Para proseguir debe marcar como final a lo menos un estado en los autómataa",{
+                    className: "alertas",
+                    button:'Aceptar',
+                    title:"Aviso",
+                    icon:"warning",
+                });
+                return;
+            }
         },
 
         existeEstadoTransicion(estados, transicion)
@@ -772,6 +810,70 @@ export default {
 
         },
 
+        existeFinales(opcion){
+            if(opcion==1)
+            {
+                for(var i=0; i<this.estadosAutomataAFD.length;i++)
+                {
+                    if(this.estadosAutomataAFD[i].final===true)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            else{
+                var existe1=false;
+                var existe2=false;
+
+                for(var i=0; i<this.estadosAP1.length;i++)
+                {
+                    if(this.estadosAP1[i].final===true)
+                    {
+                        existe1=true;
+                    }
+                }
+
+                for(var j=0; j<this.estadosAP2.length;j++)
+                {
+                    if(this.estadosAP2[j].final===true)
+                    {
+                        existe2=true;
+                    }
+                }
+
+                if(existe1 && existe2)
+                {
+                    return true;
+                }
+                return false;
+            }
+        },
+
+        delAndClear(){
+            if(this.option===1)
+            {
+                this.estadosAutomataAFD=[];
+                this.transicionesAutomataAFD=[];
+            }
+            else{
+                if(this.apSeleccionado===1)
+                {
+                    this.estadosAP1=[];
+                    this.transicionesAP2=[];
+                }
+                else{
+                    if(this.apSeleccionado===2)
+                    {
+                        this.estadosAP2=[];
+                        this.transicionesAP2=[];
+                    }
+                }
+            }
+            console.log("Autómata eliminado");
+            this.drawAutomata();
+        },
+
         pilaAPs(pilaAP,pila,transiciones){
             if(pila.length<1){
                 pila.push('P')                
@@ -913,7 +1015,7 @@ export default {
             
             this.estadoAutomataUnionAP.id='inicio';
             this.estadoAutomataUnionAP.label='inicio';
-            this.estadoAutomataUnionAP.color='#75616b47';
+            this.estadoAutomataUnionAP.color='#C25C0B';
             this.estadosAutomataUnionAP.push(this.estadoAutomataUnionAP);
             this.transicionAutomataUnionAP.from='inicio';
             this.transicionAutomataUnionAP.to=this.estadosAP1[0].id;
@@ -981,10 +1083,8 @@ export default {
                 { console.log("entro for transiciones estado actual");
                     var aux=transicionesEstadoActual[k].label.split('|');
                                                                         // c - +  
-                    if(aux[0]===palabra[i])      //aca empieza el webeo   a|E|B   aabb
-                                                                        // a|x|E
+                    if(aux[0]===palabra[i])      //aca empieza el webeo   a|E|B   aabb // a|x|E
                     {
-                        //pila.push('P')
                         estadoActual=transicionesEstadoActual[k].to;
                         if(aux[2]!='E' && aux[1] !='E')
                         {   
@@ -1017,9 +1117,9 @@ export default {
             {
                 if(estadoActual===estados[t].id)
                 {
-                    if(estados.final===true)
+                    if(estados[t].final===true)
                     {
-                        if((pila.length===1 && pila[0]=='P') || pila.length===0)
+                        if(pila[0]=='P')
                         {
                             swal("La palabra pertenece al leguaje 2",{
                                 className: "alertas",
@@ -1049,6 +1149,37 @@ export default {
                     }
                 }
             }    
+        },
+
+        concatenacionAP(){
+            this.estadosAutomataConcatenacionAP=[];
+            this.transicionesAutomataConcatenacionAP=[];
+            this.copiarAutomata(this.estadosAP1,this.transicionesAP1,this.estadosAutomataConcatenacionAP,this.transicionesAutomataConcatenacionAP);
+            var eap2=[];
+            var tap2=[];
+            this.copiarAutomata(this.estadosAP2,this.transicionesAP2,eap2,tap2);
+            eap2.splice(0,1);
+            tap2.splice(0,1);
+            var inicio=eap2[0].id;
+            for(var i=0; i<this.estadosAutomataConcatenacionAP.length;i++)
+            {
+                if(this.estadosAutomataConcatenacionAP[i].final===true)
+                {
+                    this.transicionAutomataConcatenacionAP.from=this.estadosAutomataConcatenacionAP[i].id;
+                    this.transicionAutomataConcatenacionAP.label='E|E|E';
+                    this.transicionAutomataConcatenacionAP.to=inicio;
+                    this.transicionAutomataConcatenacionAP.color={color:'rgb(255,0,0)'};
+                    this.transicionesAutomataConcatenacionAP.push(this.transicionAutomataConcatenacionAP);
+                    this.transicionAutomataConcatenacionAP={from: '', label: '', to: '', color: {color: 'rgb(0,0,0)'}};
+                    this.estadosAutomataConcatenacionAP[i].final=false;
+                    this.estadosAutomataConcatenacionAP[i].shape='ellipse';
+                    this.estadosAutomataConcatenacionAP[i].color='#C25C0B';
+                }
+            }
+            this.estadosAutomataConcatenacionAP=this.estadosAutomataConcatenacionAP.concat(eap2);
+            this.transicionesAutomataConcatenacionAP=this.transicionesAutomataConcatenacionAP.concat(tap2);
+            console.log("trans concatenacion: ",this.transicionesAutomataConcatenacionAP);
+            this.drawAutomata();
         },
 
         copiarAutomata(estadosIn,transicionesIn, estadosOut,transicionesOut)
@@ -1129,6 +1260,7 @@ export default {
                     {
                         this.alfabetoAP1.push(this.transicionAP1.label);
                     }
+                    console.log("Alfabeto AP1: ",this.alfabetoAP1);
 
                 }
                 else{
@@ -1154,6 +1286,7 @@ export default {
                         {
                             this.alfabetoAP2.push(this.transicionAP2.label);
                         }
+                        console.log("Alfabeto AP2: ",this.alfabetoAP2);
                     }
                 }
             }
@@ -1436,7 +1569,7 @@ export default {
                 else{
                     if(this.apSeleccionado===2)
                     {
-                        for(var k=0; j<this.estadosAP2.length; k++)
+                        for(var k=0; k<this.estadosAP2.length; k++)
                         {
                             if(this.estadosAP2[k].id===id && this.estadosAP2[k].final===false)
                             {
@@ -1476,7 +1609,7 @@ export default {
             return false;
         },
         existeCaracterAP(caracter){
-            for(var i=0; i<this.alfabetoAFD.length;i++)
+            for(var i=0; i<this.alfabetoAP1.length;i++)
             {
                 if(this.alfabetoAP1[i]===caracter)
                 {
@@ -1625,6 +1758,10 @@ export default {
             if(this.opcion===3)
             {
                 var networkUnion= new vis.Network(apUnidos,dataAPUnidos,options);//el Apus nahasapeemapetilon
+            }
+            if(this.opcion===2)
+            {
+                var networkConcatenacion= new vis.Network(apConcatenados,dataAPConcatenados,options);
             }
 
         },

@@ -2295,6 +2295,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2385,14 +2386,14 @@ __webpack_require__.r(__webpack_exports__);
         }
       },
       estadosAutomataConcatenacionAP: [],
-      estadoAutomataConcatenacionAp: {
+      estadoAutomataConcatenacionAP: {
         id: '',
         label: '',
         color: '#C25C0B',
         "final": false
       },
       transicionesAutomataConcatenacionAP: [],
-      transicionAutomataConcatenacionAp: {
+      transicionAutomataConcatenacionAP: {
         from: '',
         label: '',
         to: '',
@@ -2435,12 +2436,14 @@ __webpack_require__.r(__webpack_exports__);
       this.selected = true;
       this.selected2 = true;
       this.createTrans = false;
+      this.drawAutomata();
     },
     createTransicion: function createTransicion() {
       this.createTrans = true;
       this.selected = true;
       this.selected2 = true;
       this.creaEstado = false;
+      this.drawAutomata();
     },
     representacion: function representacion() {
       this.representacion1 = true;
@@ -2483,13 +2486,43 @@ __webpack_require__.r(__webpack_exports__);
       this.apSeleccionado = 2;
     },
     mostrarOP1: function mostrarOP1() {
-      this.opcion = 1;
+      if (this.existeFinales(1)) {
+        this.opcion = 1;
+      } else {
+        swal("Para proseguir debe marcar como final a lo menos un estado el autómata", {
+          className: "alertas",
+          button: 'Aceptar',
+          title: "Aviso",
+          icon: "warning"
+        });
+        return;
+      }
     },
     mostrarOP2: function mostrarOP2() {
-      this.opcion = 2;
+      if (this.existeFinales(2)) {
+        this.opcion = 2;
+      } else {
+        swal("Para proseguir debe marcar como final a lo menos un estado en los autómataa", {
+          className: "alertas",
+          button: 'Aceptar',
+          title: "Aviso",
+          icon: "warning"
+        });
+        return;
+      }
     },
     mostrarOP3: function mostrarOP3() {
-      this.opcion = 3;
+      if (this.existeFinales(3)) {
+        this.opcion = 3;
+      } else {
+        swal("Para proseguir debe marcar como final a lo menos un estado en los autómataa", {
+          className: "alertas",
+          button: 'Aceptar',
+          title: "Aviso",
+          icon: "warning"
+        });
+        return;
+      }
     },
     existeEstadoTransicion: function existeEstadoTransicion(estados, transicion) {
       var existeFrom = false;
@@ -2714,6 +2747,57 @@ __webpack_require__.r(__webpack_exports__);
         }
       }
     },
+    existeFinales: function existeFinales(opcion) {
+      if (opcion == 1) {
+        for (var i = 0; i < this.estadosAutomataAFD.length; i++) {
+          if (this.estadosAutomataAFD[i]["final"] === true) {
+            return true;
+          }
+        }
+
+        return false;
+      } else {
+        var existe1 = false;
+        var existe2 = false;
+
+        for (var i = 0; i < this.estadosAP1.length; i++) {
+          if (this.estadosAP1[i]["final"] === true) {
+            existe1 = true;
+          }
+        }
+
+        for (var j = 0; j < this.estadosAP2.length; j++) {
+          if (this.estadosAP2[j]["final"] === true) {
+            existe2 = true;
+          }
+        }
+
+        if (existe1 && existe2) {
+          return true;
+        }
+
+        return false;
+      }
+    },
+    delAndClear: function delAndClear() {
+      if (this.option === 1) {
+        this.estadosAutomataAFD = [];
+        this.transicionesAutomataAFD = [];
+      } else {
+        if (this.apSeleccionado === 1) {
+          this.estadosAP1 = [];
+          this.transicionesAP2 = [];
+        } else {
+          if (this.apSeleccionado === 2) {
+            this.estadosAP2 = [];
+            this.transicionesAP2 = [];
+          }
+        }
+      }
+
+      console.log("Autómata eliminado");
+      this.drawAutomata();
+    },
     pilaAPs: function pilaAPs(pilaAP, pila, transiciones) {
       if (pila.length < 1) {
         pila.push('P');
@@ -2867,7 +2951,7 @@ __webpack_require__.r(__webpack_exports__);
       this.transicionesAutomataUnionAP = this.transicionesAutomataUnionAP.concat(this.transicionesAP2);
       this.estadoAutomataUnionAP.id = 'inicio';
       this.estadoAutomataUnionAP.label = 'inicio';
-      this.estadoAutomataUnionAP.color = '#75616b47';
+      this.estadoAutomataUnionAP.color = '#C25C0B';
       this.estadosAutomataUnionAP.push(this.estadoAutomataUnionAP);
       this.transicionAutomataUnionAP.from = 'inicio';
       this.transicionAutomataUnionAP.to = this.estadosAP1[0].id;
@@ -2941,10 +3025,8 @@ __webpack_require__.r(__webpack_exports__);
           console.log("entro for transiciones estado actual");
           var aux = transicionesEstadoActual[k].label.split('|'); // c - +  
 
-          if (aux[0] === palabra[i]) //aca empieza el webeo   a|E|B   aabb
-            // a|x|E
+          if (aux[0] === palabra[i]) //aca empieza el webeo   a|E|B   aabb // a|x|E
             {
-              //pila.push('P')
               estadoActual = transicionesEstadoActual[k].to;
 
               if (aux[2] != 'E' && aux[1] != 'E') {
@@ -2978,8 +3060,8 @@ __webpack_require__.r(__webpack_exports__);
 
       for (var t = 0; t < estados.length; t++) {
         if (estadoActual === estados[t].id) {
-          if (estados["final"] === true) {
-            if (pila.length === 1 && pila[0] == 'P' || pila.length === 0) {
+          if (estados[t]["final"] === true) {
+            if (pila[0] == 'P') {
               swal("La palabra pertenece al leguaje 2", {
                 className: "alertas",
                 button: "Aceptar",
@@ -3006,6 +3088,45 @@ __webpack_require__.r(__webpack_exports__);
           }
         }
       }
+    },
+    concatenacionAP: function concatenacionAP() {
+      this.estadosAutomataConcatenacionAP = [];
+      this.transicionesAutomataConcatenacionAP = [];
+      this.copiarAutomata(this.estadosAP1, this.transicionesAP1, this.estadosAutomataConcatenacionAP, this.transicionesAutomataConcatenacionAP);
+      var eap2 = [];
+      var tap2 = [];
+      this.copiarAutomata(this.estadosAP2, this.transicionesAP2, eap2, tap2);
+      eap2.splice(0, 1);
+      tap2.splice(0, 1);
+      var inicio = eap2[0].id;
+
+      for (var i = 0; i < this.estadosAutomataConcatenacionAP.length; i++) {
+        if (this.estadosAutomataConcatenacionAP[i]["final"] === true) {
+          this.transicionAutomataConcatenacionAP.from = this.estadosAutomataConcatenacionAP[i].id;
+          this.transicionAutomataConcatenacionAP.label = 'E|E|E';
+          this.transicionAutomataConcatenacionAP.to = inicio;
+          this.transicionAutomataConcatenacionAP.color = {
+            color: 'rgb(255,0,0)'
+          };
+          this.transicionesAutomataConcatenacionAP.push(this.transicionAutomataConcatenacionAP);
+          this.transicionAutomataConcatenacionAP = {
+            from: '',
+            label: '',
+            to: '',
+            color: {
+              color: 'rgb(0,0,0)'
+            }
+          };
+          this.estadosAutomataConcatenacionAP[i]["final"] = false;
+          this.estadosAutomataConcatenacionAP[i].shape = 'ellipse';
+          this.estadosAutomataConcatenacionAP[i].color = '#C25C0B';
+        }
+      }
+
+      this.estadosAutomataConcatenacionAP = this.estadosAutomataConcatenacionAP.concat(eap2);
+      this.transicionesAutomataConcatenacionAP = this.transicionesAutomataConcatenacionAP.concat(tap2);
+      console.log("trans concatenacion: ", this.transicionesAutomataConcatenacionAP);
+      this.drawAutomata();
     },
     copiarAutomata: function copiarAutomata(estadosIn, transicionesIn, estadosOut, transicionesOut) {
       var estado = {
@@ -3095,6 +3216,8 @@ __webpack_require__.r(__webpack_exports__);
           if (!existe) {
             this.alfabetoAP1.push(this.transicionAP1.label);
           }
+
+          console.log("Alfabeto AP1: ", this.alfabetoAP1);
         } else {
           if (this.apSeleccionado === 2) {
             for (var k = 0; k < this.transicionesAP2; k++) {
@@ -3112,6 +3235,8 @@ __webpack_require__.r(__webpack_exports__);
             if (!existe) {
               this.alfabetoAP2.push(this.transicionAP2.label);
             }
+
+            console.log("Alfabeto AP2: ", this.alfabetoAP2);
           }
         }
       }
@@ -3417,7 +3542,7 @@ __webpack_require__.r(__webpack_exports__);
           }
         } else {
           if (this.apSeleccionado === 2) {
-            for (var k = 0; j < this.estadosAP2.length; k++) {
+            for (var k = 0; k < this.estadosAP2.length; k++) {
               if (this.estadosAP2[k].id === id && this.estadosAP2[k]["final"] === false) {
                 this.estadosAP2[k]["final"] = true;
                 this.estadosAP2[k].shape = 'diamond';
@@ -3448,7 +3573,7 @@ __webpack_require__.r(__webpack_exports__);
       return false;
     },
     existeCaracterAP: function existeCaracterAP(caracter) {
-      for (var i = 0; i < this.alfabetoAFD.length; i++) {
+      for (var i = 0; i < this.alfabetoAP1.length; i++) {
         if (this.alfabetoAP1[i] === caracter) {
           return true;
         }
@@ -3577,6 +3702,10 @@ __webpack_require__.r(__webpack_exports__);
 
       if (this.opcion === 3) {
         var networkUnion = new vis.Network(apUnidos, dataAPUnidos, options); //el Apus nahasapeemapetilon
+      }
+
+      if (this.opcion === 2) {
+        var networkConcatenacion = new vis.Network(apConcatenados, dataAPConcatenados, options);
       }
     },
     encontrarExpresionRegular: function encontrarExpresionRegular() {
@@ -94749,7 +94878,16 @@ var render = function() {
                           )
                         ]),
                         _vm._v(" "),
-                        _vm._m(0),
+                        _c("div", { staticClass: "col-md-4" }, [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-sm btn-danger",
+                              on: { click: _vm.delAndClear }
+                            },
+                            [_vm._v("Eliminar Autómata")]
+                          )
+                        ]),
                         _vm._v(" "),
                         _c("div", { staticClass: "col-md-4" }, [
                           _c(
@@ -94821,7 +94959,7 @@ var render = function() {
                                 })
                               ]),
                               _vm._v(" "),
-                              _vm._m(1)
+                              _vm._m(0)
                             ]
                           )
                         ])
@@ -95124,7 +95262,16 @@ var render = function() {
                           )
                         ]),
                         _vm._v(" "),
-                        _vm._m(2),
+                        _c("div", { staticClass: "col-md-4" }, [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-sm btn-danger",
+                              on: { click: _vm.delAndClear }
+                            },
+                            [_vm._v("Eliminar Autómata")]
+                          )
+                        ]),
                         _vm._v(" "),
                         _c("div", { staticClass: "col-md-4" }, [
                           _c(
@@ -95186,7 +95333,7 @@ var render = function() {
                                     })
                                   ]),
                                   _vm._v(" "),
-                                  _vm._m(3)
+                                  _vm._m(1)
                                 ]
                               )
                             : _vm._e(),
@@ -95235,7 +95382,7 @@ var render = function() {
                                     })
                                   ]),
                                   _vm._v(" "),
-                                  _vm._m(4)
+                                  _vm._m(2)
                                 ]
                               )
                             : _vm._e()
@@ -95774,7 +95921,7 @@ var render = function() {
                       attrs: { "aria-describedby": "estados1" }
                     },
                     [
-                      _vm._m(5),
+                      _vm._m(3),
                       _vm._v(" "),
                       _c(
                         "tbody",
@@ -95830,13 +95977,13 @@ var render = function() {
                   )
                 : _vm._e(),
               _vm._v(" "),
-              _vm.option === 2
+              _vm.option === 2 && _vm.apSeleccionado === 1
                 ? _c("h3", { staticClass: "text-center fredoka my-3" }, [
                     _vm._v("Tabla de estados autómata de Pila 1")
                   ])
                 : _vm._e(),
               _vm._v(" "),
-              _vm.option === 2
+              _vm.option === 2 && _vm.apSeleccionado === 1
                 ? _c(
                     "table",
                     {
@@ -95844,7 +95991,7 @@ var render = function() {
                       attrs: { "aria-describedby": "estados1" }
                     },
                     [
-                      _vm._m(6),
+                      _vm._m(4),
                       _vm._v(" "),
                       _c(
                         "tbody",
@@ -95899,13 +96046,13 @@ var render = function() {
                   )
                 : _vm._e(),
               _vm._v(" "),
-              _vm.option === 2
+              _vm.option === 2 && _vm.apSeleccionado === 2
                 ? _c("h3", { staticClass: "text-center fredoka my-3" }, [
                     _vm._v("Tabla de estados autómata de Pila 2")
                   ])
                 : _vm._e(),
               _vm._v(" "),
-              _vm.option === 2
+              _vm.option === 2 && _vm.apSeleccionado === 2
                 ? _c(
                     "table",
                     {
@@ -95913,7 +96060,7 @@ var render = function() {
                       attrs: { "aria-describedby": "estados1" }
                     },
                     [
-                      _vm._m(7),
+                      _vm._m(5),
                       _vm._v(" "),
                       _c(
                         "tbody",
@@ -96123,7 +96270,20 @@ var render = function() {
             { staticClass: "card cardaux3 col-md-10 rounded-bottom mb-3" },
             [
               _c("div", { staticClass: "container my-3" }, [
-                _vm._v("\n\n                aaaaaaaaaaaaaa\n            ")
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-success",
+                    on: { click: _vm.concatenacionAP }
+                  },
+                  [_vm._v("Mostrar concatenación")]
+                ),
+                _vm._v(" "),
+                _c("div", {
+                  staticStyle: { border: "1px solid lightgray" },
+                  attrs: { id: "APCONCATENADO" }
+                }),
+                _vm._v("\n                aaaaaaaaaaaaaa\n            ")
               ])
             ]
           )
@@ -96169,32 +96329,12 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-4" }, [
-      _c("button", { staticClass: "btn btn-sm btn-danger" }, [
-        _vm._v("Eliminar Autómata")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "text-center" }, [
       _c(
         "button",
         { staticClass: "btn btn-success btn-sm", attrs: { type: "submit" } },
         [_vm._v("Agregar")]
       )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-4" }, [
-      _c("button", { staticClass: "btn btn-sm btn-danger" }, [
-        _vm._v("Eliminar Autómata")
-      ])
     ])
   },
   function() {
@@ -109229,8 +109369,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\Luciano\Desktop\2020-2\Grafos y lenguajes formales\Grafos\GLF-2020s2-Trabajo-3\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\Luciano\Desktop\2020-2\Grafos y lenguajes formales\Grafos\GLF-2020s2-Trabajo-3\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\GLF-2020s2-Trabajo-3\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\GLF-2020s2-Trabajo-3\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
