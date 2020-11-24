@@ -233,28 +233,6 @@
                 <!--AP-->
             </div>
 
-            <!--REPRESENTACION AUTOMATAS-->
-            <div class="grafo1 col-md-8 card cardaux">
-                <h3 class="text-center fredoka my-2">Representación</h3>
-                <div class="row">
-                    <div class="col-md-12" v-if="option===1">
-                        <h4 class="text-center fredoka my-3" >Autómata Finito Determinista</h4>
-                        <div id="AFD" class="mb-3" style="border:1px solid lightgray;"></div>
-                    </div>
-
-                    <div class="col-md-6" v-if="option===2">
-                        <h4 class="text-center fredoka my-3">Autómata de Pila 1</h4>
-                        <div  id="AP1" class="mb-3" style="border:1px solid lightgray;"></div>
-                    </div>
-                    <div class="col-md-6" v-if="option===2">
-                        <h4 class="text-center fredoka my-3">Autómata de Pila 2</h4>
-                        <div id="AP2" class="mb-3" style="border:1px solid lightgray;"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!--REPRESENTACION AUTOMATAS-->
-
             <!--MODIFICAR ESTADOS FINALES-->
             <div class="grafo1 col-md-5 mx-3 card cardaux my-3" v-if="representacion1">
                 <hr>
@@ -322,6 +300,28 @@
                 </div>
             </div>
             <!--MODIFICAR ESTADOS FINALES-->
+
+            <!--REPRESENTACION AUTOMATAS-->
+            <div class="grafo1 col-md-8 card cardaux">
+                <h3 class="text-center fredoka my-2">Representación</h3>
+                <div class="row">
+                    <div class="col-md-12" v-if="option===1">
+                        <h4 class="text-center fredoka my-3" >Autómata Finito Determinista</h4>
+                        <div id="AFD" class="mb-3" style="border:1px solid lightgray;"></div>
+                    </div>
+
+                    <div class="col-md-6" v-if="option===2">
+                        <h4 class="text-center fredoka my-3">Autómata de Pila 1</h4>
+                        <div  id="AP1" class="mb-3" style="border:1px solid lightgray;"></div>
+                    </div>
+                    <div class="col-md-6" v-if="option===2">
+                        <h4 class="text-center fredoka my-3">Autómata de Pila 2</h4>
+                        <div id="AP2" class="mb-3" style="border:1px solid lightgray;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!--REPRESENTACION AUTOMATAS-->
         </div>
 
         <h1 class="text-center fredoka textocolor my-4">Operaciones</h1>
@@ -1080,7 +1080,7 @@ export default {
                 {
                     this.estadosAutomataAFD.push(this.estadoAutomataAFD);
                     this.transicionAutomataAFD.from='inicio';
-                    this.transicionAutomataAFD.label='';
+                    this.transicionAutomataAFD.label='E';
                     this.transicionAutomataAFD.to= this.estadoAutomataAFD.id;
                     this.transicionesAutomataAFD.push(this.transicionAutomataAFD);
                     this.transicionAutomataAFD= {from:'',label: '',to:'',color:{color:'rgb(0,0,0)'}};
@@ -1509,15 +1509,16 @@ export default {
                 {
                     this.transicionAutomataAFD.from=finales[j];
                     this.transicionAutomataAFD.to='Final';
-                    this.transicionAutomataAFD.label='';
+                    this.transicionAutomataAFD.label='E';
                     this.transicionesAutomataAFD.push(this.transicionAutomataAFD);
                     this.transicionAutomataAFD={from: '', label: '', to: '', color: {color: 'rgb(0,0,0)'}};
                 }
             }
+            console.log("Estados:",this.estadosAutomataAFD);
 
             //Buscar intermedio entre el inicial (q0) y q2 
             var primero='inicio';   //INICIO   -  INTERMEDIO   -   Q1 Q2 ...
-            var intermedio;
+            var intermedio={from: '', label: '', to: '', color: {color: 'rgb(0,0,0)'}};
             var revisado=[];
             var transicion={from: '', label: '', to: '', color: {color: 'rgb(0,0,0)'}};
             var transaux=[];
@@ -1526,49 +1527,63 @@ export default {
                 console.log("k =", k, "/ ", this.transicionesAutomataAFD.length);
                 if(this.transicionesAutomataAFD[k].from===primero)
                 {
-                    intermedio=this.transicionesAutomataAFD[k].to;
-                    console.log("Intermedio: ", intermedio);
+                    intermedio=this.transicionesAutomataAFD[k];
+                    console.log("Intermedio: ", intermedio.to);
                     console.log("Revisados: ", revisado);
                     for(var t=0; t<this.transicionesAutomataAFD.length;t++)
                     {
                         console.log("t =", t, "/ ", this.transicionesAutomataAFD.length);
-                        if(this.transicionesAutomataAFD[t].from===intermedio)
+                        if(this.transicionesAutomataAFD[t].from===intermedio.to && t!=k)
                         {
-                            console.log("entro 1");
-                            for(var u=0; u<revisado.length; u++){
-                                console.log("entro for");                                
-                                if(transicionesAutomataAFD[t].to != revisado[u]){
-                                    console.log("entro 2.1");
-                                    transicion.from=primero;
-                                    if(this.transicionesAutomataAFD[t].from==this.transicionesAutomataAFD[t].to)
-                                    {
-                                        console.log("entro 3.1");
-                                        if(this.transicionesAutomata[t].label.includes('+'))
-                                        {
-                                            transicion.label=transicion.label+'('+this.transicionesAutomataAFD[t].label+')*';
-                                        }
-                                        else{
-                                            transicion.label=transicion.label+this.transicionesAutomataAFD[t].label+'*';
-                                        }
-                                    }
-                                    else{
-                                        console.log("entro 3.2");
-                                        transicion.label=transicion.label+this.transicionesAutomataAFD[t].label;
-                                    }
-                                    transicion.to=this.transicionesAutomataAFD[t].to;
-                                    console.log("transicion push", transicion);
-                                    this.transicionesAutomataAFD.push(transicion);
-                                    transicion={from: '', label: '', to: '', color: {color: 'rgb(0,0,0)'}};
-                                    this.transicionesAutomataAFD.splice(t,1);
-                                }else{
-                                    console.log("entro 2.2");
-                                    this.transicionesAutomataAFD.splice(t,1);
+                            console.log("encontro to del revisando en el from del transiciones");
+                            transicion.from=primero;
+                            if(this.transicionesAutomataAFD[t].from==this.transicionesAutomataAFD[t].to)
+                            {
+                                console.log("entro 3.1");
+                                if(this.transicionesAutomataAFD[t].label.includes('+'))
+                                {
+                                    transicion.label=transicion.label+'('+this.transicionesAutomataAFD[t].label+')*';
+                                }
+                                else{
+                                    transicion.label=transicion.label+this.transicionesAutomataAFD[t].label+'*';
                                 }
                             }
+                            else{
+                                console.log("entro 3.2");
+                                transicion.label=transicion.label+this.transicionesAutomataAFD[t].label;
+                            }
+                            transicion.to=this.transicionesAutomataAFD[t].to;
+                            console.log("transicion push", transicion);
+                            this.transicionesAutomataAFD.push(transicion);
+                            transicion={from: '', label: '', to: '', color: {color: 'rgb(0,0,0)'}};
+                            console.log("splice", this.transicionesAutomataAFD[t].from,this.transicionesAutomataAFD[t].label, this.transicionesAutomataAFD[t].to);
+                            this.transicionesAutomataAFD.splice(t,1);
+                            if(k!=0){
+                                k--;
+                            }
+                            if(t!=0){
+                                t--;
+                            }
+                                
+                            
+                            for(let p=0; p<this.transicionesAutomataAFD.length; p++){
+                                for(let q=1; q<this.transicionesAutomataAFD.length; q++){
+                                    console.log("------------------");
+                                    if(p!=q){
+                                        if(this.transicionesAutomataAFD[p].from===this.transicionesAutomataAFD[q].from && this.transicionesAutomataAFD[p].to===this.transicionesAutomataAFD[q].to){
+                                            this.transicionesAutomataAFD[p].label=this.transicionesAutomataAFD[p].label.concat(this.transicionesAutomataAFD[q].label);
+                                            console.log("splice del concat", this.transicionesAutomataAFD[q].from,this.transicionesAutomataAFD[q].label, this.transicionesAutomataAFD[q].to);
+                                            this.transicionesAutomataAFD.splice(q,1);
+                                            p--;
+                                            q--;
+                                        }
+                                    }
+                                }
+                            }
+                            
                         }
                     }
-                    revisado.push(intermedio);
-                
+                    revisado.push(intermedio.to);
                 }
                 
             }
@@ -1579,6 +1594,7 @@ export default {
         },
 
         salenFinales(finales){
+            console.log("funcion salen finales");
             for(var j=0; j<this.transicionesAutomataAFD.length;j++)
             {
                 for(var k=0; k<finales.length;k++)
@@ -1589,7 +1605,7 @@ export default {
                             if(this.estadosAutomataAFD[t].final===true){
                                 this.estadosAutomataAFD[t].final=false;
                                 this.estadosAutomataAFD[t].shape='ellipse';
-                                this.estadosAutomata[t].color='#C25C0B';
+                                this.estadosAutomataAFD[t].color='#C25C0B';
                             }
                         }
                         this.estadoAutomataAFD.final=true;
@@ -1602,8 +1618,47 @@ export default {
                         return true;
                     }
                 }
+            }
+            return false;
+        },
+
+        sonIguales(final,cadena){                     
+            var Final=final.split('E');    //EbabE -> split(E) ==> ["","bab",""]
+            var cad= cadena.split('E');    // Ebabaa -> split(E) ==> ["","babaa"]
+            var aux1;
+            var aux2;
+            for(var i=0; i<Final.length;i++)
+            {
+                if(Final[i]!='')
+                {
+                    aux1=Final[i];           //aux1="bab"
+                }
+            }   
+            aux1=aux1.split('');             //aux1= ['b','a','b']
+            for(var j=0; j<cad.length;j++)   
+            {
+                if(cad[j]!='')
+                {
+                    aux2=cad[j];             //aux2="babaa"
+                }
+            }
+            aux2=aux2.split('');             //aux2=['b','a','b','a','a']
+
+            if(aux2.length>=aux1.length)        //aca los recorre y compara 
+            {
+                for(k=0; k<aux1.length;k++)
+                {
+                    if(aux2[k]!=aux1[k])
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            else{
                 return false;
             }
+                  
         },
 
 

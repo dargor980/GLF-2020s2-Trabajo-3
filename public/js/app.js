@@ -2709,11 +2709,11 @@ __webpack_require__.r(__webpack_exports__);
         pila.push('P');
 
         if (pilaAP.agrega === '' && pilaAP.elimina === '') {
-          for (var k = 0; k < transiciones.length; k++) {
-            if (transiciones[k].from != 'inicio') {
-              var nT = transiciones[k].label + '|' + 'E' + '|' + 'E';
+          for (var _k = 0; _k < transiciones.length; _k++) {
+            if (transiciones[_k].from != 'inicio') {
+              var nT = transiciones[_k].label + '|' + 'E' + '|' + 'E';
               console.log("nT", nT);
-              transiciones[k].label = nT;
+              transiciones[_k].label = nT;
               nT = '';
             }
 
@@ -3034,7 +3034,7 @@ __webpack_require__.r(__webpack_exports__);
         if (this.estadosAutomataAFD.length === 1) {
           this.estadosAutomataAFD.push(this.estadoAutomataAFD);
           this.transicionAutomataAFD.from = 'inicio';
-          this.transicionAutomataAFD.label = '';
+          this.transicionAutomataAFD.label = 'E';
           this.transicionAutomataAFD.to = this.estadoAutomataAFD.id;
           this.transicionesAutomataAFD.push(this.transicionAutomataAFD);
           this.transicionAutomataAFD = {
@@ -3452,7 +3452,7 @@ __webpack_require__.r(__webpack_exports__);
         for (var j = 0; j < finales.length; j++) {
           this.transicionAutomataAFD.from = finales[j];
           this.transicionAutomataAFD.to = 'Final';
-          this.transicionAutomataAFD.label = '';
+          this.transicionAutomataAFD.label = 'E';
           this.transicionesAutomataAFD.push(this.transicionAutomataAFD);
           this.transicionAutomataAFD = {
             from: '',
@@ -3463,12 +3463,20 @@ __webpack_require__.r(__webpack_exports__);
             }
           };
         }
-      } //Buscar intermedio entre el inicial (q0) y q2 
+      }
 
+      console.log("Estados:", this.estadosAutomataAFD); //Buscar intermedio entre el inicial (q0) y q2 
 
       var primero = 'inicio'; //INICIO   -  INTERMEDIO   -   Q1 Q2 ...
 
-      var intermedio;
+      var intermedio = {
+        from: '',
+        label: '',
+        to: '',
+        color: {
+          color: 'rgb(0,0,0)'
+        }
+      };
       var revisado = [];
       var transicion = {
         from: '',
@@ -3484,63 +3492,79 @@ __webpack_require__.r(__webpack_exports__);
         console.log("k =", k, "/ ", this.transicionesAutomataAFD.length);
 
         if (this.transicionesAutomataAFD[k].from === primero) {
-          intermedio = this.transicionesAutomataAFD[k].to;
-          console.log("Intermedio: ", intermedio);
+          intermedio = this.transicionesAutomataAFD[k];
+          console.log("Intermedio: ", intermedio.to);
           console.log("Revisados: ", revisado);
 
           for (var t = 0; t < this.transicionesAutomataAFD.length; t++) {
             console.log("t =", t, "/ ", this.transicionesAutomataAFD.length);
 
-            if (this.transicionesAutomataAFD[t].from === intermedio) {
-              console.log("entro 1");
+            if (this.transicionesAutomataAFD[t].from === intermedio.to && t != k) {
+              console.log("encontro to del revisando en el from del transiciones");
+              transicion.from = primero;
 
-              for (var u = 0; u < revisado.length; u++) {
-                console.log("entro for");
+              if (this.transicionesAutomataAFD[t].from == this.transicionesAutomataAFD[t].to) {
+                console.log("entro 3.1");
 
-                if (transicionesAutomataAFD[t].to != revisado[u]) {
-                  console.log("entro 2.1");
-                  transicion.from = primero;
-
-                  if (this.transicionesAutomataAFD[t].from == this.transicionesAutomataAFD[t].to) {
-                    console.log("entro 3.1");
-
-                    if (this.transicionesAutomata[t].label.includes('+')) {
-                      transicion.label = transicion.label + '(' + this.transicionesAutomataAFD[t].label + ')*';
-                    } else {
-                      transicion.label = transicion.label + this.transicionesAutomataAFD[t].label + '*';
-                    }
-                  } else {
-                    console.log("entro 3.2");
-                    transicion.label = transicion.label + this.transicionesAutomataAFD[t].label;
-                  }
-
-                  transicion.to = this.transicionesAutomataAFD[t].to;
-                  console.log("transicion push", transicion);
-                  this.transicionesAutomataAFD.push(transicion);
-                  transicion = {
-                    from: '',
-                    label: '',
-                    to: '',
-                    color: {
-                      color: 'rgb(0,0,0)'
-                    }
-                  };
-                  this.transicionesAutomataAFD.splice(t, 1);
+                if (this.transicionesAutomataAFD[t].label.includes('+')) {
+                  transicion.label = transicion.label + '(' + this.transicionesAutomataAFD[t].label + ')*';
                 } else {
-                  console.log("entro 2.2");
-                  this.transicionesAutomataAFD.splice(t, 1);
+                  transicion.label = transicion.label + this.transicionesAutomataAFD[t].label + '*';
+                }
+              } else {
+                console.log("entro 3.2");
+                transicion.label = transicion.label + this.transicionesAutomataAFD[t].label;
+              }
+
+              transicion.to = this.transicionesAutomataAFD[t].to;
+              console.log("transicion push", transicion);
+              this.transicionesAutomataAFD.push(transicion);
+              transicion = {
+                from: '',
+                label: '',
+                to: '',
+                color: {
+                  color: 'rgb(0,0,0)'
+                }
+              };
+              console.log("splice", this.transicionesAutomataAFD[t].from, this.transicionesAutomataAFD[t].label, this.transicionesAutomataAFD[t].to);
+              this.transicionesAutomataAFD.splice(t, 1);
+
+              if (k != 0) {
+                k--;
+              }
+
+              if (t != 0) {
+                t--;
+              }
+
+              for (var p = 0; p < this.transicionesAutomataAFD.length; p++) {
+                for (var q = 1; q < this.transicionesAutomataAFD.length; q++) {
+                  console.log("------------------");
+
+                  if (p != q) {
+                    if (this.transicionesAutomataAFD[p].from === this.transicionesAutomataAFD[q].from && this.transicionesAutomataAFD[p].to === this.transicionesAutomataAFD[q].to) {
+                      this.transicionesAutomataAFD[p].label = this.transicionesAutomataAFD[p].label.concat(this.transicionesAutomataAFD[q].label);
+                      console.log("splice del concat", this.transicionesAutomataAFD[q].from, this.transicionesAutomataAFD[q].label, this.transicionesAutomataAFD[q].to);
+                      this.transicionesAutomataAFD.splice(q, 1);
+                      p--;
+                      q--;
+                    }
+                  }
                 }
               }
             }
           }
 
-          revisado.push(intermedio);
+          revisado.push(intermedio.to);
         }
       }
 
       this.drawAutomata();
     },
     salenFinales: function salenFinales(finales) {
+      console.log("funcion salen finales");
+
       for (var j = 0; j < this.transicionesAutomataAFD.length; j++) {
         for (var k = 0; k < finales.length; k++) {
           if (this.transicionesAutomataAFD[j].from === finales[k]) {
@@ -3548,7 +3572,7 @@ __webpack_require__.r(__webpack_exports__);
               if (this.estadosAutomataAFD[t]["final"] === true) {
                 this.estadosAutomataAFD[t]["final"] = false;
                 this.estadosAutomataAFD[t].shape = 'ellipse';
-                this.estadosAutomata[t].color = '#C25C0B';
+                this.estadosAutomataAFD[t].color = '#C25C0B';
               }
             }
 
@@ -3567,7 +3591,45 @@ __webpack_require__.r(__webpack_exports__);
             return true;
           }
         }
+      }
 
+      return false;
+    },
+    sonIguales: function sonIguales(_final, cadena) {
+      var Final = _final.split('E'); //EbabE -> split(E) ==> ["","bab",""]
+
+
+      var cad = cadena.split('E'); // Ebabaa -> split(E) ==> ["","babaa"]
+
+      var aux1;
+      var aux2;
+
+      for (var i = 0; i < Final.length; i++) {
+        if (Final[i] != '') {
+          aux1 = Final[i]; //aux1="bab"
+        }
+      }
+
+      aux1 = aux1.split(''); //aux1= ['b','a','b']
+
+      for (var j = 0; j < cad.length; j++) {
+        if (cad[j] != '') {
+          aux2 = cad[j]; //aux2="babaa"
+        }
+      }
+
+      aux2 = aux2.split(''); //aux2=['b','a','b','a','a']
+
+      if (aux2.length >= aux1.length) //aca los recorre y compara 
+        {
+          for (k = 0; k < aux1.length; k++) {
+            if (aux2[k] != aux1[k]) {
+              return false;
+            }
+          }
+
+          return true;
+        } else {
         return false;
       }
     }
@@ -95493,56 +95555,6 @@ var render = function() {
           ])
         : _vm._e(),
       _vm._v(" "),
-      _c("div", { staticClass: "grafo1 col-md-8 card cardaux" }, [
-        _c("h3", { staticClass: "text-center fredoka my-2" }, [
-          _vm._v("Representación")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "row" }, [
-          _vm.option === 1
-            ? _c("div", { staticClass: "col-md-12" }, [
-                _c("h4", { staticClass: "text-center fredoka my-3" }, [
-                  _vm._v("Autómata Finito Determinista")
-                ]),
-                _vm._v(" "),
-                _c("div", {
-                  staticClass: "mb-3",
-                  staticStyle: { border: "1px solid lightgray" },
-                  attrs: { id: "AFD" }
-                })
-              ])
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.option === 2
-            ? _c("div", { staticClass: "col-md-6" }, [
-                _c("h4", { staticClass: "text-center fredoka my-3" }, [
-                  _vm._v("Autómata de Pila 1")
-                ]),
-                _vm._v(" "),
-                _c("div", {
-                  staticClass: "mb-3",
-                  staticStyle: { border: "1px solid lightgray" },
-                  attrs: { id: "AP1" }
-                })
-              ])
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.option === 2
-            ? _c("div", { staticClass: "col-md-6" }, [
-                _c("h4", { staticClass: "text-center fredoka my-3" }, [
-                  _vm._v("Autómata de Pila 2")
-                ]),
-                _vm._v(" "),
-                _c("div", {
-                  staticClass: "mb-3",
-                  staticStyle: { border: "1px solid lightgray" },
-                  attrs: { id: "AP2" }
-                })
-              ])
-            : _vm._e()
-        ])
-      ]),
-      _vm._v(" "),
       _vm.representacion1
         ? _c("div", { staticClass: "grafo1 col-md-5 mx-3 card cardaux my-3" }, [
             _c("hr"),
@@ -95663,7 +95675,57 @@ var render = function() {
               )
             ])
           ])
-        : _vm._e()
+        : _vm._e(),
+      _vm._v(" "),
+      _c("div", { staticClass: "grafo1 col-md-8 card cardaux" }, [
+        _c("h3", { staticClass: "text-center fredoka my-2" }, [
+          _vm._v("Representación")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "row" }, [
+          _vm.option === 1
+            ? _c("div", { staticClass: "col-md-12" }, [
+                _c("h4", { staticClass: "text-center fredoka my-3" }, [
+                  _vm._v("Autómata Finito Determinista")
+                ]),
+                _vm._v(" "),
+                _c("div", {
+                  staticClass: "mb-3",
+                  staticStyle: { border: "1px solid lightgray" },
+                  attrs: { id: "AFD" }
+                })
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.option === 2
+            ? _c("div", { staticClass: "col-md-6" }, [
+                _c("h4", { staticClass: "text-center fredoka my-3" }, [
+                  _vm._v("Autómata de Pila 1")
+                ]),
+                _vm._v(" "),
+                _c("div", {
+                  staticClass: "mb-3",
+                  staticStyle: { border: "1px solid lightgray" },
+                  attrs: { id: "AP1" }
+                })
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.option === 2
+            ? _c("div", { staticClass: "col-md-6" }, [
+                _c("h4", { staticClass: "text-center fredoka my-3" }, [
+                  _vm._v("Autómata de Pila 2")
+                ]),
+                _vm._v(" "),
+                _c("div", {
+                  staticClass: "mb-3",
+                  staticStyle: { border: "1px solid lightgray" },
+                  attrs: { id: "AP2" }
+                })
+              ])
+            : _vm._e()
+        ])
+      ])
     ]),
     _vm._v(" "),
     _c("h1", { staticClass: "text-center fredoka textocolor my-4" }, [
@@ -108911,8 +108973,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\Luciano\Desktop\2020-2\Grafos y lenguajes formales\Grafos\GLF-2020s2-Trabajo-3\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\Luciano\Desktop\2020-2\Grafos y lenguajes formales\Grafos\GLF-2020s2-Trabajo-3\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\GLF-2020s2-Trabajo-3\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\GLF-2020s2-Trabajo-3\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
