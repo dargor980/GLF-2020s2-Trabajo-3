@@ -305,8 +305,6 @@
                         </tbody>
                     </table>
                     <button class="btn btn-success btn-sm mb-3 text-right" type="submit" @click="representacionBack">Guardar</button>
-                    
-
                 </div>
             </div>
             <!--MODIFICAR ESTADOS FINALES-->
@@ -874,6 +872,21 @@ export default {
             this.drawAutomata();
         },
 
+        simplificarAlfabeto(alfabeto){
+            
+            var newArr = [];
+            var myObj = {};
+            alfabeto.forEach(el => {      
+                if (!(el in myObj)) { 
+                    myObj[el] = true
+                    newArr.push(el)
+                }
+            });
+                        
+            console.log(newArr);
+            return newArr;
+        },
+
         pilaAPs(pilaAP,pila,transiciones){
             if(pila.length<1){
                 pila.push('P')                
@@ -1233,6 +1246,7 @@ export default {
                 if(!existe)
                 {
                     this.alfabetoAFD.push(this.transicionAutomataAFD.label);
+                    this.alfabetoAFD=this.simplificarAlfabeto(this.alfabetoAFD);
                 }
                 console.log("Alfabeto AFD: ",this.alfabetoAFD);
             }
@@ -1259,6 +1273,7 @@ export default {
                     if(!existe)
                     {
                         this.alfabetoAP1.push(this.transicionAP1.label);
+                        this.alfabetoAP1=this.simplificarAlfabeto(this.alfabetoAP1);
                     }
                     console.log("Alfabeto AP1: ",this.alfabetoAP1);
 
@@ -1285,11 +1300,13 @@ export default {
                         if(!existe)
                         {
                             this.alfabetoAP2.push(this.transicionAP2.label);
+                            this.alfabetoAP2=this.simplificarAlfabeto(this.alfabetoAP2);
                         }
                         console.log("Alfabeto AP2: ",this.alfabetoAP2);
                     }
                 }
             }
+            
         },
 
         estadosDistintos(estados,estado)
@@ -1769,8 +1786,10 @@ export default {
         revisartransicion(transaux, label){
             var array2 = [];
             array2 = label.split('');
+            console.log('transaux rev transicion: ',transaux) //var aux = transicion.label if aux==transiciones.labelsig avanza pero no agrega 
             console.log('revisartransicion',array2);
             array2 = this.encontrarparentesis(array2);   
+            console.log("array encontrarparentesis: ",array2);
             if(transaux.includes('+')){ // se asume que en transaux existe un a+b o un a+b+c
                 if(array2.includes('+')){ /* [a,b,b,*,a, (,a,+,b,),*,a,+,b,a,(,a,+,b,),*] */ 
                     if(array2[array2.length-1]==transaux || array2[array2.length-3]==transaux){
@@ -1815,17 +1834,19 @@ export default {
                             i++;
                         }
                         else{
-                            console.log('agregamos: ',array[j]);
-                            aux=aux.concat(array[j]);
-                            i++;
-                            if(j+1<=array.length-1){
-                                if(array[j+1]=='*')
-                                {
-                                    console.log('agregamos *', array[j+1]);
-                                    aux=aux.concat(array[j+1]);
-                                    i++;
+                            if(array[j]==')'){
+                                aux=aux.concat(array[j]);
+                                if(j+1<=array.length-1){
+                                    if(array[j+1]=='*')
+                                    {
+                                        console.log('agregamos *', array[j+1]);
+                                        aux=aux.concat(array[j+1]);
+                                        i++;
+                                    }
                                 }
+                                console.log('agregamos: ',array[j]);
                             }
+                            
                         }
                     }
                     arrayaux.push(aux);
@@ -1888,7 +1909,7 @@ export default {
                         {
                             console.log("encontro to del revisando en el from del transiciones");
                             transicion.to='Final';
-                            if(this.transicionesAutomataAFD[t].from==this.transicionesAutomataAFD[t].to)
+                            if(this.transicionesAutomataAFD[t].from==this.transicionesAutomataAFD[t].to) 
                             {
                                 console.log("entro 3.1");
                                 var transaux;
@@ -1896,6 +1917,7 @@ export default {
                                 {   
                                     console.log("entro 3.1.1");
                                     transaux='('+this.transicionesAutomataAFD[t].label+')*';
+                                    console.log("transicion.label: ", transicion.label);
                                     if(!this.revisartransicion(transaux, transicion.label)){
                                         console.log("entro 3.1.1.1");
                                         transicion.label=transicion.label.concat(transaux);
@@ -1904,6 +1926,7 @@ export default {
                                 else{
                                     console.log("entro 3.1.2");
                                     transaux=this.transicionesAutomataAFD[t].label+'*';
+                                    console.log("transicion.label: ", transicion.label);
                                     if(!this.revisartransicion(transaux, transicion.label)){
                                         console.log("entro 3.1.2.1");
                                         transicion.label=transicion.label.concat(transaux);
@@ -1918,7 +1941,7 @@ export default {
                             transicion.from=this.transicionesAutomataAFD[t].from;
                             console.log("transicion push", transicion);
                             this.transicionesAutomataAFD.push(transicion);
-                            transicion={from: '', label: '', to: '', color: {color: 'rgb(0,0,0)'}};
+                            //transicion={from: '', label: '', to: '', color: {color: 'rgb(0,0,0)'}};  
                             console.log("splice", this.transicionesAutomataAFD[t].from,this.transicionesAutomataAFD[t].label, this.transicionesAutomataAFD[t].to);
                             this.transicionesAutomataAFD.splice(t,1);
                             if(k!=0){
@@ -1987,8 +2010,8 @@ export default {
         sonIguales(final,cadena){                     
             var Final=final.split('E');    //EbabE -> split(E) ==> ["","bab",""]
             var cad= cadena.split('E');    // Ebabaa -> split(E) ==> ["","babaa"]
-            var aux1;
-            var aux2;
+            var aux1=[];
+            var aux2=[];
             for(var i=0; i<Final.length;i++)
             {
                 if(Final[i]!='')
@@ -2008,7 +2031,7 @@ export default {
 
             if(aux2.length>=aux1.length)        //aca los recorre y compara 
             {
-                for(k=0; k<aux1.length;k++)
+                for(let k=0; k<aux1.length;k++)
                 {
                     if(aux2[k]!=aux1[k])
                     {

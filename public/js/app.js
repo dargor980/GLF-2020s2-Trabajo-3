@@ -2294,8 +2294,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2798,6 +2796,18 @@ __webpack_require__.r(__webpack_exports__);
       console.log("Autómata eliminado");
       this.drawAutomata();
     },
+    simplificarAlfabeto: function simplificarAlfabeto(alfabeto) {
+      var newArr = [];
+      var myObj = {};
+      alfabeto.forEach(function (el) {
+        if (!(el in myObj)) {
+          myObj[el] = true;
+          newArr.push(el);
+        }
+      });
+      console.log(newArr);
+      return newArr;
+    },
     pilaAPs: function pilaAPs(pilaAP, pila, transiciones) {
       if (pila.length < 1) {
         pila.push('P');
@@ -3196,6 +3206,7 @@ __webpack_require__.r(__webpack_exports__);
 
         if (!existe) {
           this.alfabetoAFD.push(this.transicionAutomataAFD.label);
+          this.alfabetoAFD = this.simplificarAlfabeto(this.alfabetoAFD);
         }
 
         console.log("Alfabeto AFD: ", this.alfabetoAFD);
@@ -3215,6 +3226,7 @@ __webpack_require__.r(__webpack_exports__);
 
           if (!existe) {
             this.alfabetoAP1.push(this.transicionAP1.label);
+            this.alfabetoAP1 = this.simplificarAlfabeto(this.alfabetoAP1);
           }
 
           console.log("Alfabeto AP1: ", this.alfabetoAP1);
@@ -3234,6 +3246,7 @@ __webpack_require__.r(__webpack_exports__);
 
             if (!existe) {
               this.alfabetoAP2.push(this.transicionAP2.label);
+              this.alfabetoAP2 = this.simplificarAlfabeto(this.alfabetoAP2);
             }
 
             console.log("Alfabeto AP2: ", this.alfabetoAP2);
@@ -3711,8 +3724,11 @@ __webpack_require__.r(__webpack_exports__);
     revisartransicion: function revisartransicion(transaux, label) {
       var array2 = [];
       array2 = label.split('');
+      console.log('transaux rev transicion: ', transaux); //var aux = transicion.label if aux==transiciones.labelsig avanza pero no agrega 
+
       console.log('revisartransicion', array2);
       array2 = this.encontrarparentesis(array2);
+      console.log("array encontrarparentesis: ", array2);
 
       if (transaux.includes('+')) {
         // se asume que en transaux existe un a+b o un a+b+c
@@ -3762,16 +3778,18 @@ __webpack_require__.r(__webpack_exports__);
               aux = aux.concat(array[j]);
               i++;
             } else {
-              console.log('agregamos: ', array[j]);
-              aux = aux.concat(array[j]);
-              i++;
+              if (array[j] == ')') {
+                aux = aux.concat(array[j]);
 
-              if (j + 1 <= array.length - 1) {
-                if (array[j + 1] == '*') {
-                  console.log('agregamos *', array[j + 1]);
-                  aux = aux.concat(array[j + 1]);
-                  i++;
+                if (j + 1 <= array.length - 1) {
+                  if (array[j + 1] == '*') {
+                    console.log('agregamos *', array[j + 1]);
+                    aux = aux.concat(array[j + 1]);
+                    i++;
+                  }
                 }
+
+                console.log('agregamos: ', array[j]);
               }
             }
           }
@@ -3861,6 +3879,7 @@ __webpack_require__.r(__webpack_exports__);
                 if (this.transicionesAutomataAFD[t].label.includes('+')) {
                   console.log("entro 3.1.1");
                   transaux = '(' + this.transicionesAutomataAFD[t].label + ')*';
+                  console.log("transicion.label: ", transicion.label);
 
                   if (!this.revisartransicion(transaux, transicion.label)) {
                     console.log("entro 3.1.1.1");
@@ -3869,6 +3888,7 @@ __webpack_require__.r(__webpack_exports__);
                 } else {
                   console.log("entro 3.1.2");
                   transaux = this.transicionesAutomataAFD[t].label + '*';
+                  console.log("transicion.label: ", transicion.label);
 
                   if (!this.revisartransicion(transaux, transicion.label)) {
                     console.log("entro 3.1.2.1");
@@ -3882,15 +3902,8 @@ __webpack_require__.r(__webpack_exports__);
 
               transicion.from = this.transicionesAutomataAFD[t].from;
               console.log("transicion push", transicion);
-              this.transicionesAutomataAFD.push(transicion);
-              transicion = {
-                from: '',
-                label: '',
-                to: '',
-                color: {
-                  color: 'rgb(0,0,0)'
-                }
-              };
+              this.transicionesAutomataAFD.push(transicion); //transicion={from: '', label: '', to: '', color: {color: 'rgb(0,0,0)'}};  
+
               console.log("splice", this.transicionesAutomataAFD[t].from, this.transicionesAutomataAFD[t].label, this.transicionesAutomataAFD[t].to);
               this.transicionesAutomataAFD.splice(t, 1);
 
