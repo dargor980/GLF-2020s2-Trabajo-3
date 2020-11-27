@@ -3708,6 +3708,87 @@ __webpack_require__.r(__webpack_exports__);
         var networkConcatenacion = new vis.Network(apConcatenados, dataAPConcatenados, options);
       }
     },
+    revisartransicion: function revisartransicion(transaux, label) {
+      var array2 = [];
+      array2 = label.split('');
+      console.log('revisartransicion', array2);
+      array2 = this.encontrarparentesis(array2);
+
+      if (transaux.includes('+')) {
+        // se asume que en transaux existe un a+b o un a+b+c
+        if (array2.includes('+')) {
+          /* [a,b,b,*,a, (,a,+,b,),*,a,+,b,a,(,a,+,b,),*] */
+          if (array2[array2.length - 1] == transaux || array2[array2.length - 3] == transaux) {
+            return true;
+          } else {
+            return false;
+          }
+        } else {
+          return false;
+        }
+      } else {
+        // se asume que en transaux existe un b*
+        if (transaux.includes('*')) {
+          // se asume que en transaux existe un a+b o un a+b+c
+          if (array2.includes('*')) {
+            /* [a,b,b*,a, (a+b)*,a+b,a] */
+            if (array2[array2.length - 1] == transaux || array2[array2.length - 3] == transaux) {
+              return true;
+            } else {
+              return false;
+            }
+          } else {
+            return false;
+          }
+        }
+      }
+    },
+    encontrarparentesis: function encontrarparentesis(array) {
+      console.log('encontro parentesis');
+      var aux = '';
+      var arrayaux = [];
+      console.log('array.length: ', array.length);
+
+      for (var i = 0; i < array.length; i++) {
+        console.log('entro');
+
+        if (array[i] == '(') {
+          console.log('encontro! : (');
+          aux = aux.concat(array[i]);
+
+          for (var j = i; j < array.length; j++) {
+            if (array[j] != ')') {
+              console.log('encontro! : ), agregamos:', array[j]);
+              aux = aux.concat(array[j]);
+              i++;
+            } else {
+              console.log('agregamos: ', array[j]);
+              aux = aux.concat(array[j]);
+              i++;
+
+              if (j + 1 <= array.length - 1) {
+                if (array[j + 1] == '*') {
+                  console.log('agregamos *', array[j + 1]);
+                  aux = aux.concat(array[j + 1]);
+                  i++;
+                }
+              }
+            }
+          }
+
+          arrayaux.push(aux);
+          console.log('aux', aux);
+          console.log('arrayaux1', arrayaux);
+          aux = '';
+        } else {
+          arrayaux.push(array[i]);
+          console.log('arrayaux2', arrayaux);
+        }
+      }
+
+      console.log('arrayaux3', arrayaux);
+      return arrayaux;
+    },
     encontrarExpresionRegular: function encontrarExpresionRegular() {
       var finales = []; //Se busca los finales y se agregan al arreglo finales
 
@@ -3762,32 +3843,44 @@ __webpack_require__.r(__webpack_exports__);
       for (var k = 0; k < this.transicionesAutomataAFD.length; k++) {
         console.log("k =", k, "/ ", this.transicionesAutomataAFD.length);
 
-        if (this.transicionesAutomataAFD[k].from === primero) {
+        if (this.transicionesAutomataAFD[k].from != primero && this.transicionesAutomataAFD[k].to == 'Final') {
           intermedio = this.transicionesAutomataAFD[k];
           console.log("Intermedio: ", intermedio.to);
-          console.log("Revisados: ", revisado);
 
           for (var t = 0; t < this.transicionesAutomataAFD.length; t++) {
             console.log("t =", t, "/ ", this.transicionesAutomataAFD.length);
 
-            if (this.transicionesAutomataAFD[t].from === intermedio.to && t != k) {
+            if (this.transicionesAutomataAFD[t].to === intermedio.from && t != k) {
               console.log("encontro to del revisando en el from del transiciones");
-              transicion.from = primero;
+              transicion.to = 'Final';
 
               if (this.transicionesAutomataAFD[t].from == this.transicionesAutomataAFD[t].to) {
                 console.log("entro 3.1");
+                var transaux;
 
                 if (this.transicionesAutomataAFD[t].label.includes('+')) {
-                  transicion.label = transicion.label + '(' + this.transicionesAutomataAFD[t].label + ')*';
+                  console.log("entro 3.1.1");
+                  transaux = '(' + this.transicionesAutomataAFD[t].label + ')*';
+
+                  if (!this.revisartransicion(transaux, transicion.label)) {
+                    console.log("entro 3.1.1.1");
+                    transicion.label = transicion.label.concat(transaux);
+                  }
                 } else {
-                  transicion.label = transicion.label + this.transicionesAutomataAFD[t].label + '*';
+                  console.log("entro 3.1.2");
+                  transaux = this.transicionesAutomataAFD[t].label + '*';
+
+                  if (!this.revisartransicion(transaux, transicion.label)) {
+                    console.log("entro 3.1.2.1");
+                    transicion.label = transicion.label.concat(transaux);
+                  }
                 }
               } else {
                 console.log("entro 3.2");
-                transicion.label = transicion.label + this.transicionesAutomataAFD[t].label;
+                transicion.label = transicion.label.concat(this.transicionesAutomataAFD[t].label);
               }
 
-              transicion.to = this.transicionesAutomataAFD[t].to;
+              transicion.from = this.transicionesAutomataAFD[t].from;
               console.log("transicion push", transicion);
               this.transicionesAutomataAFD.push(transicion);
               transicion = {
@@ -3826,8 +3919,6 @@ __webpack_require__.r(__webpack_exports__);
               }
             }
           }
-
-          revisado.push(intermedio.to);
         }
       }
 
