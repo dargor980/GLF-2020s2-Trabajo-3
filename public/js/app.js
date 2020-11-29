@@ -2294,6 +2294,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2487,7 +2494,7 @@ __webpack_require__.r(__webpack_exports__);
       if (this.existeFinales(1)) {
         this.opcion = 1;
       } else {
-        swal("Para proseguir debe marcar como final a lo menos un estado el autómata", {
+        swal("Para proseguir debe marcar como final a lo menos un estado del autómata AFD", {
           className: "alertas",
           button: 'Aceptar',
           title: "Aviso",
@@ -2636,8 +2643,8 @@ __webpack_require__.r(__webpack_exports__);
             return;
           }
 
-          for (var i = 0; i < this.transicionesAP1.length; i++) {
-            if (this.transicionesAP1[i].from === this.transicionAP1.from && this.transicionesAP1[i].label === this.transicionAP1.label) {
+          for (var j = 0; j < this.transicionesAP1.length; j++) {
+            if (this.transicionesAP1[j].from === this.transicionAP1.from && this.transicionesAP1[j].label === this.transicionAP1.label) {
               swal("La transición ya existe. Ingrese otra", {
                 className: "alertas",
                 button: "Aceptar",
@@ -2685,8 +2692,8 @@ __webpack_require__.r(__webpack_exports__);
               return;
             }
 
-            for (var i = 0; i < this.transicionesAP2.length; i++) {
-              if (this.transicionesAP2[i].from === this.transicionAP2.from && this.transicionesAP2[i].label === this.transicionAP2.label) {
+            for (var k = 0; k < this.transicionesAP2.length; k++) {
+              if (this.transicionesAP2[k].from === this.transicionAP2.from && this.transicionesAP2[k].label === this.transicionAP2.label) {
                 swal("La transición ya existe. Ingrese otra", {
                   className: "alertas",
                   button: "Aceptar",
@@ -2724,7 +2731,6 @@ __webpack_require__.r(__webpack_exports__);
       this.drawAutomata();
     },
     existeTransicionAFD: function existeTransicionAFD(transiciones, transicion) {
-      var existe = false;
       var caracteres = [];
       var aux;
 
@@ -2758,14 +2764,14 @@ __webpack_require__.r(__webpack_exports__);
         var existe1 = false;
         var existe2 = false;
 
-        for (var i = 0; i < this.estadosAP1.length; i++) {
-          if (this.estadosAP1[i]["final"] === true) {
+        for (var j = 0; j < this.estadosAP1.length; j++) {
+          if (this.estadosAP1[j]["final"] === true) {
             existe1 = true;
           }
         }
 
-        for (var j = 0; j < this.estadosAP2.length; j++) {
-          if (this.estadosAP2[j]["final"] === true) {
+        for (var k = 0; k < this.estadosAP2.length; k++) {
+          if (this.estadosAP2[k]["final"] === true) {
             existe2 = true;
           }
         }
@@ -2833,9 +2839,7 @@ __webpack_require__.r(__webpack_exports__);
               var newT = transiciones[i].label + '|' + 'E' + '|' + pilaAP.agrega;
               console.log("newT:", newT);
               transiciones[i].label = newT;
-              newT = ''; //funcion agregareliminar
-              //this.pila1.push(this.pilaAP1.agrega)
-
+              newT = '';
               pilaAP.agrega = '';
             }
           }
@@ -2852,9 +2856,7 @@ __webpack_require__.r(__webpack_exports__);
             console.log("newT:", _newT);
             transiciones[j].label = _newT;
             _newT = '';
-          } //funcion agregareliminar
-          //this.pila1.pop(this.pilaAP1.elimina)
-
+          }
 
           pilaAP.elimina = '';
         }
@@ -2868,10 +2870,7 @@ __webpack_require__.r(__webpack_exports__);
               var newElim = transiciones[z].label + '|' + pilaAP.elimina + '|' + pilaAP.agrega;
               console.log("newElim", newElim);
               transiciones[z].label = newElim;
-              newElim = ''; //funcion agregareliminar
-              //this.pila1.pop(this.pilaAP1.elimina)
-              //this.pila1.push(this.pilaAP1.agrega)
-
+              newElim = '';
               pilaAP.agrega = '';
               pilaAP.elimina = '';
             }
@@ -2902,9 +2901,7 @@ __webpack_require__.r(__webpack_exports__);
               var newT1 = transiciones[f].label + '|' + 'E' + '|' + pilaAP.agrega;
               console.log("newT1:", newT1);
               transiciones[f].label = newT1;
-              newT1 = ''; //funcion agregareliminar
-              //this.pila1.push(this.pilaAP1.agrega)
-
+              newT1 = '';
               pilaAP.agrega = '';
             }
           }
@@ -2919,9 +2916,7 @@ __webpack_require__.r(__webpack_exports__);
               var newT2 = transiciones[d].label + '|' + pilaAP.elimina + '|' + 'E';
               console.log("newT2:", newT2);
               transiciones[d].label = newT2;
-              newT2 = ''; //funcion agregareliminar
-              //this.pila1.pop(this.pilaAP1.elimina)
-
+              newT2 = '';
               pilaAP.elimina = '';
             }
           }
@@ -2937,10 +2932,7 @@ __webpack_require__.r(__webpack_exports__);
               var newElim1 = transiciones[o].label + '|' + pilaAP.elimina + '|' + pilaAP.agrega;
               console.log("newElim1", newElim1);
               transiciones[o].label = newElim1;
-              newElim1 = ''; //funcion agregareliminar(elimina || agrega )
-              //this.pila1.pop(this.pilaAP1.elimina)
-              //this.pila1.push(this.pilaAP1.agrega)
-
+              newElim1 = '';
               pilaAP.agrega = '';
               pilaAP.elimina = '';
             }
@@ -2952,19 +2944,31 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     unionAp: function unionAp() {
-      this.estadosAP1.splice(0, 1);
-      this.estadosAP2.splice(0, 1);
-      this.transicionesAP1.splice(0, 1);
-      this.transicionesAP2.splice(0, 1);
-      this.copiarAutomata(this.estadosAP1, this.transicionesAP1, this.estadosAutomataUnionAP, this.transicionesAutomataUnionAP);
-      this.estadosAutomataUnionAP = this.estadosAutomataUnionAP.concat(this.estadosAP2);
-      this.transicionesAutomataUnionAP = this.transicionesAutomataUnionAP.concat(this.transicionesAP2);
+      var Eap1 = [];
+      var Tap1 = [];
+      var Eap2 = [];
+      var Tap2 = [];
+      this.transicionesAutomataUnionAP = [];
+      this.estadosAutomataUnionAP = [];
+      this.copiarAutomata(this.estadosAP1, this.transicionesAP1, Eap1, Tap1);
+      this.copiarAutomata(this.estadosAP2, this.transicionesAP2, Eap2, Tap2);
+      Eap1.splice(0, 1);
+      Eap2.splice(0, 1);
+      Tap1.splice(0, 1);
+      Tap2.splice(0, 1);
+      console.log("eap1: ", Eap1);
+      console.log("eap1: ", Tap1);
+      console.log("Eap2 : ", Eap2);
+      console.log("Tap2 : ", Tap2);
+      this.copiarAutomata(Eap1, Tap1, this.estadosAutomataUnionAP, this.transicionesAutomataUnionAP);
+      this.estadosAutomataUnionAP = this.estadosAutomataUnionAP.concat(Eap2);
+      this.transicionesAutomataUnionAP = this.transicionesAutomataUnionAP.concat(Tap2);
       this.estadoAutomataUnionAP.id = 'inicio';
       this.estadoAutomataUnionAP.label = 'inicio';
       this.estadoAutomataUnionAP.color = '#C25C0B';
       this.estadosAutomataUnionAP.push(this.estadoAutomataUnionAP);
       this.transicionAutomataUnionAP.from = 'inicio';
-      this.transicionAutomataUnionAP.to = this.estadosAP1[0].id;
+      this.transicionAutomataUnionAP.to = Eap1[0].id;
       this.transicionAutomataUnionAP.label = 'E|E|E';
       this.transicionesAutomataUnionAP.push(this.transicionAutomataUnionAP);
       this.transicionAutomataUnionAP = {
@@ -2976,7 +2980,7 @@ __webpack_require__.r(__webpack_exports__);
         }
       };
       this.transicionAutomataUnionAP.from = 'inicio';
-      this.transicionAutomataUnionAP.to = this.estadosAP2[0].id;
+      this.transicionAutomataUnionAP.to = Eap2[0].id;
       this.transicionAutomataUnionAP.label = 'E|E|E';
       this.transicionesAutomataUnionAP.push(this.transicionAutomataUnionAP);
       console.log(this.transicionesAutomataUnionAP);
@@ -3890,45 +3894,62 @@ __webpack_require__.r(__webpack_exports__);
 
             for (var w = 0; w < arrayentrada.length; w++) {
               cant.label = arrayentrada[w];
+              console.log('cant', cant);
 
-              for (var x = 0; x < arrayentrada.length; x++) {
-                if (arrayentrada[w] == arrayentrada[x] && x != w) {
-                  c++;
+              if (arrayentrada.length == 0) {
+                cant.cantidad = 0;
+                arraycantentrada.push(cant);
+              } else {
+                for (var x = 0; x < arrayentrada.length; x++) {
+                  if (arrayentrada[w] == arrayentrada[x] && w != x) {
+                    c++;
+                  }
                 }
-              }
 
-              cant.cantidad = c;
-              console.log("push entrada");
-              arraycantentrada.push(cant);
-              c = 0;
-              cant = {
-                label: '',
-                cantidad: 0
-              };
+                cant.cantidad = c;
+                console.log("push entrada");
+
+                if (!this.existeenarray(cant.label, arraycantentrada)) {
+                  arraycantentrada.push(cant);
+                }
+
+                c = 0;
+                cant = {
+                  label: '',
+                  cantidad: 0
+                };
+              }
             }
+
+            console.log("array cant entrada", arraycantentrada);
 
             for (var y = 0; y < arraysalida.length; y++) {
               cant.label = arraysalida[y];
               console.log('cant', cant);
 
-              for (var z = 0; z < arraysalida.length; z++) {
-                if (arraysalida[y] == arraysalida[z] && z != y) {
-                  c++;
-                  cant.cantidad = c;
-                }
-              }
-
-              console.log("push salida");
-
-              if (!this.existeenarray(cant.label, arraycantsalida)) {
+              if (arraysalida.length == 0) {
+                cant.cantidad = 0;
                 arraycantsalida.push(cant);
-              }
+              } else {
+                for (var z = 0; z < arraysalida.length; z++) {
+                  if (arraysalida[y] == arraysalida[z] && y != z) {
+                    c++;
+                  }
+                }
 
-              c = 0;
-              cant = {
-                label: '',
-                cantidad: 0
-              };
+                cant.cantidad = c;
+
+                if (!this.existeenarray(cant.label, arraycantsalida)) {
+                  console.log("push salida");
+                  arraycantsalida.push(cant);
+                }
+
+                c = 0;
+                cant = {
+                  label: '',
+                  cantidad: 0
+                };
+              }
             }
 
             console.log("array cant salida", arraycantsalida);
@@ -3940,9 +3961,49 @@ __webpack_require__.r(__webpack_exports__);
 
                 for (var t = 0; t < arraytrans.length; t++) {
                   if (arraytrans[t].from == arrayentrada[r]) {
-                    labelaux = labelaux.concat(arraytrans[t].label);
+                    for (var f = 0; f < arraycantentrada.length; f++) {
+                      console.log('arrayccantentrada[f].label', arraycantentrada[f].label, 'arraytrans[t].label', arraytrans[t].label);
+
+                      if (arraytrans[t].from == arraycantentrada[f].label) {
+                        console.log('arraycantentrada[f].label==arraytrans[t].label');
+
+                        if (arraycantentrada[f].cantidad == 0) {
+                          console.log("concatene 1", arraytrans[t].label);
+                          labelaux = labelaux.concat(arraytrans[t].label);
+                          console.log('labelaux', labelaux);
+                          t = arraytrans.length;
+                          f = arraycantentrada.length;
+                        } else {
+                          console.log('else de la discordia');
+                          var arrayIndice = [];
+                          console.log("entra", arraytrans, arraycantentrada[f].label);
+
+                          for (var toar = 0; toar < arraytrans.length; toar++) {
+                            if (arraytrans[toar].from == arraycantentrada[f].label) {
+                              arrayIndice.push(toar);
+                            } else {
+                              console.log('no ta');
+                            }
+                          }
+
+                          console.log('arrayIndice', arrayIndice);
+                          var aparte1 = arrayIndice.pop();
+                          console.log("concatene 2", arraytrans[aparte1].label);
+                          labelaux = labelaux.concat(arraytrans[aparte1].label);
+                          arraycantentrada[f].cantidad = arraycantentrada[f].cantidad - 1;
+                          console.log("array cant entrada", arraycantentrada[f]);
+                          console.log("array Indice después", arrayIndice);
+                          t = arraytrans.length;
+                          f = arraycantentrada.length;
+                        }
+                      } else {
+                        console.log("ahora te queremos Geraud");
+                      }
+                    }
                   }
                 }
+
+                arrayIndice = [];
 
                 for (var u = 0; u < arraytrans.length; u++) {
                   if (arraytrans[u].from == arraytrans[u].to) {
@@ -3967,7 +4028,7 @@ __webpack_require__.r(__webpack_exports__);
                         console.log('arraycantsalida[a].label==arraytrans[v].label');
 
                         if (arraycantsalida[a].cantidad == 0) {
-                          console.log("concatene una wea 1", arraytrans[v].label);
+                          console.log("concatene 1", arraytrans[v].label);
                           labelaux = labelaux.concat(arraytrans[v].label);
                           console.log('labelaux', labelaux);
                           v = arraytrans.length;
@@ -3978,9 +4039,9 @@ __webpack_require__.r(__webpack_exports__);
                           var arrayIndice = [];
                           console.log("entra", arraytrans, arraycantsalida[a].label);
 
-                          for (var toar = 0; toar < arraytrans.length; toar++) {
-                            if (arraytrans[toar].to == arraycantsalida[a].label) {
-                              arrayIndice.push(toar);
+                          for (var _toar = 0; _toar < arraytrans.length; _toar++) {
+                            if (arraytrans[_toar].to == arraycantsalida[a].label) {
+                              arrayIndice.push(_toar);
                             } else {
                               console.log('no ta');
                             }
@@ -3988,7 +4049,7 @@ __webpack_require__.r(__webpack_exports__);
 
                           console.log('arrayIndice', arrayIndice);
                           var aparte = arrayIndice.pop();
-                          console.log("concatene una wea 2", arraytrans[aparte].label);
+                          console.log("concatene 2", arraytrans[aparte].label);
                           labelaux = labelaux.concat(arraytrans[aparte].label);
                           arraycantsalida[a].cantidad = arraycantsalida[a].cantidad - 1;
                           console.log("array cant salida", arraycantsalida[a]);
@@ -3997,7 +4058,7 @@ __webpack_require__.r(__webpack_exports__);
                           a = arraycantsalida.length;
                         }
                       } else {
-                        console.log("chupala geraud");
+                        console.log("ahora te queremos Geraud");
                       }
                     }
                   }
@@ -4028,9 +4089,60 @@ __webpack_require__.r(__webpack_exports__);
         } else {
           k = 999999;
         }
+
+        if (this.transicionesAutomataAFD[this.transicionesAutomataAFD.length - 1].from == 'inicio' && this.transicionesAutomataAFD[this.transicionesAutomataAFD.length - 1].to == 'Final') {
+          k = 999999;
+        }
       }
 
+      var expFinal = '';
+      console.log("transiciones finales: ", this.transicionesAutomataAFD);
+
+      for (var b = 0; b < this.transicionesAutomataAFD.length; b++) {
+        var expresion = void 0;
+        expresion = this.transicionesAutomataAFD[b].label.split('');
+        expresion.splice(0, 1);
+        expresion.splice(expresion.length - 1, 1);
+        expresion = expresion.join('');
+        this.transicionesAutomataAFD[b].label = expresion;
+
+        if (expFinal == '') {
+          expFinal = this.transicionesAutomataAFD[b].label;
+        } else {
+          expFinal = expFinal + ' + ' + this.transicionesAutomataAFD[b].label;
+        }
+      }
+
+      console.log("Expresion final: ", expFinal);
+      this.transicionesAutomataAFD = [];
+      this.transicionAutomataAFD = {
+        from: 'inicio',
+        label: expFinal,
+        to: 'Final',
+        color: {
+          color: 'rgb(0,0,0)'
+        }
+      };
+      this.transicionesAutomataAFD.push(this.transicionAutomataAFD);
+      this.transicionAutomataAFD = {
+        from: '',
+        label: '',
+        to: '',
+        color: {
+          color: 'rgb(0,0,0)'
+        }
+      };
+      this.eliminarEstados(this.estadosAutomataAFD);
+      this.expresionRegularAFD = expFinal;
       this.drawAutomata();
+    },
+    eliminarEstados: function eliminarEstados(estados) {
+      for (var c = 0; c < estados.length; c++) {
+        if (estados[c].id != 'inicio' && estados[c].id != 'Final') {
+          estados.splice(c, 1);
+          c--;
+        }
+      }
     },
     buscarToEnArray: function buscarToEnArray(array, efto) {
       var indices = [];
@@ -4059,71 +4171,31 @@ __webpack_require__.r(__webpack_exports__);
 
       for (var j = 0; j < this.transicionesAutomataAFD.length; j++) {
         for (var k = 0; k < finales.length; k++) {
-          if (this.transicionesAutomataAFD[j].from === finales[k]) {
-            for (var t = 0; t < this.estadosAutomataAFD.length; t++) {
-              if (this.estadosAutomataAFD[t]["final"] === true) {
-                this.estadosAutomataAFD[t]["final"] = false;
-                this.estadosAutomataAFD[t].shape = 'ellipse';
-                this.estadosAutomataAFD[t].color = '#C25C0B';
-              }
+          for (var t = 0; t < this.estadosAutomataAFD.length; t++) {
+            if (this.estadosAutomataAFD[t]["final"] === true) {
+              this.estadosAutomataAFD[t]["final"] = false;
+              this.estadosAutomataAFD[t].shape = 'ellipse';
+              this.estadosAutomataAFD[t].color = '#C25C0B';
             }
-
-            this.estadoAutomataAFD["final"] = true;
-            this.estadoAutomataAFD.shape = 'diamond';
-            this.estadoAutomataAFD.color = '#5cb85c';
-            this.estadoAutomataAFD.id = 'Final';
-            this.estadoAutomataAFD.label = 'Final';
-            this.estadosAutomataAFD.push(this.estadoAutomataAFD);
-            this.estadoAutomataAFD = {
-              id: '',
-              label: '',
-              color: '#C25C0B',
-              "final": false
-            };
-            return true;
           }
+
+          this.estadoAutomataAFD["final"] = true;
+          this.estadoAutomataAFD.shape = 'diamond';
+          this.estadoAutomataAFD.color = '#5cb85c';
+          this.estadoAutomataAFD.id = 'Final';
+          this.estadoAutomataAFD.label = 'Final';
+          this.estadosAutomataAFD.push(this.estadoAutomataAFD);
+          this.estadoAutomataAFD = {
+            id: '',
+            label: '',
+            color: '#C25C0B',
+            "final": false
+          };
+          return true;
         }
       }
 
       return false;
-    },
-    sonIguales: function sonIguales(_final2, cadena) {
-      var Final = _final2.split('E'); //EbabE -> split(E) ==> ["","bab",""]
-
-
-      var cad = cadena.split('E'); // Ebabaa -> split(E) ==> ["","babaa"]
-
-      var aux1 = [];
-      var aux2 = [];
-
-      for (var i = 0; i < Final.length; i++) {
-        if (Final[i] != '') {
-          aux1 = Final[i]; //aux1="bab"
-        }
-      }
-
-      aux1 = aux1.split(''); //aux1= ['b','a','b']
-
-      for (var j = 0; j < cad.length; j++) {
-        if (cad[j] != '') {
-          aux2 = cad[j]; //aux2="babaa"
-        }
-      }
-
-      aux2 = aux2.split(''); //aux2=['b','a','b','a','a']
-
-      if (aux2.length >= aux1.length) //aca los recorre y compara 
-        {
-          for (var k = 0; k < aux1.length; k++) {
-            if (aux2[k] != aux1[k]) {
-              return false;
-            }
-          }
-
-          return true;
-        } else {
-        return false;
-      }
     }
   }
 });
@@ -96463,15 +96535,25 @@ var render = function() {
             { staticClass: "card cardaux3 col-md-10 rounded-bottom mb-3" },
             [
               _c("div", { staticClass: "container my-3" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-success",
-                    on: { click: _vm.encontrarExpresionRegular }
-                  },
-                  [_vm._v("Mostrar expresion regular")]
-                ),
-                _vm._v("\n                aaaaaaaaaaaaaa\n            ")
+                _c("div", { staticClass: "text-center" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-success",
+                      on: { click: _vm.encontrarExpresionRegular }
+                    },
+                    [_vm._v("Mostrar expresion regular")]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "my-3" }, [
+                  _vm._v(
+                    "\n                    La expresión regular del AFD es: "
+                  ),
+                  _c("strong", [
+                    _vm._v(" " + _vm._s(_vm.expresionRegularAFD) + " ")
+                  ])
+                ])
               ])
             ]
           )
@@ -96491,20 +96573,21 @@ var render = function() {
             { staticClass: "card cardaux3 col-md-10 rounded-bottom mb-3" },
             [
               _c("div", { staticClass: "container my-3" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-success",
-                    on: { click: _vm.concatenacionAP }
-                  },
-                  [_vm._v("Mostrar concatenación")]
-                ),
+                _c("div", { staticClass: "text-center my-3" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-success",
+                      on: { click: _vm.concatenacionAP }
+                    },
+                    [_vm._v("Mostrar concatenación")]
+                  )
+                ]),
                 _vm._v(" "),
                 _c("div", {
                   staticStyle: { border: "1px solid lightgray" },
                   attrs: { id: "APCONCATENADO" }
-                }),
-                _vm._v("\n                aaaaaaaaaaaaaa\n            ")
+                })
               ])
             ]
           )
@@ -96524,20 +96607,21 @@ var render = function() {
             { staticClass: "card cardaux3 col-md-10 rounded-bottom mb-3" },
             [
               _c("div", { staticClass: "container my-3" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-success",
-                    on: { click: _vm.unionAp }
-                  },
-                  [_vm._v("Mostrar Unión UWU")]
-                ),
+                _c("div", { staticClass: "text-center my-3" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-success",
+                      on: { click: _vm.unionAp }
+                    },
+                    [_vm._v("Mostrar Unión")]
+                  )
+                ]),
                 _vm._v(" "),
                 _c("div", {
                   staticStyle: { border: "1px solid lightgray" },
                   attrs: { id: "APUNIDOS" }
-                }),
-                _vm._v("\n                aaaaaaaaaaaaaa\n            ")
+                })
               ])
             ]
           )
@@ -96733,7 +96817,7 @@ var staticRenderFns = [
                     attrs: { id: "af", "data-parent": "#automatas" }
                   },
                   [
-                    _c("div", {}, [
+                    _c("div", { staticClass: "my-3" }, [
                       _c(
                         "div",
                         { staticClass: "row d-flex justify-content-center" },
@@ -96746,15 +96830,61 @@ var staticRenderFns = [
                       _vm._v(" "),
                       _c("p", { staticClass: "textocolor lato" }, [
                         _vm._v(
-                          "\n                                aaaaaaaaaa\n                            "
-                        )
+                          "\n                                Existe un tipo de autómata que define los lenguajes independientes del contexto.\n                                Dicho autómata, conocido como “autómata de pila”, es una extensión del autómata finito\n                                no determinista con transiciones-ε ,\n                                el cual constituye una forma de definir los lenguajes regulares.\n                                El autómata de pila es fundamentalmente un AFN-ε con la adición de una pila.\n                                "
+                        ),
+                        _c("br"),
+                        _vm._v(" "),
+                        _c("br"),
+                        _vm._v(
+                          "\n                                Un autómata con pila puede ser descrito como una séptupla "
+                        ),
+                        _c("strong", [
+                          _c("em", [_vm._v("M = (S,Σ,Γ,δ,s,Z,F)")])
+                        ]),
+                        _vm._v("  donde: "),
+                        _c("br"),
+                        _vm._v(" "),
+                        _c("strong", [_vm._v("S")]),
+                        _vm._v(" es un conjunto finito de estados "),
+                        _c("br"),
+                        _vm._v(" "),
+                        _c("strong", [_vm._v("Σ")]),
+                        _vm._v(" y "),
+                        _c("strong", [_vm._v("Γ")]),
+                        _vm._v(
+                          "  son alfabetos (símbolos de entrada y de la pila respectivamente) "
+                        ),
+                        _c("br"),
+                        _vm._v(" "),
+                        _c("strong", [
+                          _vm._v("δ : S × (Σ ∪ {ε}) x Γ → ℘(S x Γ*) ")
+                        ]),
+                        _c("br"),
+                        _vm._v(" "),
+                        _c("strong", [_vm._v("s ∈ S")]),
+                        _vm._v("  es el estado inicial "),
+                        _c("br"),
+                        _vm._v(" "),
+                        _c("strong", [_vm._v("Z ∈ Γ")]),
+                        _vm._v("  es el símbolo inicial de la pila"),
+                        _c("br"),
+                        _vm._v(" "),
+                        _c("strong", [_c("em", [_vm._v("F ⊆ S")])]),
+                        _vm._v(
+                          "  es un conjunto de estados de aceptación o finales"
+                        ),
+                        _c("br")
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "row justify-content-center" }, [
                         _c("div", { staticClass: "image-parent" }, [
                           _c("img", {
-                            staticClass: "img-fluid",
-                            attrs: { src: "", alt: "AP" }
+                            staticStyle: { "border-radius": "10px" },
+                            attrs: {
+                              src:
+                                "https://upload.wikimedia.org/wikipedia/commons/1/13/Ejemplo_1_AFPN.JPG",
+                              alt: "AP"
+                            }
                           })
                         ])
                       ])
@@ -96775,24 +96905,23 @@ var staticRenderFns = [
                         { staticClass: "row d-flex justify-content-center" },
                         [
                           _c("h4", { staticClass: "textocolor fredoka" }, [
-                            _vm._v("Expresion Regular")
+                            _vm._v("Expresión Regular")
                           ])
                         ]
                       ),
                       _vm._v(" "),
                       _c("p", { staticClass: "textocolor lato" }, [
                         _vm._v(
-                          "\n                               aaaaaaaaa\n                            "
+                          "\n                               Una Expresión regular es un generador de lenguajes sobre un alfabeto con ciertas caractericticas (restricciones).\n                               En otras palabras, una expresión regular es una forma de representar los lenguajes regulares. "
+                        ),
+                        _c("br"),
+                        _vm._v(
+                          "\n                               Ésta se construye utilizando los caracteres del alfabeto sobre el cual se define el lenguaje.\n                            "
                         )
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "row justify-content-center" }, [
-                        _c("div", { staticClass: "image-parent" }, [
-                          _c("img", {
-                            staticClass: "img-fluid",
-                            attrs: { src: "", alt: "ER" }
-                          })
-                        ])
+                        _c("div", { staticClass: "image-parent" })
                       ])
                     ])
                   ]
@@ -109314,15 +109443,14 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /*!********************************************************!*\
   !*** ./resources/js/components/AutomatasComponent.vue ***!
   \********************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _AutomatasComponent_vue_vue_type_template_id_06dab8b6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AutomatasComponent.vue?vue&type=template&id=06dab8b6& */ "./resources/js/components/AutomatasComponent.vue?vue&type=template&id=06dab8b6&");
 /* harmony import */ var _AutomatasComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AutomatasComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/AutomatasComponent.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _AutomatasComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _AutomatasComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -109352,7 +109480,7 @@ component.options.__file = "resources/js/components/AutomatasComponent.vue"
 /*!*********************************************************************************!*\
   !*** ./resources/js/components/AutomatasComponent.vue?vue&type=script&lang=js& ***!
   \*********************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

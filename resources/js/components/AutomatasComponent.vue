@@ -348,8 +348,12 @@
             </div>
             <div class="card cardaux3 col-md-10 rounded-bottom mb-3" v-if="opcion===1">
                 <div class="container my-3">
-                    <button class="btn btn-success" @click="encontrarExpresionRegular">Mostrar expresion regular</button>
-                    aaaaaaaaaaaaaa
+                    <div class="text-center">
+                        <button class="btn btn-success" @click="encontrarExpresionRegular">Mostrar expresion regular</button>
+                    </div>
+                    <div class="my-3">
+                        La expresión regular del AFD es: <strong> {{expresionRegularAFD}} </strong>
+                    </div>
                 </div>
             </div>
 
@@ -359,9 +363,11 @@
             </div>
             <div class="card cardaux3 col-md-10 rounded-bottom mb-3" v-if="opcion===2">
                 <div class="container my-3">
-                    <button class="btn btn-success" @click="concatenacionAP">Mostrar concatenación</button>
+                    <div class="text-center my-3">
+                        <button class="btn btn-success" @click="concatenacionAP">Mostrar concatenación</button>
+                    </div>
                     <div id="APCONCATENADO" style="border:1px solid lightgray;"></div>
-                    aaaaaaaaaaaaaa
+                    
                 </div>
             </div>
 
@@ -371,9 +377,10 @@
             </div>
             <div class="card cardaux3 col-md-10 rounded-bottom mb-3" v-if="opcion===3">
                 <div class="container my-3">
-                    <button class="btn btn-success" @click="unionAp">Mostrar Unión UWU</button>
+                    <div class="text-center my-3">
+                        <button class="btn btn-success" @click="unionAp">Mostrar Unión</button>
+                    </div>
                     <div id="APUNIDOS" style="border:1px solid lightgray;"></div>
-                    aaaaaaaaaaaaaa
                 </div>
             </div>
 
@@ -531,7 +538,7 @@ export default {
                 this.opcion=1;
             }
             else{
-                swal("Para proseguir debe marcar como final a lo menos un estado el autómata",{
+                swal("Para proseguir debe marcar como final a lo menos un estado del autómata AFD",{
                     className: "alertas",
                     button:'Aceptar',
                     title:"Aviso",
@@ -702,9 +709,9 @@ export default {
                         });
                         return;
                     }
-                    for( var i =0; i<this.transicionesAP1.length; i++)
+                    for( var j =0; j<this.transicionesAP1.length; j++)
                     {
-                        if(this.transicionesAP1[i].from===this.transicionAP1.from && this.transicionesAP1[i].label === this.transicionAP1.label)
+                        if(this.transicionesAP1[j].from===this.transicionAP1.from && this.transicionesAP1[j].label === this.transicionAP1.label)
                         {
                             swal("La transición ya existe. Ingrese otra",{
                                 className: "alertas",
@@ -749,9 +756,9 @@ export default {
                             });
                             return;
                         }
-                        for( var i =0; i<this.transicionesAP2.length; i++)
+                        for( var k =0; k<this.transicionesAP2.length; k++)
                         {
-                            if(this.transicionesAP2[i].from===this.transicionAP2.from && this.transicionesAP2[i].label === this.transicionAP2.label)
+                            if(this.transicionesAP2[k].from===this.transicionAP2.from && this.transicionesAP2[k].label === this.transicionAP2.label)
                             {
                                 swal("La transición ya existe. Ingrese otra",{
                                     className: "alertas",
@@ -783,7 +790,6 @@ export default {
         },
 
         existeTransicionAFD(transiciones,transicion){
-            var existe= false;
             var caracteres= [];
             var aux;
 
@@ -824,17 +830,17 @@ export default {
                 var existe1=false;
                 var existe2=false;
 
-                for(var i=0; i<this.estadosAP1.length;i++)
+                for(var j=0; j<this.estadosAP1.length;j++)
                 {
-                    if(this.estadosAP1[i].final===true)
+                    if(this.estadosAP1[j].final===true)
                     {
                         existe1=true;
                     }
                 }
 
-                for(var j=0; j<this.estadosAP2.length;j++)
+                for(var k=0; k<this.estadosAP2.length;k++)
                 {
-                    if(this.estadosAP2[j].final===true)
+                    if(this.estadosAP2[k].final===true)
                     {
                         existe2=true;
                     }
@@ -912,8 +918,6 @@ export default {
                             console.log("newT:",newT);
                             transiciones[i].label= newT;
                             newT = ''
-                            //funcion agregareliminar
-                            //this.pila1.push(this.pilaAP1.agrega)
                             pilaAP.agrega=''
                         }
                     }    
@@ -927,8 +931,6 @@ export default {
                         transiciones[j].label= newT;
                         newT = '' 
                     }
-                    //funcion agregareliminar
-                    //this.pila1.pop(this.pilaAP1.elimina)
                     pilaAP.elimina=''
                 }
                 if(pilaAP.agrega!='' && pilaAP.elimina!=''){
@@ -940,9 +942,6 @@ export default {
                             console.log("newElim", newElim);
                             transiciones[z].label = newElim;
                             newElim='';
-                            //funcion agregareliminar
-                            //this.pila1.pop(this.pilaAP1.elimina)
-                            //this.pila1.push(this.pilaAP1.agrega)
                             pilaAP.agrega=''
                             pilaAP.elimina=''               
                         }
@@ -972,8 +971,6 @@ export default {
                             console.log("newT1:",newT1);
                             transiciones[f].label= newT1;
                             newT1 = ''
-                            //funcion agregareliminar
-                            //this.pila1.push(this.pilaAP1.agrega)
                             pilaAP.agrega=''
                         }
                     }                    
@@ -987,8 +984,6 @@ export default {
                             console.log("newT2:",newT2);
                             transiciones[d].label= newT2;
                             newT2 = ''                             
-                            //funcion agregareliminar
-                            //this.pila1.pop(this.pilaAP1.elimina)
                             pilaAP.elimina=''
                         }
                     }
@@ -1003,9 +998,6 @@ export default {
                             console.log("newElim1", newElim1);
                             transiciones[o].label = newElim1;
                             newElim1='';
-                            //funcion agregareliminar(elimina || agrega )
-                            //this.pila1.pop(this.pilaAP1.elimina)
-                            //this.pila1.push(this.pilaAP1.agrega)
                             pilaAP.agrega=''
                             pilaAP.elimina=''                           
                         }
@@ -1018,25 +1010,40 @@ export default {
         },
 
         unionAp(){
-            this.estadosAP1.splice(0,1);
-            this.estadosAP2.splice(0,1);
-            this.transicionesAP1.splice(0,1);
-            this.transicionesAP2.splice(0,1);
-            this.copiarAutomata(this.estadosAP1,this.transicionesAP1,this.estadosAutomataUnionAP,this.transicionesAutomataUnionAP);
-            this.estadosAutomataUnionAP= this.estadosAutomataUnionAP.concat(this.estadosAP2);
-            this.transicionesAutomataUnionAP= this.transicionesAutomataUnionAP.concat(this.transicionesAP2);
+            let Eap1=[];
+            let Tap1=[];
+    
+            let Eap2=[];
+            let Tap2=[];
+            this.transicionesAutomataUnionAP=[];
+            this.estadosAutomataUnionAP=[];
+            
+            this.copiarAutomata(this.estadosAP1,this.transicionesAP1,Eap1,Tap1);
+            this.copiarAutomata(this.estadosAP2,this.transicionesAP2,Eap2,Tap2);
+
+            Eap1.splice(0,1);
+            Eap2.splice(0,1);
+            Tap1.splice(0,1);
+            Tap2.splice(0,1);
+            console.log("eap1: ",Eap1);
+            console.log("eap1: ",Tap1);
+            console.log("Eap2 : ",Eap2);
+            console.log("Tap2 : ",Tap2);
+            this.copiarAutomata(Eap1,Tap1,this.estadosAutomataUnionAP,this.transicionesAutomataUnionAP);
+            this.estadosAutomataUnionAP= this.estadosAutomataUnionAP.concat(Eap2);
+            this.transicionesAutomataUnionAP= this.transicionesAutomataUnionAP.concat(Tap2);
             
             this.estadoAutomataUnionAP.id='inicio';
             this.estadoAutomataUnionAP.label='inicio';
             this.estadoAutomataUnionAP.color='#C25C0B';
             this.estadosAutomataUnionAP.push(this.estadoAutomataUnionAP);
             this.transicionAutomataUnionAP.from='inicio';
-            this.transicionAutomataUnionAP.to=this.estadosAP1[0].id;
+            this.transicionAutomataUnionAP.to=Eap1[0].id;
             this.transicionAutomataUnionAP.label='E|E|E';
             this.transicionesAutomataUnionAP.push(this.transicionAutomataUnionAP);
             this.transicionAutomataUnionAP={from: '', label: '', to: '', color: {color: 'rgb(0,0,0)'}}
             this.transicionAutomataUnionAP.from='inicio';
-            this.transicionAutomataUnionAP.to=this.estadosAP2[0].id;
+            this.transicionAutomataUnionAP.to=Eap2[0].id;
             this.transicionAutomataUnionAP.label='E|E|E';
             this.transicionesAutomataUnionAP.push(this.transicionAutomataUnionAP);
             console.log(this.transicionesAutomataUnionAP);
@@ -1925,36 +1932,53 @@ export default {
                         }
                         console.log("Array entrada:", arrayentrada);
                         console.log("Array salida:", arraysalida);
-                        for(let w=0; w<arrayentrada.length; w++){
+                        for(let w=0; w<arrayentrada.length; w++){ 
                             cant.label=arrayentrada[w];
-                            for(let x=0; x<arrayentrada.length; x++){
-                                if(arrayentrada[w]==arrayentrada[x] && x!=w){
-                                    c++;
+                            console.log('cant',cant);
+                            if(arrayentrada.length==0){
+                                cant.cantidad=0;
+                                arraycantentrada.push(cant);
+                            }else{
+                                for(let x=0; x<arrayentrada.length; x++){
+                                    if(arrayentrada[w]==arrayentrada[x] && w!=x){
+                                        c++;
+                                    }
                                 }
+                                cant.cantidad=c;
+                                console.log("push entrada");
+                                
+                                if(!this.existeenarray(cant.label, arraycantentrada)){
+                                    arraycantentrada.push(cant);
+                                }
+                                
+                                c=0;
+                                cant={label: '', cantidad: 0};
                             }
-                            cant.cantidad=c;
-                            console.log("push entrada");
-                            arraycantentrada.push(cant);
-                            c=0;
-                            cant={label: '', cantidad: 0};
                         }
+                        console.log("array cant entrada", arraycantentrada);
 
                         for(let y=0; y<arraysalida.length; y++){ 
                             cant.label=arraysalida[y];
                             console.log('cant',cant);
-                            for(let z=0; z<arraysalida.length; z++){
-                                if(arraysalida[y]==arraysalida[z] && z!=y){
-                                    c++;
-                                    cant.cantidad=c;
-                                }
-                            }
-                            console.log("push salida");
-                            
-                            if(!this.existeenarray(cant.label, arraycantsalida)){
+                            if(arraysalida.length==0){
+                                cant.cantidad=0;
                                 arraycantsalida.push(cant);
+                            }else{
+                                for(let z=0; z<arraysalida.length; z++){
+                                    if(arraysalida[y]==arraysalida[z] && y!=z){
+                                        c++;
+                                    }
+                                }
+                                cant.cantidad=c;
+                                
+                                if(!this.existeenarray(cant.label, arraycantsalida)){
+                                    console.log("push salida");
+                                    arraycantsalida.push(cant);
+                                }
+                                
+                                c=0;
+                                cant={label: '', cantidad: 0};
                             }
-                            c=0;
-                            cant={label: '', cantidad: 0};
                         }
                         console.log("array cant salida", arraycantsalida);
 
@@ -1964,9 +1988,46 @@ export default {
                                 transicion.to=arraysalida[s];
                                 for(var t=0; t<arraytrans.length; t++){
                                     if(arraytrans[t].from==arrayentrada[r]){
-                                        labelaux=labelaux.concat(arraytrans[t].label);
+                                        for(var f=0; f<arraycantentrada.length; f++){
+                                            console.log('arrayccantentrada[f].label',arraycantentrada[f].label,'arraytrans[t].label',arraytrans[t].label);
+                                            if(arraytrans[t].from == arraycantentrada[f].label){
+                                                console.log('arraycantentrada[f].label==arraytrans[t].label');
+                                                if(arraycantentrada[f].cantidad==0){
+                                                    console.log("concatene 1", arraytrans[t].label);
+                                                    labelaux = labelaux.concat(arraytrans[t].label);
+                                                    console.log('labelaux',labelaux);
+                                                    t=arraytrans.length;
+                                                    f=arraycantentrada.length; 
+                                                }
+                                                else{
+                                                    console.log('else de la discordia');
+                                                    var arrayIndice=[];
+                                                    console.log("entra", arraytrans, arraycantentrada[f].label);
+                                                    for(let toar=0; toar<arraytrans.length; toar++){
+                                                        if(arraytrans[toar].from==arraycantentrada[f].label){
+                                                            arrayIndice.push(toar);
+                                                        }
+                                                        else{
+                                                            console.log('no ta');
+                                                        }
+                                                    }
+                                                    console.log('arrayIndice',arrayIndice);
+                                                    let aparte1=arrayIndice.pop();
+                                                    console.log("concatene 2", arraytrans[aparte1].label);
+                                                    labelaux = labelaux.concat(arraytrans[aparte1].label);
+                                                    arraycantentrada[f].cantidad=arraycantentrada[f].cantidad-1;
+                                                    console.log("array cant entrada",arraycantentrada[f]);
+                                                    console.log("array Indice después",arrayIndice);
+                                                    t=arraytrans.length;
+                                                    f=arraycantentrada.length;                                                   
+                                                }
+                                            }else{
+                                                console.log("ahora te queremos Geraud");
+                                            }
+                                        }
                                     }
                                 }
+                                arrayIndice=[];
                                 for(var u=0; u<arraytrans.length; u++){
                                     if(arraytrans[u].from == arraytrans[u].to){
                                         auxtrans='('+arraytrans[u].label+')'+'*'
@@ -1984,7 +2045,7 @@ export default {
                                             if(arraytrans[v].to == arraycantsalida[a].label){
                                                 console.log('arraycantsalida[a].label==arraytrans[v].label');
                                                 if(arraycantsalida[a].cantidad==0){
-                                                    console.log("concatene una wea 1", arraytrans[v].label);
+                                                    console.log("concatene 1", arraytrans[v].label);
                                                     labelaux = labelaux.concat(arraytrans[v].label);
                                                     console.log('labelaux',labelaux);
                                                     v=arraytrans.length;
@@ -2005,7 +2066,7 @@ export default {
                                                     }
                                                     console.log('arrayIndice',arrayIndice);
                                                     let aparte=arrayIndice.pop();
-                                                    console.log("concatene una wea 2", arraytrans[aparte].label);
+                                                    console.log("concatene 2", arraytrans[aparte].label);
                                                     labelaux = labelaux.concat(arraytrans[aparte].label);
                                                     arraycantsalida[a].cantidad=arraycantsalida[a].cantidad-1;
                                                     console.log("array cant salida",arraycantsalida[a]);
@@ -2014,7 +2075,7 @@ export default {
                                                     a=arraycantsalida.length;                                                   
                                                 }
                                             }else{
-                                                console.log("chupala geraud");
+                                                console.log("ahora te queremos Geraud");
                                             }
                                         }
                                     }
@@ -2037,9 +2098,45 @@ export default {
                 else{
                     k=999999;
                 }
+                if(this.transicionesAutomataAFD[this.transicionesAutomataAFD.length-1].from=='inicio' && this.transicionesAutomataAFD[this.transicionesAutomataAFD.length-1].to=='Final'){
+                    k=999999;
+                }
             }
+            var expFinal='';
+            console.log("transiciones finales: ",this.transicionesAutomataAFD);
+            for(let b=0; b<this.transicionesAutomataAFD.length;b++){
+                let expresion;
+                expresion=this.transicionesAutomataAFD[b].label.split('');
+                expresion.splice(0,1);
+                expresion.splice(expresion.length-1,1);
+                expresion=expresion.join('');
+                this.transicionesAutomataAFD[b].label=expresion
+                if(expFinal==''){
+                    expFinal=this.transicionesAutomataAFD[b].label;
+                }
+                else{
+                    expFinal=expFinal + ' + ' + this.transicionesAutomataAFD[b].label
+                }
+            }
+            console.log("Expresion final: ",expFinal);
+            this.transicionesAutomataAFD=[];
+            this.transicionAutomataAFD={from: 'inicio', label:expFinal, to: 'Final', color: {color: 'rgb(0,0,0)'}}
+            this.transicionesAutomataAFD.push(this.transicionAutomataAFD);
+            this.transicionAutomataAFD={from: '', label:'', to: '', color: {color: 'rgb(0,0,0)'}}
+            this.eliminarEstados(this.estadosAutomataAFD);
+            this.expresionRegularAFD=expFinal;
             this.drawAutomata();
         },
+
+        eliminarEstados(estados){
+            for(let c=0; c<estados.length; c++){
+                if(estados[c].id != 'inicio' && estados[c].id != 'Final'){
+                    estados.splice(c,1);
+                    c--
+                }
+            }
+        },
+
         buscarToEnArray(array, efto){
             let indices=[];
             for(let t=0;array.length;t++){
@@ -2067,66 +2164,25 @@ export default {
             {
                 for(var k=0; k<finales.length;k++)
                 {
-                    if(this.transicionesAutomataAFD[j].from===finales[k])
-                    {
-                        for(var t=0; t<this.estadosAutomataAFD.length;t++){
-                            if(this.estadosAutomataAFD[t].final===true){
-                                this.estadosAutomataAFD[t].final=false;
-                                this.estadosAutomataAFD[t].shape='ellipse';
-                                this.estadosAutomataAFD[t].color='#C25C0B';
-                            }
+                    for(var t=0; t<this.estadosAutomataAFD.length;t++){
+                        if(this.estadosAutomataAFD[t].final===true){
+                            this.estadosAutomataAFD[t].final=false;
+                            this.estadosAutomataAFD[t].shape='ellipse';
+                            this.estadosAutomataAFD[t].color='#C25C0B';
                         }
-                        this.estadoAutomataAFD.final=true;
-                        this.estadoAutomataAFD.shape='diamond';
-                        this.estadoAutomataAFD.color='#5cb85c';
-                        this.estadoAutomataAFD.id='Final';
-                        this.estadoAutomataAFD.label='Final';
-                        this.estadosAutomataAFD.push(this.estadoAutomataAFD);
-                        this.estadoAutomataAFD={id: '', label: '', color: '#C25C0B', final: false};
-                        return true;
                     }
+                    this.estadoAutomataAFD.final=true;
+                    this.estadoAutomataAFD.shape='diamond';
+                    this.estadoAutomataAFD.color='#5cb85c';
+                    this.estadoAutomataAFD.id='Final';
+                    this.estadoAutomataAFD.label='Final';
+                    this.estadosAutomataAFD.push(this.estadoAutomataAFD);
+                    this.estadoAutomataAFD={id: '', label: '', color: '#C25C0B', final: false};
+                    return true;
+                    
                 }
             }
             return false;
-        },
-
-        sonIguales(final,cadena){                     
-            var Final=final.split('E');    //EbabE -> split(E) ==> ["","bab",""]
-            var cad= cadena.split('E');    // Ebabaa -> split(E) ==> ["","babaa"]
-            var aux1=[];
-            var aux2=[];
-            for(var i=0; i<Final.length;i++)
-            {
-                if(Final[i]!='')
-                {
-                    aux1=Final[i];           //aux1="bab"
-                }
-            }   
-            aux1=aux1.split('');             //aux1= ['b','a','b']
-            for(var j=0; j<cad.length;j++)   
-            {
-                if(cad[j]!='')
-                {
-                    aux2=cad[j];             //aux2="babaa"
-                }
-            }
-            aux2=aux2.split('');             //aux2=['b','a','b','a','a']
-
-            if(aux2.length>=aux1.length)        //aca los recorre y compara 
-            {
-                for(let k=0; k<aux1.length;k++)
-                {
-                    if(aux2[k]!=aux1[k])
-                    {
-                        return false;
-                    }
-                }
-                return true;
-            }
-            else{
-                return false;
-            }
-                  
         },
 
 
