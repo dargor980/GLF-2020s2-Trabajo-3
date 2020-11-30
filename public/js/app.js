@@ -2262,45 +2262,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2456,12 +2417,6 @@ __webpack_require__.r(__webpack_exports__);
     representacionBack: function representacionBack() {
       this.representacion1 = false;
       this.drawAutomata();
-    },
-    showAnalisisPalabra: function showAnalisisPalabra() {
-      this.analizarPalabra = true;
-      this.createTrans = false;
-      this.selected = true;
-      this.selected2 = true;
     },
     back: function back() {
       this.selected = false;
@@ -2987,122 +2942,6 @@ __webpack_require__.r(__webpack_exports__);
       console.log(this.estadosAutomataUnionAP);
       this.drawAutomata();
     },
-    analisisPalabraAP: function analisisPalabraAP(estados, transiciones, pila) {
-      var palabra = this.cadena.split('');
-      console.log("palabra", palabra);
-      var transicionesEstadoActual = [];
-      var estadoActual;
-
-      if (estados.length === 1 || estados.length === 0) {
-        swal("Debe ingresar el automata antes de analizar la palabra", {
-          className: "alertas",
-          button: "Aceptar",
-          title: "Aviso",
-          icon: "warning"
-        });
-        return;
-      } else {
-        if (!this.existeFinal(estados)) {
-          swal("Para analizar la palabra debe marcar como final a lo menos un estado en el autómata", {
-            className: "alertas",
-            button: "Aceptar",
-            title: "Aviso",
-            icon: "warning"
-          });
-          return;
-        }
-      }
-
-      estadoActual = estados[1].id;
-      console.log(estadoActual);
-
-      for (var i = 0; i < palabra.length; i++) {
-        if (!this.existeCaracterAP(palabra[i])) {
-          swal("La palabra no pertenece al lenguaje 1", {
-            className: "alertas",
-            button: "Aceptar",
-            title: "Resultado del análisis",
-            icon: "error"
-          });
-          return;
-        }
-
-        for (var j = 0; j < transiciones.length; j++) {
-          console.log("entro for transiciones");
-
-          if (transiciones[j].from === estadoActual) {
-            transicionesEstadoActual.push(transiciones[j]);
-          }
-        }
-
-        for (var k = 0; k < transicionesEstadoActual.length; k++) {
-          console.log("entro for transiciones estado actual");
-          var aux = transicionesEstadoActual[k].label.split('|'); // c - +  
-
-          if (aux[0] === palabra[i]) //aca empieza el webeo   a|E|B   aabb // a|x|E
-            {
-              estadoActual = transicionesEstadoActual[k].to;
-
-              if (aux[2] != 'E' && aux[1] != 'E') {
-                if (pila[pila.length - 1] == aux[1]) {
-                  pila.pop();
-                }
-
-                if (pila[pila.length - 1] == aux[2]) {
-                  pila.push(aux[2]);
-                }
-              }
-
-              if (aux[2] != 'E' && aux[1] == 'E') {
-                if (pila[pila.length - 1] == aux[1]) {
-                  pila.pop();
-                }
-              }
-
-              if (aux[2] == 'E' && aux[1] != 'E') {
-                if (pila[pila.length - 1] == aux[2]) {
-                  pila.push(aux[2]);
-                }
-              }
-
-              console.log("Estado Actual: ", estadoActual);
-            }
-        }
-
-        transicionesEstadoActual = [];
-      }
-
-      for (var t = 0; t < estados.length; t++) {
-        if (estadoActual === estados[t].id) {
-          if (estados[t]["final"] === true) {
-            if (pila[0] == 'P') {
-              swal("La palabra pertenece al leguaje 2", {
-                className: "alertas",
-                button: "Aceptar",
-                title: "Resultado del análisis"
-              });
-              return;
-            } else {
-              swal("La palabra no pertenece al lenguaje 3", {
-                className: "alertas",
-                button: "Aceptar",
-                title: "Resultado del análisis",
-                icon: "error"
-              });
-              return;
-            }
-          } else {
-            swal("La palabra no pertenece al lenguaje 4", {
-              className: "alertas",
-              button: "Aceptar",
-              title: "Resultado del análisis",
-              icon: "error"
-            });
-            return;
-          }
-        }
-      }
-    },
     concatenacionAP: function concatenacionAP() {
       this.estadosAutomataConcatenacionAP = [];
       this.transicionesAutomataConcatenacionAP = [];
@@ -3478,7 +3317,7 @@ __webpack_require__.r(__webpack_exports__);
               this.drawAutomata();
               return;
             } else {
-              if (!this.estadosDistintos(this.estadoAP1, this.estadoAP2)) {
+              if (!this.estadosDistintos(this.estadosAP1, this.estadoAP2)) {
                 swal("El id debe ser distinto al/los estado(s) del otro autómata", {
                   className: "alertas",
                   button: "Aceptar",
@@ -3597,83 +3436,6 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       return false;
-    },
-    analizarCadenaAFD: function analizarCadenaAFD() {
-      var word = this.cadena.split('');
-      var transicionesEstadoActual = [];
-      var estadoActual;
-      console.log(word);
-
-      if (this.estadosAutomataAFD.length === 1 || this.estadosAutomataAFD.length === 0) {
-        swal("Debe ingresar el automata antes de analizar la palabra", {
-          className: "alertas",
-          button: "Aceptar",
-          title: "Aviso",
-          icon: "warning"
-        });
-        return;
-      } else {
-        if (!this.existeFinal(this.estadosAutomataAFD)) {
-          swal("Para analizar la palabra debe marcar como final a lo menos un estado en el autómata", {
-            className: "alertas",
-            button: "Aceptar",
-            title: "Aviso",
-            icon: "warning"
-          });
-          return;
-        }
-      }
-
-      estadoActual = this.estadosAutomataAFD[1].id;
-      console.log(estadoActual);
-
-      for (var i = 0; i < word.length; i++) {
-        if (!this.existeCaracterAFD(word[i])) {
-          swal("La palabra no pertenece al lenguaje", {
-            className: "alertas",
-            button: "Aceptar",
-            title: "Resultado del análisis",
-            icon: "error"
-          });
-          return;
-        }
-
-        for (var j = 0; j < this.transicionesAutomataAFD.length; j++) {
-          if (this.transicionesAutomataAFD[j].from === estadoActual) {
-            transicionesEstadoActual.push(this.transicionesAutomataAFD[j]);
-          }
-        }
-
-        for (var k = 0; k < transicionesEstadoActual.length; k++) {
-          if (transicionesEstadoActual[k].label === word[i]) {
-            estadoActual = transicionesEstadoActual[k].to;
-            console.log("Estado Actual: ", estadoActual);
-          }
-        }
-
-        transicionesEstadoActual = [];
-      }
-
-      for (var t = 0; t < this.estadosAutomataAFD.length; t++) {
-        if (estadoActual === this.estadosAutomataAFD[t].id) {
-          if (this.estadosAutomataAFD[t]["final"] === true) {
-            swal("La palabra pertenece al leguaje", {
-              className: "alertas",
-              button: "Aceptar",
-              title: "Resultado del análisis"
-            });
-            return;
-          } else {
-            swal("La palabra no pertenece al lenguaje", {
-              className: "alertas",
-              button: "Aceptar",
-              title: "Resultado del análisis",
-              icon: "error"
-            });
-            return;
-          }
-        }
-      }
     },
     drawAutomata: function drawAutomata() {
       var afd = document.getElementById("AFD");
@@ -95164,23 +94926,14 @@ var render = function() {
                           _c(
                             "button",
                             {
-                              staticClass: "btn btn-sm btn-success",
-                              on: { click: _vm.showAnalisisPalabra }
-                            },
-                            [_vm._v("Analizar Palabra")]
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-md-4" }, [
-                          _c(
-                            "button",
-                            {
                               staticClass: "btn btn-sm btn-danger",
                               on: { click: _vm.delAndClear }
                             },
                             [_vm._v("Eliminar Autómata")]
                           )
                         ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-4" }),
                         _vm._v(" "),
                         _c("div", { staticClass: "col-md-4" }, [
                           _c(
@@ -95389,58 +95142,6 @@ var render = function() {
                           ]
                         )
                       ])
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.analizarPalabra
-                    ? _c("div", { staticClass: "col-md-12 my-4" }, [
-                        _c(
-                          "form",
-                          {
-                            on: {
-                              submit: function($event) {
-                                $event.preventDefault()
-                                return _vm.analizarCadenaAFD($event)
-                              }
-                            }
-                          },
-                          [
-                            _c("div", { staticClass: "form-group" }, [
-                              _c("label", [_vm._v("Ingrese la palabra: ")]),
-                              _vm._v(" "),
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.cadena,
-                                    expression: "cadena"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                attrs: { type: "text" },
-                                domProps: { value: _vm.cadena },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.cadena = $event.target.value
-                                  }
-                                }
-                              })
-                            ]),
-                            _vm._v(" "),
-                            _c(
-                              "button",
-                              {
-                                staticClass: "btn btn-success btn-sm",
-                                attrs: { type: "submit" }
-                              },
-                              [_vm._v("Consultar Palabra")]
-                            )
-                          ]
-                        )
-                      ])
                     : _vm._e()
                 ])
               : _vm._e(),
@@ -95548,23 +95249,14 @@ var render = function() {
                           _c(
                             "button",
                             {
-                              staticClass: "btn btn-sm btn-success",
-                              on: { click: _vm.showAnalisisPalabra }
-                            },
-                            [_vm._v("Analizar Palabra")]
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-md-4" }, [
-                          _c(
-                            "button",
-                            {
                               staticClass: "btn btn-sm btn-danger",
                               on: { click: _vm.delAndClear }
                             },
                             [_vm._v("Eliminar Autómata")]
                           )
                         ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-4" }),
                         _vm._v(" "),
                         _c("div", { staticClass: "col-md-4" }, [
                           _c(
@@ -96072,118 +95764,6 @@ var render = function() {
                                     attrs: { type: "submit" }
                                   },
                                   [_vm._v("Agregar")]
-                                )
-                              ]
-                            )
-                          : _vm._e()
-                      ])
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.analizarPalabra
-                    ? _c("div", { staticClass: "col-md-12 my-4" }, [
-                        _vm.apSeleccionado === 1
-                          ? _c(
-                              "form",
-                              {
-                                on: {
-                                  submit: function($event) {
-                                    $event.preventDefault()
-                                    return _vm.analisisPalabraAP(
-                                      _vm.estadosAP1,
-                                      _vm.transicionesAP1,
-                                      _vm.pila1
-                                    )
-                                  }
-                                }
-                              },
-                              [
-                                _c("div", { staticClass: "form-group" }, [
-                                  _c("label", [_vm._v("Ingrese la palabra: ")]),
-                                  _vm._v(" "),
-                                  _c("input", {
-                                    directives: [
-                                      {
-                                        name: "model",
-                                        rawName: "v-model",
-                                        value: _vm.cadena,
-                                        expression: "cadena"
-                                      }
-                                    ],
-                                    staticClass: "form-control",
-                                    attrs: { type: "text" },
-                                    domProps: { value: _vm.cadena },
-                                    on: {
-                                      input: function($event) {
-                                        if ($event.target.composing) {
-                                          return
-                                        }
-                                        _vm.cadena = $event.target.value
-                                      }
-                                    }
-                                  })
-                                ]),
-                                _vm._v(" "),
-                                _c(
-                                  "button",
-                                  {
-                                    staticClass: "btn btn-success btn-sm",
-                                    attrs: { type: "submit" }
-                                  },
-                                  [_vm._v("Consultar Palabra")]
-                                )
-                              ]
-                            )
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _vm.apSeleccionado === 2
-                          ? _c(
-                              "form",
-                              {
-                                on: {
-                                  submit: function($event) {
-                                    $event.preventDefault()
-                                    return _vm.analisisPalabraAP(
-                                      _vm.estadosAP2,
-                                      _vm.transicionesAP2,
-                                      _vm.pila2
-                                    )
-                                  }
-                                }
-                              },
-                              [
-                                _c("div", { staticClass: "form-group" }, [
-                                  _c("label", [_vm._v("Ingrese la palabra: ")]),
-                                  _vm._v(" "),
-                                  _c("input", {
-                                    directives: [
-                                      {
-                                        name: "model",
-                                        rawName: "v-model",
-                                        value: _vm.cadena,
-                                        expression: "cadena"
-                                      }
-                                    ],
-                                    staticClass: "form-control",
-                                    attrs: { type: "text" },
-                                    domProps: { value: _vm.cadena },
-                                    on: {
-                                      input: function($event) {
-                                        if ($event.target.composing) {
-                                          return
-                                        }
-                                        _vm.cadena = $event.target.value
-                                      }
-                                    }
-                                  })
-                                ]),
-                                _vm._v(" "),
-                                _c(
-                                  "button",
-                                  {
-                                    staticClass: "btn btn-success btn-sm",
-                                    attrs: { type: "submit" }
-                                  },
-                                  [_vm._v("Consultar Palabra")]
                                 )
                               ]
                             )
@@ -96830,7 +96410,7 @@ var staticRenderFns = [
                       _vm._v(" "),
                       _c("p", { staticClass: "textocolor lato" }, [
                         _vm._v(
-                          "\n                                Existe un tipo de autómata que define los lenguajes independientes del contexto.\n                                Dicho autómata, conocido como “autómata de pila”, es una extensión del autómata finito\n                                no determinista con transiciones-ε ,\n                                el cual constituye una forma de definir los lenguajes regulares.\n                                El autómata de pila es fundamentalmente un AFN-ε con la adición de una pila.\n                                "
+                          "\n                                \n                                Existe un tipo de autómata que define los lenguajes independientes del contexto.\n                                Dicho autómata, conocido como “autómata de pila”, es una extensión del autómata finito\n                                no determinista con transiciones-ε ,\n                                el cual constituye una forma de definir los lenguajes regulares.\n                                El autómata de pila es fundamentalmente un AFN-ε con la adición de una pila.\n                                "
                         ),
                         _c("br"),
                         _vm._v(" "),
@@ -96844,36 +96424,44 @@ var staticRenderFns = [
                         _vm._v("  donde: "),
                         _c("br"),
                         _vm._v(" "),
-                        _c("strong", [_vm._v("S")]),
-                        _vm._v(" es un conjunto finito de estados "),
-                        _c("br"),
-                        _vm._v(" "),
-                        _c("strong", [_vm._v("Σ")]),
-                        _vm._v(" y "),
-                        _c("strong", [_vm._v("Γ")]),
-                        _vm._v(
-                          "  son alfabetos (símbolos de entrada y de la pila respectivamente) "
-                        ),
-                        _c("br"),
-                        _vm._v(" "),
-                        _c("strong", [
-                          _vm._v("δ : S × (Σ ∪ {ε}) x Γ → ℘(S x Γ*) ")
-                        ]),
-                        _c("br"),
-                        _vm._v(" "),
-                        _c("strong", [_vm._v("s ∈ S")]),
-                        _vm._v("  es el estado inicial "),
-                        _c("br"),
-                        _vm._v(" "),
-                        _c("strong", [_vm._v("Z ∈ Γ")]),
-                        _vm._v("  es el símbolo inicial de la pila"),
-                        _c("br"),
-                        _vm._v(" "),
-                        _c("strong", [_c("em", [_vm._v("F ⊆ S")])]),
-                        _vm._v(
-                          "  es un conjunto de estados de aceptación o finales"
-                        ),
-                        _c("br")
+                        _c("ul", [
+                          _c("li", [
+                            _c("strong", [_vm._v("S")]),
+                            _vm._v(" es un conjunto finito de estados")
+                          ]),
+                          _vm._v(" "),
+                          _c("li", [
+                            _c("strong", [_vm._v("Σ")]),
+                            _vm._v(" y "),
+                            _c("strong", [_vm._v("Γ")]),
+                            _vm._v(
+                              "  son alfabetos (símbolos de entrada y de la pila respectivamente)"
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("li", [
+                            _c("strong", [
+                              _vm._v("δ : S × (Σ ∪ {ε}) x Γ → ℘(S x Γ*) ")
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("li", [
+                            _c("strong", [_vm._v("s ∈ S")]),
+                            _vm._v("  es el estado inicial")
+                          ]),
+                          _vm._v(" "),
+                          _c("li", [
+                            _c("strong", [_vm._v("Z ∈ Γ")]),
+                            _vm._v("  es el símbolo inicial de la pila")
+                          ]),
+                          _vm._v(" "),
+                          _c("li", [
+                            _c("strong", [_c("em", [_vm._v("F ⊆ S")])]),
+                            _vm._v(
+                              "  es un conjunto de estados de aceptación o finales"
+                            )
+                          ])
+                        ])
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "row justify-content-center" }, [

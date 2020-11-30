@@ -24,6 +24,7 @@
                                     <h4 class="textocolor fredoka">Autómata De Pila</h4>
                                 </div>
                                 <p class="textocolor lato" >
+                                    
                                     Existe un tipo de autómata que define los lenguajes independientes del contexto.
                                     Dicho autómata, conocido como “autómata de pila”, es una extensión del autómata finito
                                     no determinista con transiciones-ε ,
@@ -32,12 +33,14 @@
                                     <br>
                                     <br>
                                     Un autómata con pila puede ser descrito como una séptupla <strong><em>M = (S,Σ,Γ,δ,s,Z,F)</em></strong>&nbsp; donde: <br>
-                                    <strong>S</strong>&nbsp;es un conjunto finito de estados <br>
-                                    <strong>Σ</strong> y <strong>Γ</strong>&nbsp; son alfabetos (símbolos de entrada y de la pila respectivamente) <br>
-                                    <strong>δ : S × (Σ &cup; {ε}) x Γ &rarr; &weierp;(S x Γ*) </strong><br>
-                                    <strong>s &isin; S</strong>&nbsp; es el estado inicial <br>
-                                    <strong>Z &isin; Γ</strong>&nbsp; es el símbolo inicial de la pila<br>
-                                    <strong><em>F &sube; S</em></strong>&nbsp; es un conjunto de estados de aceptación o finales<br>
+                                    <ul>
+                                        <li><strong>S</strong>&nbsp;es un conjunto finito de estados</li>
+                                        <li><strong>Σ</strong> y <strong>Γ</strong>&nbsp; son alfabetos (símbolos de entrada y de la pila respectivamente)</li>
+                                        <li><strong>δ : S × (Σ &cup; {ε}) x Γ &rarr; &weierp;(S x Γ*) </strong></li>
+                                        <li><strong>s &isin; S</strong>&nbsp; es el estado inicial</li>
+                                        <li><strong>Z &isin; Γ</strong>&nbsp; es el símbolo inicial de la pila</li>
+                                        <li><strong><em>F &sube; S</em></strong>&nbsp; es un conjunto de estados de aceptación o finales</li>
+                                    </ul>
                                 </p>
                                 <div class="row justify-content-center">
                                     <div class="image-parent">

@@ -29,11 +29,9 @@
                     </div>
                     <div class="row text-center" v-if="!selected">
                         <div class="col-md-4">
-                            <button class="btn btn-sm btn-success" @click="showAnalisisPalabra">Analizar Palabra</button>
-                        </div>
-                        <div class="col-md-4">
                             <button class="btn btn-sm btn-danger" @click="delAndClear">Eliminar Autómata</button>
                         </div>
+                        <div class="col-md-4"></div>
                         <div class="col-md-4">
                             <button class="btn btn-sm btn-warning" @click="backInicio"> Volver al Inicio</button>
                         </div>                       
@@ -72,21 +70,8 @@
                             <button class="btn btn-success btn-sm" type="submit">Agregar</button>
                         </form>
                     </div> 
-
-
-                    <div class="col-md-12 my-4" v-if="analizarPalabra">
-                        <form @submit.prevent="analizarCadenaAFD">
-                            <div class="form-group">
-                                <label>Ingrese la palabra: </label>
-                                <input type="text" class="form-control" v-model="cadena">
-                            </div>
-                            <button class="btn btn-success btn-sm" type="submit">Consultar Palabra</button>
-                        </form>
-                    </div> 
                 </div>
                 <!--AFD-->
-
-
 
                 <!--AP-->
                 <div class="container-fluid py-4 mr-4" v-if="option===2">
@@ -122,18 +107,13 @@
 
                     <div class="row text-center" v-if="!selected">
                         <div class="col-md-4">
-                            <button class="btn btn-sm btn-success" @click="showAnalisisPalabra">Analizar Palabra</button>
-                        </div>
-                        <div class="col-md-4">
                             <button class="btn btn-sm btn-danger" @click="delAndClear">Eliminar Autómata</button>
                         </div>
+                        <div class="col-md-4"></div>
                         <div class="col-md-4">
                             <button class="btn btn-sm btn-warning" @click="backToAp"> Volver</button>
                         </div>                       
                     </div>
-
-
-
 
                     <div class="my-4" v-if="creaEstado">
                         <div>
@@ -210,25 +190,6 @@
                             <button class="btn btn-success btn-sm" type="submit">Agregar</button>
                         </form>
                     </div> 
-
-                    <div class="col-md-12 my-4" v-if="analizarPalabra">
-                        <form @submit.prevent="analisisPalabraAP(estadosAP1,transicionesAP1,pila1)" v-if="apSeleccionado===1">
-                            <div class="form-group">
-                                <label>Ingrese la palabra: </label>
-                                <input type="text" class="form-control" v-model="cadena">
-                            </div>
-                            <button class="btn btn-success btn-sm" type="submit" >Consultar Palabra</button>
-                        </form>
-
-                        <form @submit.prevent="analisisPalabraAP(estadosAP2,transicionesAP2,pila2)" v-if="apSeleccionado===2">
-                            <div class="form-group">
-                                <label>Ingrese la palabra: </label>
-                                <input type="text" class="form-control" v-model="cadena">
-                            </div>
-                            <button class="btn btn-success btn-sm" type="submit" >Consultar Palabra</button>
-                        </form>
-                    </div>
-
                 </div>
                 <!--AP-->
             </div>
@@ -491,13 +452,6 @@ export default {
         representacionBack(){
             this.representacion1=false;
             this.drawAutomata();
-        },
-
-        showAnalisisPalabra(){
-            this.analizarPalabra=true;
-            this.createTrans=false;
-            this.selected=true;
-            this.selected2=true;
         },
 
         back(){
@@ -1051,126 +1005,6 @@ export default {
             this.drawAutomata();
         },
 
-        analisisPalabraAP(estados,transiciones,pila){
-            var palabra = this.cadena.split('');
-            console.log("palabra",palabra);
-            var transicionesEstadoActual=[];
-            var estadoActual;
-            if(estados.length===1 || estados.length===0)
-            {
-                swal("Debe ingresar el automata antes de analizar la palabra",{
-                    className: "alertas",
-                    button: "Aceptar",
-                    title: "Aviso",
-                    icon: "warning",
-                });
-                return;
-            }
-            else{
-                if(!this.existeFinal(estados))
-                {
-                    swal("Para analizar la palabra debe marcar como final a lo menos un estado en el autómata",{
-                        className: "alertas",
-                        button: "Aceptar",
-                        title: "Aviso",
-                        icon: "warning",
-                    });
-                    return;
-                }                
-            }
-            estadoActual=estados[1].id;
-            console.log(estadoActual);
-            for(var i=0; i<palabra.length;i++)
-            {
-                if(!this.existeCaracterAP(palabra[i]))
-                {
-                    swal("La palabra no pertenece al lenguaje 1",{
-                        className: "alertas",
-                        button: "Aceptar",
-                        title: "Resultado del análisis",
-                        icon: "error",
-                    });
-                    return;
-                }
-                for(var j=0; j<transiciones.length;j++)
-                {
-                    console.log("entro for transiciones");
-                    if(transiciones[j].from===estadoActual){
-                        transicionesEstadoActual.push(transiciones[j]);
-                    }
-                }
-                for(var k =0; k<transicionesEstadoActual.length; k++)
-                { console.log("entro for transiciones estado actual");
-                    var aux=transicionesEstadoActual[k].label.split('|');
-                                                                        // c - +  
-                    if(aux[0]===palabra[i])      //aca empieza el webeo   a|E|B   aabb // a|x|E
-                    {
-                        estadoActual=transicionesEstadoActual[k].to;
-                        if(aux[2]!='E' && aux[1] !='E')
-                        {   
-                            if(pila[pila.length-1]==aux[1]){
-                                pila.pop();                                
-                            }
-                            if(pila[pila.length-1]==aux[2]){
-                                pila.push(aux[2]);
-                            }
-                        }
-                        if(aux[2]!='E' && aux[1]=='E'){
-                            if(pila[pila.length-1]==aux[1]){
-                                pila.pop();
-                                
-                            }
-                        }
-                        if(aux[2]=='E' && aux[1]!='E'){
-                            if(pila[pila.length-1]==aux[2]){
-                                pila.push(aux[2]);
-                            }
-                        }
-                        console.log("Estado Actual: ", estadoActual);
-                        
-                    }
-                }
-                transicionesEstadoActual=[];
-            }
-
-            for(var t=0; t<estados.length; t++)
-            {
-                if(estadoActual===estados[t].id)
-                {
-                    if(estados[t].final===true)
-                    {
-                        if(pila[0]=='P')
-                        {
-                            swal("La palabra pertenece al leguaje 2",{
-                                className: "alertas",
-                                button: "Aceptar",
-                                title: "Resultado del análisis",   
-                            });
-                            return;
-                        }
-                        else{
-                            swal("La palabra no pertenece al lenguaje 3",{
-                                className: "alertas",
-                                button: "Aceptar",
-                                title: "Resultado del análisis",
-                                icon: "error",
-                            });
-                            return;
-                        }
-                    }
-                    else{
-                        swal("La palabra no pertenece al lenguaje 4",{
-                            className: "alertas",
-                            button: "Aceptar",
-                            title: "Resultado del análisis",
-                            icon: "error",
-                        });
-                        return;
-                    }
-                }
-            }    
-        },
-
         concatenacionAP(){
             this.estadosAutomataConcatenacionAP=[];
             this.transicionesAutomataConcatenacionAP=[];
@@ -1496,7 +1330,7 @@ export default {
                             return;
                         }
                         else{
-                            if(!this.estadosDistintos(this.estadoAP1,this.estadoAP2))
+                            if(!this.estadosDistintos(this.estadosAP1,this.estadoAP2))
                             {
                                 swal("El id debe ser distinto al/los estado(s) del otro autómata",{
                                     className:"alertas",
@@ -1643,91 +1477,6 @@ export default {
             return false;
         },
 
-        analizarCadenaAFD(){
-            var word=this.cadena.split('');    
-            var transicionesEstadoActual=[];    
-            var estadoActual;
-            console.log(word);
-            if(this.estadosAutomataAFD.length===1 || this.estadosAutomataAFD.length===0)
-            {
-                swal("Debe ingresar el automata antes de analizar la palabra",{
-                    className: "alertas",
-                    button: "Aceptar",
-                    title: "Aviso",
-                    icon: "warning",
-                });
-                return;
-            }
-            else{
-                if(!this.existeFinal(this.estadosAutomataAFD))
-                {
-                    swal("Para analizar la palabra debe marcar como final a lo menos un estado en el autómata",{
-                        className: "alertas",
-                        button: "Aceptar",
-                        title: "Aviso",
-                        icon: "warning",
-                    });
-                    return;
-                }
-            }
-            estadoActual=this.estadosAutomataAFD[1].id;
-            console.log(estadoActual);
-            for(var i=0; i<word.length;i++)
-            {
-                if(!this.existeCaracterAFD(word[i]))
-                {
-                    swal("La palabra no pertenece al lenguaje",{
-                        className: "alertas",
-                        button: "Aceptar",
-                        title: "Resultado del análisis",
-                        icon: "error",
-                    });
-                    return;
-                }
-                for(var j=0; j<this.transicionesAutomataAFD.length;j++)
-                {
-                    if(this.transicionesAutomataAFD[j].from===estadoActual){
-                        transicionesEstadoActual.push(this.transicionesAutomataAFD[j]);
-                    }
-                }
-                for(var k =0; k<transicionesEstadoActual.length; k++)
-                {
-                    if(transicionesEstadoActual[k].label===word[i])     
-                    {
-                        estadoActual=transicionesEstadoActual[k].to;
-                        console.log("Estado Actual: ", estadoActual);
-                    }
-                }
-                transicionesEstadoActual=[];
-            }
-
-            for(var t=0; t<this.estadosAutomataAFD.length; t++)
-            {
-                if(estadoActual===this.estadosAutomataAFD[t].id)
-                {
-                    if(this.estadosAutomataAFD[t].final===true)
-                    {
-                        swal("La palabra pertenece al leguaje",{
-                            className: "alertas",
-                            button: "Aceptar",
-                            title: "Resultado del análisis",   
-                        });
-                        return;
-                    }
-                    else{
-                        swal("La palabra no pertenece al lenguaje",{
-                            className: "alertas",
-                            button: "Aceptar",
-                            title: "Resultado del análisis",
-                            icon: "error",
-                        });
-                        return;
-                    }
-                }
-            }
-            
-        },
-
         drawAutomata(){
             var afd= document.getElementById("AFD");
             var ap1= document.getElementById("AP1");
@@ -1759,7 +1508,6 @@ export default {
                 nodes: this.estadosAutomataUnionAP,
                 edges: this.transicionesAutomataUnionAP,
             };
-
 
             var options = {
                 height: 320 +'px',
@@ -2184,8 +1932,6 @@ export default {
             }
             return false;
         },
-
-
     }
 }
 </script>
