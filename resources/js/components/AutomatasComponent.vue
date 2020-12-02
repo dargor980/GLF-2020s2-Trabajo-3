@@ -1649,17 +1649,17 @@ export default {
             var arraysalida=[];
             var auxtrans='';
             var labelaux='';
-            var cant={label: '', cantidad: 0};
+            var cant={label: '', cantidad: 0, indices: []};
             var arraycantentrada=[];
             var arraycantsalida=[];
             var c=0;
-            for(var k=0; k<this.transicionesAutomataAFD.length;k++)
+            var largo=this.transicionesAutomataAFD.length;
+            for(var k=0; k<largo;k++)
             {
                 if(this.transicionesAutomataAFD[k]!=undefined)
                 {
                     if(this.transicionesAutomataAFD[k].to==final){
                         let valor=this.transicionesAutomataAFD[k];
-                        console.log("valor", valor);
                         for(var p=0; p<this.transicionesAutomataAFD.length; p++){
                             if(valor.from==this.transicionesAutomataAFD[p].to || valor.from==this.transicionesAutomataAFD[p].from){
                                 arraytrans.push(this.transicionesAutomataAFD[p]);
@@ -1682,7 +1682,6 @@ export default {
                         console.log("Array salida:", arraysalida);
                         for(let w=0; w<arrayentrada.length; w++){ 
                             cant.label=arrayentrada[w];
-                            console.log('cant',cant);
                             if(arrayentrada.length==0){
                                 cant.cantidad=0;
                                 arraycantentrada.push(cant);
@@ -1693,21 +1692,25 @@ export default {
                                     }
                                 }
                                 cant.cantidad=c;
-                                console.log("push entrada");
                                 
+                                for(let e=0; e<arraytrans.length; e++){
+                                    if(arrayentrada[w]==arraytrans[e].from){
+                                        cant.indices.push(e);
+                                    }
+                                }
+
                                 if(!this.existeenarray(cant.label, arraycantentrada)){
                                     arraycantentrada.push(cant);
                                 }
                                 
                                 c=0;
-                                cant={label: '', cantidad: 0};
+                                cant={label: '', cantidad: 0, indices: []};
                             }
                         }
                         console.log("array cant entrada", arraycantentrada);
 
                         for(let y=0; y<arraysalida.length; y++){ 
                             cant.label=arraysalida[y];
-                            console.log('cant',cant);
                             if(arraysalida.length==0){
                                 cant.cantidad=0;
                                 arraycantsalida.push(cant);
@@ -1718,14 +1721,19 @@ export default {
                                     }
                                 }
                                 cant.cantidad=c;
-                                
+
+                                for(let g=0; g<arraytrans.length; g++){
+                                    if(arraysalida[y]==arraytrans[g].to){
+                                        cant.indices.push(g);
+                                    }
+                                }
+
                                 if(!this.existeenarray(cant.label, arraycantsalida)){
-                                    console.log("push salida");
                                     arraycantsalida.push(cant);
                                 }
                                 
                                 c=0;
-                                cant={label: '', cantidad: 0};
+                                cant={label: '', cantidad: 0, indices: []};
                             }
                         }
                         console.log("array cant salida", arraycantsalida);
@@ -1734,12 +1742,15 @@ export default {
                             for(var s=0; s<arraysalida.length; s++){
                                 transicion.from=arrayentrada[r];
                                 transicion.to=arraysalida[s];
+                                console.log("from:",transicion.from, "to:", transicion.to)
+                                console.log("inicio de transicion entrada");
                                 for(var t=0; t<arraytrans.length; t++){
+                                    console.log("array from:",arraytrans[t].from,"- array entrada: ",arrayentrada[r]);
                                     if(arraytrans[t].from==arrayentrada[r]){
+                                        console.log('for con t');
                                         for(var f=0; f<arraycantentrada.length; f++){
-                                            console.log('arrayccantentrada[f].label',arraycantentrada[f].label,'arraytrans[t].label',arraytrans[t].label);
+                                            console.log("array[t] from:",arraytrans[t].from,"- array cant entrada: ",arraycantentrada[f].label);
                                             if(arraytrans[t].from == arraycantentrada[f].label){
-                                                console.log('arraycantentrada[f].label==arraytrans[t].label');
                                                 if(arraycantentrada[f].cantidad==0){
                                                     console.log("concatene 1", arraytrans[t].label);
                                                     labelaux = labelaux.concat(arraytrans[t].label);
@@ -1748,50 +1759,39 @@ export default {
                                                     f=arraycantentrada.length; 
                                                 }
                                                 else{
-                                                    console.log('else de la discordia');
-                                                    var arrayIndice=[];
-                                                    console.log("entra", arraytrans, arraycantentrada[f].label);
-                                                    for(let toar=0; toar<arraytrans.length; toar++){
-                                                        if(arraytrans[toar].from==arraycantentrada[f].label){
-                                                            arrayIndice.push(toar);
-                                                        }
-                                                        else{
-                                                            console.log('no ta');
-                                                        }
-                                                    }
-                                                    console.log('arrayIndice',arrayIndice);
-                                                    let aparte1=arrayIndice.pop();
+                                                    console.log('else de la entrada');
+                                                    let aparte1=arraycantentrada[f].indices[arraycantentrada[f].indices.length-1];
+                                                    arraycantentrada[f].indices.splice(arraycantentrada[f].indices.length-1 ,1)
                                                     console.log("concatene 2", arraytrans[aparte1].label);
                                                     labelaux = labelaux.concat(arraytrans[aparte1].label);
+                                                    console.log('labelaux',labelaux);
                                                     arraycantentrada[f].cantidad=arraycantentrada[f].cantidad-1;
-                                                    console.log("array cant entrada",arraycantentrada[f]);
-                                                    console.log("array Indice después",arrayIndice);
                                                     t=arraytrans.length;
                                                     f=arraycantentrada.length;                                                   
                                                 }
-                                            }else{
-                                                console.log("ahora te queremos Geraud");
                                             }
                                         }
                                     }
                                 }
-                                arrayIndice=[];
+                                console.log("inicio de transicion intermedia");
                                 for(var u=0; u<arraytrans.length; u++){
                                     if(arraytrans[u].from == arraytrans[u].to){
                                         auxtrans='('+arraytrans[u].label+')'+'*'
                                         if(!this.revisartransicion(auxtrans, labelaux)){
                                             labelaux=labelaux.concat(auxtrans);
+                                            console.log('labelaux',labelaux);
                                         }
                                         auxtrans='';
                                     }
                                 }
+                                console.log("inicio de transicion salida");
                                 for(var v=0; v<arraytrans.length; v++){
+                                    console.log("array from:",arraytrans[v].to,"- array salida: ",arraysalida[s]);
                                     if(arraytrans[v].to==arraysalida[s]){ 
                                         console.log('for con v');
                                         for(var a=0; a<arraycantsalida.length; a++){
-                                            console.log('arraycantsalida[a].label',arraycantsalida[a].label,'arraytrans[v].label',arraytrans[v].label);
+                                            console.log("array[v] to:",arraytrans[v].to,"- array cant salida: ",arraycantsalida[a].label);
                                             if(arraytrans[v].to == arraycantsalida[a].label){
-                                                console.log('arraycantsalida[a].label==arraytrans[v].label');
                                                 if(arraycantsalida[a].cantidad==0){
                                                     console.log("concatene 1", arraytrans[v].label);
                                                     labelaux = labelaux.concat(arraytrans[v].label);
@@ -1800,44 +1800,30 @@ export default {
                                                     a=arraycantsalida.length; 
                                                 }
                                                 else{
-                                                    ///se cáe ups.
-                                                    console.log('else de la discordia');
-                                                    var arrayIndice=[];
-                                                    console.log("entra", arraytrans, arraycantsalida[a].label);
-                                                    for(let toar=0; toar<arraytrans.length; toar++){
-                                                        if(arraytrans[toar].to==arraycantsalida[a].label){
-                                                            arrayIndice.push(toar);
-                                                        }
-                                                        else{
-                                                            console.log('no ta');
-                                                        }
-                                                    }
-                                                    console.log('arrayIndice',arrayIndice);
-                                                    let aparte=arrayIndice.pop();
+                                                    console.log('else de la salida');
+                                                    let aparte=arraycantsalida[a].indices[arraycantsalida[a].indices.length-1];
+                                                    arraycantsalida[a].indices.splice(arraycantsalida[a].indices.length-1, 1);
                                                     console.log("concatene 2", arraytrans[aparte].label);
                                                     labelaux = labelaux.concat(arraytrans[aparte].label);
+                                                    console.log('labelaux',labelaux);
                                                     arraycantsalida[a].cantidad=arraycantsalida[a].cantidad-1;
-                                                    console.log("array cant salida",arraycantsalida[a]);
-                                                    console.log("array Indice después",arrayIndice);
                                                     v=arraytrans.length;
                                                     a=arraycantsalida.length;                                                   
                                                 }
-                                            }else{
-                                                console.log("ahora te queremos Geraud");
                                             }
                                         }
                                     }
                                 }
-                                arrayIndice=[];
                                 transicion.label=labelaux;
                                 this.transicionesAutomataAFD.push(transicion);
+                                largo++;
                                 transicion={from: '', label: '', to: '', color: {color: 'rgb(0,0,0)'}};
                                 labelaux='';
                             }
-                            arraytrans=[];
-                            arrayentrada=[];
-                            arraysalida=[];
                         }
+                        arraytrans=[];
+                        arrayentrada=[];
+                        arraysalida=[];
                         arraycantsalida=[];
                         arraycantentrada=[];
                     }
@@ -1845,8 +1831,8 @@ export default {
                 }
                 else{
                     k=999999;
-                }
-                if(this.transicionesAutomataAFD[this.transicionesAutomataAFD.length-1].from=='inicio' && this.transicionesAutomataAFD[this.transicionesAutomataAFD.length-1].to=='Final'){
+                } 
+                if(this.verificarTermino(this.transicionesAutomataAFD)){
                     k=999999;
                 }
             }
@@ -1876,6 +1862,16 @@ export default {
             this.drawAutomata();
         },
 
+        verificarTermino(transiciones){
+            for(let a=0; a<transiciones.length; a++){
+                if(transiciones[a].from=='inicio' && transiciones[a].to=='Final'){
+                }else{
+                    return false;
+                }
+            }
+            return true;
+        },
+
         eliminarEstados(estados){
             for(let c=0; c<estados.length; c++){
                 if(estados[c].id != 'inicio' && estados[c].id != 'Final'){
@@ -1898,11 +1894,9 @@ export default {
         existeenarray(label, array ){
             for(let bus=0; bus<array.length;bus++){
                 if(array[bus].label==label){
-                    console.log('existe');
                     return true;
                 }
             }
-            console.log('no existe');
             return false;
         },
 
