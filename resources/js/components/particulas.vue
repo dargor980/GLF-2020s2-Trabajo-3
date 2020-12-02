@@ -5,7 +5,7 @@
                 <div class="row container-fluid">
                     <!--NOMBRE-->
                     <div class="col-md-4">
-                        <div class="navbar-brand fredoka textocolor">Trabajo Unidad II: Autómatas de Pila y Expresiones Regulares</div>
+                        <div class="navbar-brand fredoka textocolor">Trabajo Unidad III: Autómatas de Pila y Expresiones Regulares</div>
                     </div>
                     <!--/NOMBRE-->
             

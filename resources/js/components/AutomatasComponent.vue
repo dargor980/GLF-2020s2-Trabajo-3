@@ -310,10 +310,11 @@
             <div class="card cardaux3 col-md-10 rounded-bottom mb-3" v-if="opcion===1">
                 <div class="container my-3">
                     <div class="text-center">
-                        <button class="btn btn-success" @click="encontrarExpresionRegular">Mostrar expresion regular</button>
+                        <a href="#ER"><button class="btn btn-success" @click="encontrarExpresionRegular">Mostrar expresion regular</button></a>
                     </div>
                     <div class="my-3">
-                        La expresión regular del AFD es: <strong> {{expresionRegularAFD}} </strong>
+                        <h3 class="my-3">La expresión regular del AFD es: <strong> {{expresionRegularAFD}} </strong></h3>
+                        <div id="ER" style="border:1px solid lightgray;"></div>
                     </div>
                 </div>
             </div>
@@ -394,7 +395,8 @@ export default {
             alfabetoAP1:[],
             alfabetoAP2:[],
 
-            cadena:'',
+            automataER:[],
+            transicionesER:[],
 
             selected:false,
             selected2:false,
@@ -466,6 +468,7 @@ export default {
             this.automataCreate=false;
             this.creaEstado=false;
             this.option=0;
+            this.opcion=0;
             this.selected=false;
         },
 
@@ -858,7 +861,6 @@ export default {
                             transiciones[k].label= nT;
                             nT = ''
                         }
-                        console.log("Epsilon");
                     }
                 }
                 if(pilaAP.agrega!='' && pilaAP.elimina==''){
@@ -891,7 +893,6 @@ export default {
                     console.log("agrega: ", pilaAP.agrega, ", elimina: ", pilaAP.elimina);
                     for(let z=0;z< transiciones.length;z++){
                         if(transiciones[z].from!='inicio' && !transiciones[z].label.includes('|')){
-                            console.log("entramos perrito");
                             let newElim = transiciones[z].label + '|' + pilaAP.elimina + '|' + pilaAP.agrega
                             console.log("newElim", newElim);
                             transiciones[z].label = newElim;
@@ -913,7 +914,6 @@ export default {
                             transiciones[m].label= nT1;
                             nT1 = ''
                         }
-                        console.log("Epsilon");
                     }
                 }
                 if(pilaAP.agrega!='' && pilaAP.elimina==''){                   
@@ -1483,6 +1483,7 @@ export default {
             var ap2= document.getElementById("AP2");
             var apConcatenados= document.getElementById("APCONCATENADO");
             var apUnidos= document.getElementById("APUNIDOS");
+            var ER= document.getElementById("ER");
 
             var dataAFD= {
                 nodes: this.estadosAutomataAFD,
@@ -1509,6 +1510,11 @@ export default {
                 edges: this.transicionesAutomataUnionAP,
             };
 
+            var dataER= {
+                nodes: this.automataER,
+                edges: this.transicionesER,
+            }
+
             var options = {
                 height: 320 +'px',
                 edges:{
@@ -1519,6 +1525,10 @@ export default {
             if(this.option===1)
             {
                 var networkAFD= new vis.Network(afd,dataAFD,options);
+                if(this.opcion===1)
+                {
+                    var networkER= new vis.Network(ER,dataER,options);
+                }
             }
 
             if(this.option===2)
@@ -1529,7 +1539,7 @@ export default {
 
             if(this.opcion===3)
             {
-                var networkUnion= new vis.Network(apUnidos,dataAPUnidos,options);//el Apus nahasapeemapetilon
+                var networkUnion= new vis.Network(apUnidos,dataAPUnidos,options);
             }
             if(this.opcion===2)
             {
@@ -1542,8 +1552,8 @@ export default {
             var array2 = [];
             array2 = label.split('');
             array2 = this.encontrarparentesis(array2);
-            if(transaux.includes('+')){ // se asume que en transaux existe un a+b o un a+b+c
-                if(array2.includes('+')){ /* [a,b,b,*,a, (,a,+,b,),*,a,+,b,a,(,a,+,b,),*] */ 
+            if(transaux.includes('+')){ 
+                if(array2.includes('+')){ 
                     if(array2[array2.length-1]==transaux || array2[array2.length-3]==transaux){
                         return true;
                     }else{
@@ -1552,9 +1562,9 @@ export default {
                 }else{
                     return false;       
                 }
-            }else{ // se asume que en transaux existe un b*
-                if(transaux.includes('*')){ // se asume que en transaux existe un a+b o un a+b+c
-                    if(array2.includes('*')){ /* [a,b,b*,a, (a+b)*,a+b,a] */
+            }else{ 
+                if(transaux.includes('*')){ 
+                    if(array2.includes('*')){ 
                         if(array2[array2.length-1]==transaux || array2[array2.length-3]==transaux){
                             return true;
                         }else{
@@ -1615,9 +1625,13 @@ export default {
         },
         
         encontrarExpresionRegular(){
+            this.automataER=[];
+            this.transicionesER=[];
+            var estadosAFDCopia=[];
+            var transAFDCopia=[];
+            this.copiarAutomata(this.estadosAutomataAFD,this.transicionesAutomataAFD,estadosAFDCopia,transAFDCopia);
             var finales=[];
 
-            //Se busca los finales y se agregan al arreglo finales
             for(var i=0; i<this.estadosAutomataAFD.length; i++)
             {
                 if(this.estadosAutomataAFD[i].final===true)
@@ -1626,9 +1640,7 @@ export default {
                 }
             }
 
-            //Se busca si hay transiciones que salen de los finales. Si ese es el caso, se procede a crear un nuevo estado final y los antiguos dejan de ser finales.
             if(this.salenFinales(finales)){
-                //Se crean las transiciones desde los antiguos finales al nuevo final con una transicion vacía.
                 for(var j=0; j<finales.length;j++)
                 {
                     this.transicionAutomataAFD.from=finales[j];
@@ -1640,7 +1652,6 @@ export default {
             }
             console.log("Estados:",this.estadosAutomataAFD);
 
-            //Buscar intermedio entre el inicial (q0) y q2 
             var primero='inicio';
             var final='Final';
             var transicion={from: '', label: '', to: '', color: {color: 'rgb(0,0,0)'}};
@@ -1743,7 +1754,6 @@ export default {
                                 transicion.from=arrayentrada[r];
                                 transicion.to=arraysalida[s];
                                 console.log("from:",transicion.from, "to:", transicion.to)
-                                console.log("inicio de transicion entrada");
                                 for(var t=0; t<arraytrans.length; t++){
                                     console.log("array from:",arraytrans[t].from,"- array entrada: ",arrayentrada[r]);
                                     if(arraytrans[t].from==arrayentrada[r]){
@@ -1759,7 +1769,6 @@ export default {
                                                     f=arraycantentrada.length; 
                                                 }
                                                 else{
-                                                    console.log('else de la entrada');
                                                     let aparte1=arraycantentrada[f].indices[arraycantentrada[f].indices.length-1];
                                                     arraycantentrada[f].indices.splice(arraycantentrada[f].indices.length-1 ,1)
                                                     console.log("concatene 2", arraytrans[aparte1].label);
@@ -1773,7 +1782,6 @@ export default {
                                         }
                                     }
                                 }
-                                console.log("inicio de transicion intermedia");
                                 for(var u=0; u<arraytrans.length; u++){
                                     if(arraytrans[u].from == arraytrans[u].to){
                                         auxtrans='('+arraytrans[u].label+')'+'*'
@@ -1784,7 +1792,6 @@ export default {
                                         auxtrans='';
                                     }
                                 }
-                                console.log("inicio de transicion salida");
                                 for(var v=0; v<arraytrans.length; v++){
                                     console.log("array from:",arraytrans[v].to,"- array salida: ",arraysalida[s]);
                                     if(arraytrans[v].to==arraysalida[s]){ 
@@ -1800,7 +1807,6 @@ export default {
                                                     a=arraycantsalida.length; 
                                                 }
                                                 else{
-                                                    console.log('else de la salida');
                                                     let aparte=arraycantsalida[a].indices[arraycantsalida[a].indices.length-1];
                                                     arraycantsalida[a].indices.splice(arraycantsalida[a].indices.length-1, 1);
                                                     console.log("concatene 2", arraytrans[aparte].label);
@@ -1859,6 +1865,9 @@ export default {
             this.transicionAutomataAFD={from: '', label:'', to: '', color: {color: 'rgb(0,0,0)'}}
             this.eliminarEstados(this.estadosAutomataAFD);
             this.expresionRegularAFD=expFinal;
+            this.copiarAutomata(this.estadosAutomataAFD,this.transicionesAutomataAFD,this.automataER,this.transicionesER);
+            this.estadosAutomataAFD=estadosAFDCopia;
+            this.transicionesAutomataAFD=transAFDCopia;
             this.drawAutomata();
         },
 
@@ -1902,29 +1911,21 @@ export default {
 
         salenFinales(finales){
             console.log("funcion salen finales");
-            for(var j=0; j<this.transicionesAutomataAFD.length;j++)
-            {
-                for(var k=0; k<finales.length;k++)
-                {
-                    for(var t=0; t<this.estadosAutomataAFD.length;t++){
-                        if(this.estadosAutomataAFD[t].final===true){
-                            this.estadosAutomataAFD[t].final=false;
-                            this.estadosAutomataAFD[t].shape='ellipse';
-                            this.estadosAutomataAFD[t].color='#C25C0B';
-                        }
-                    }
-                    this.estadoAutomataAFD.final=true;
-                    this.estadoAutomataAFD.shape='diamond';
-                    this.estadoAutomataAFD.color='#5cb85c';
-                    this.estadoAutomataAFD.id='Final';
-                    this.estadoAutomataAFD.label='Final';
-                    this.estadosAutomataAFD.push(this.estadoAutomataAFD);
-                    this.estadoAutomataAFD={id: '', label: '', color: '#C25C0B', final: false};
-                    return true;
-                    
+            for(var t=0; t<this.estadosAutomataAFD.length;t++){
+                if(this.estadosAutomataAFD[t].final===true){
+                    this.estadosAutomataAFD[t].final=false;
+                    this.estadosAutomataAFD[t].shape='ellipse';
+                    this.estadosAutomataAFD[t].color='#C25C0B';
                 }
             }
-            return false;
+            this.estadoAutomataAFD.final=true;
+            this.estadoAutomataAFD.shape='diamond';
+            this.estadoAutomataAFD.color='#5cb85c';
+            this.estadoAutomataAFD.id='Final';
+            this.estadoAutomataAFD.label='Final';
+            this.estadosAutomataAFD.push(this.estadoAutomataAFD);
+            this.estadoAutomataAFD={id: '', label: '', color: '#C25C0B', final: false};
+            return true;
         },
     }
 }

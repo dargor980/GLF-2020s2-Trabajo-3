@@ -31,11 +31,11 @@ body {
 }
 
 .lato {
-    font-family: "LatoRegular";
+    font-family: "LatoRegular",Arial, Helvetica, sans-serif;
 }
 
 .fredoka {
-    font-family: "FredokaOne";
+    font-family: "FredokaOne", Arial, Helvetica, sans-serif;
 }
 
 .grafo1 {

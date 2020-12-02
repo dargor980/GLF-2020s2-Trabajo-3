@@ -2262,6 +2262,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2370,7 +2371,8 @@ __webpack_require__.r(__webpack_exports__);
       alfabetoAFD: [],
       alfabetoAP1: [],
       alfabetoAP2: [],
-      cadena: '',
+      automataER: [],
+      transicionesER: [],
       selected: false,
       selected2: false,
       automataCreate: false,
@@ -2429,6 +2431,7 @@ __webpack_require__.r(__webpack_exports__);
       this.automataCreate = false;
       this.creaEstado = false;
       this.option = 0;
+      this.opcion = 0;
       this.selected = false;
     },
     backToAp: function backToAp() {
@@ -2781,8 +2784,6 @@ __webpack_require__.r(__webpack_exports__);
               transiciones[k].label = nT;
               nT = '';
             }
-
-            console.log("Epsilon");
           }
         }
 
@@ -2821,7 +2822,6 @@ __webpack_require__.r(__webpack_exports__);
 
           for (var z = 0; z < transiciones.length; z++) {
             if (transiciones[z].from != 'inicio' && !transiciones[z].label.includes('|')) {
-              console.log("entramos perrito");
               var newElim = transiciones[z].label + '|' + pilaAP.elimina + '|' + pilaAP.agrega;
               console.log("newElim", newElim);
               transiciones[z].label = newElim;
@@ -2843,8 +2843,6 @@ __webpack_require__.r(__webpack_exports__);
               transiciones[m].label = nT1;
               nT1 = '';
             }
-
-            console.log("Epsilon");
           }
         }
 
@@ -3443,6 +3441,7 @@ __webpack_require__.r(__webpack_exports__);
       var ap2 = document.getElementById("AP2");
       var apConcatenados = document.getElementById("APCONCATENADO");
       var apUnidos = document.getElementById("APUNIDOS");
+      var ER = document.getElementById("ER");
       var dataAFD = {
         nodes: this.estadosAutomataAFD,
         edges: this.transicionesAutomataAFD
@@ -3463,6 +3462,10 @@ __webpack_require__.r(__webpack_exports__);
         nodes: this.estadosAutomataUnionAP,
         edges: this.transicionesAutomataUnionAP
       };
+      var dataER = {
+        nodes: this.automataER,
+        edges: this.transicionesER
+      };
       var options = {
         height: 320 + 'px',
         edges: {
@@ -3472,6 +3475,10 @@ __webpack_require__.r(__webpack_exports__);
 
       if (this.option === 1) {
         var networkAFD = new vis.Network(afd, dataAFD, options);
+
+        if (this.opcion === 1) {
+          var networkER = new vis.Network(ER, dataER, options);
+        }
       }
 
       if (this.option === 2) {
@@ -3480,7 +3487,7 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       if (this.opcion === 3) {
-        var networkUnion = new vis.Network(apUnidos, dataAPUnidos, options); //el Apus nahasapeemapetilon
+        var networkUnion = new vis.Network(apUnidos, dataAPUnidos, options);
       }
 
       if (this.opcion === 2) {
@@ -3493,9 +3500,7 @@ __webpack_require__.r(__webpack_exports__);
       array2 = this.encontrarparentesis(array2);
 
       if (transaux.includes('+')) {
-        // se asume que en transaux existe un a+b o un a+b+c
         if (array2.includes('+')) {
-          /* [a,b,b,*,a, (,a,+,b,),*,a,+,b,a,(,a,+,b,),*] */
           if (array2[array2.length - 1] == transaux || array2[array2.length - 3] == transaux) {
             return true;
           } else {
@@ -3505,11 +3510,8 @@ __webpack_require__.r(__webpack_exports__);
           return false;
         }
       } else {
-        // se asume que en transaux existe un b*
         if (transaux.includes('*')) {
-          // se asume que en transaux existe un a+b o un a+b+c
           if (array2.includes('*')) {
-            /* [a,b,b*,a, (a+b)*,a+b,a] */
             if (array2[array2.length - 1] == transaux || array2[array2.length - 3] == transaux) {
               return true;
             } else {
@@ -3571,17 +3573,20 @@ __webpack_require__.r(__webpack_exports__);
       return arrayaux;
     },
     encontrarExpresionRegular: function encontrarExpresionRegular() {
-      var finales = []; //Se busca los finales y se agregan al arreglo finales
+      this.automataER = [];
+      this.transicionesER = [];
+      var estadosAFDCopia = [];
+      var transAFDCopia = [];
+      this.copiarAutomata(this.estadosAutomataAFD, this.transicionesAutomataAFD, estadosAFDCopia, transAFDCopia);
+      var finales = [];
 
       for (var i = 0; i < this.estadosAutomataAFD.length; i++) {
         if (this.estadosAutomataAFD[i]["final"] === true) {
           finales.push(this.estadosAutomataAFD[i].id);
         }
-      } //Se busca si hay transiciones que salen de los finales. Si ese es el caso, se procede a crear un nuevo estado final y los antiguos dejan de ser finales.
-
+      }
 
       if (this.salenFinales(finales)) {
-        //Se crean las transiciones desde los antiguos finales al nuevo final con una transicion vacía.
         for (var j = 0; j < finales.length; j++) {
           this.transicionAutomataAFD.from = finales[j];
           this.transicionAutomataAFD.to = 'Final';
@@ -3598,8 +3603,7 @@ __webpack_require__.r(__webpack_exports__);
         }
       }
 
-      console.log("Estados:", this.estadosAutomataAFD); //Buscar intermedio entre el inicial (q0) y q2 
-
+      console.log("Estados:", this.estadosAutomataAFD);
       var primero = 'inicio';
       var _final = 'Final';
       var transicion = {
@@ -3732,7 +3736,6 @@ __webpack_require__.r(__webpack_exports__);
                 transicion.from = arrayentrada[r];
                 transicion.to = arraysalida[s];
                 console.log("from:", transicion.from, "to:", transicion.to);
-                console.log("inicio de transicion entrada");
 
                 for (var t = 0; t < arraytrans.length; t++) {
                   console.log("array from:", arraytrans[t].from, "- array entrada: ", arrayentrada[r]);
@@ -3751,7 +3754,6 @@ __webpack_require__.r(__webpack_exports__);
                           t = arraytrans.length;
                           f = arraycantentrada.length;
                         } else {
-                          console.log('else de la entrada');
                           var aparte1 = arraycantentrada[f].indices[arraycantentrada[f].indices.length - 1];
                           arraycantentrada[f].indices.splice(arraycantentrada[f].indices.length - 1, 1);
                           console.log("concatene 2", arraytrans[aparte1].label);
@@ -3766,8 +3768,6 @@ __webpack_require__.r(__webpack_exports__);
                   }
                 }
 
-                console.log("inicio de transicion intermedia");
-
                 for (var u = 0; u < arraytrans.length; u++) {
                   if (arraytrans[u].from == arraytrans[u].to) {
                     auxtrans = '(' + arraytrans[u].label + ')' + '*';
@@ -3780,8 +3780,6 @@ __webpack_require__.r(__webpack_exports__);
                     auxtrans = '';
                   }
                 }
-
-                console.log("inicio de transicion salida");
 
                 for (var v = 0; v < arraytrans.length; v++) {
                   console.log("array from:", arraytrans[v].to, "- array salida: ", arraysalida[s]);
@@ -3800,7 +3798,6 @@ __webpack_require__.r(__webpack_exports__);
                           v = arraytrans.length;
                           a = arraycantsalida.length;
                         } else {
-                          console.log('else de la salida');
                           var aparte = arraycantsalida[a].indices[arraycantsalida[a].indices.length - 1];
                           arraycantsalida[a].indices.splice(arraycantsalida[a].indices.length - 1, 1);
                           console.log("concatene 2", arraytrans[aparte].label);
@@ -3884,6 +3881,9 @@ __webpack_require__.r(__webpack_exports__);
       };
       this.eliminarEstados(this.estadosAutomataAFD);
       this.expresionRegularAFD = expFinal;
+      this.copiarAutomata(this.estadosAutomataAFD, this.transicionesAutomataAFD, this.automataER, this.transicionesER);
+      this.estadosAutomataAFD = estadosAFDCopia;
+      this.transicionesAutomataAFD = transAFDCopia;
       this.drawAutomata();
     },
     verificarTermino: function verificarTermino(transiciones) {
@@ -3926,33 +3926,27 @@ __webpack_require__.r(__webpack_exports__);
     salenFinales: function salenFinales(finales) {
       console.log("funcion salen finales");
 
-      for (var j = 0; j < this.transicionesAutomataAFD.length; j++) {
-        for (var k = 0; k < finales.length; k++) {
-          for (var t = 0; t < this.estadosAutomataAFD.length; t++) {
-            if (this.estadosAutomataAFD[t]["final"] === true) {
-              this.estadosAutomataAFD[t]["final"] = false;
-              this.estadosAutomataAFD[t].shape = 'ellipse';
-              this.estadosAutomataAFD[t].color = '#C25C0B';
-            }
-          }
-
-          this.estadoAutomataAFD["final"] = true;
-          this.estadoAutomataAFD.shape = 'diamond';
-          this.estadoAutomataAFD.color = '#5cb85c';
-          this.estadoAutomataAFD.id = 'Final';
-          this.estadoAutomataAFD.label = 'Final';
-          this.estadosAutomataAFD.push(this.estadoAutomataAFD);
-          this.estadoAutomataAFD = {
-            id: '',
-            label: '',
-            color: '#C25C0B',
-            "final": false
-          };
-          return true;
+      for (var t = 0; t < this.estadosAutomataAFD.length; t++) {
+        if (this.estadosAutomataAFD[t]["final"] === true) {
+          this.estadosAutomataAFD[t]["final"] = false;
+          this.estadosAutomataAFD[t].shape = 'ellipse';
+          this.estadosAutomataAFD[t].color = '#C25C0B';
         }
       }
 
-      return false;
+      this.estadoAutomataAFD["final"] = true;
+      this.estadoAutomataAFD.shape = 'diamond';
+      this.estadoAutomataAFD.color = '#5cb85c';
+      this.estadoAutomataAFD.id = 'Final';
+      this.estadoAutomataAFD.label = 'Final';
+      this.estadosAutomataAFD.push(this.estadoAutomataAFD);
+      this.estadoAutomataAFD = {
+        id: '',
+        label: '',
+        color: '#C25C0B',
+        "final": false
+      };
+      return true;
     }
   }
 });
@@ -96111,23 +96105,30 @@ var render = function() {
             [
               _c("div", { staticClass: "container my-3" }, [
                 _c("div", { staticClass: "text-center" }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-success",
-                      on: { click: _vm.encontrarExpresionRegular }
-                    },
-                    [_vm._v("Mostrar expresion regular")]
-                  )
+                  _c("a", { attrs: { href: "#ER" } }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-success",
+                        on: { click: _vm.encontrarExpresionRegular }
+                      },
+                      [_vm._v("Mostrar expresion regular")]
+                    )
+                  ])
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "my-3" }, [
-                  _vm._v(
-                    "\n                    La expresión regular del AFD es: "
-                  ),
-                  _c("strong", [
-                    _vm._v(" " + _vm._s(_vm.expresionRegularAFD) + " ")
-                  ])
+                  _c("h3", { staticClass: "my-3" }, [
+                    _vm._v("La expresión regular del AFD es: "),
+                    _c("strong", [
+                      _vm._v(" " + _vm._s(_vm.expresionRegularAFD) + " ")
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", {
+                    staticStyle: { border: "1px solid lightgray" },
+                    attrs: { id: "ER" }
+                  })
                 ])
               ])
             ]
@@ -96763,7 +96764,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "col-md-4" }, [
       _c("div", { staticClass: "navbar-brand fredoka textocolor" }, [
-        _vm._v("Trabajo Unidad II: Autómatas de Pila y Expresiones Regulares")
+        _vm._v("Trabajo Unidad III: Autómatas de Pila y Expresiones Regulares")
       ])
     ])
   },
